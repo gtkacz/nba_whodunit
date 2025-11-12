@@ -268,3 +268,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Custom
+claudedocs/
+.ruff_cache/
+CLAUDE.md
+.claude/
+.vscode/
