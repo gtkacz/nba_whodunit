@@ -55,7 +55,7 @@ jobs:
           VITE_BASE_URL: ${{ env.VITE_BASE_URL }}
         run: |
           echo "VITE_BUILD_TIME=$(date +%s)" >> $GITHUB_ENV
-          npm run build
+          npm run build-only
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
