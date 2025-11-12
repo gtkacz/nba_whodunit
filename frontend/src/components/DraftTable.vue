@@ -15,9 +15,12 @@ interface DraftTableProps {
   selectedRounds?: (number | string)[]
   overallPickRange?: [number, number]
   preDraftTeamSearch?: string[]
+  selectedPositions?: string[]
+  ageRange?: [number, number]
   tradeFilter?: 'all' | 'traded' | 'not-traded'
   availableYears?: number[]
   allPreDraftTeams?: string[]
+  availableAges?: number[]
 }
 
 const props = withDefaults(defineProps<DraftTableProps>(), {
@@ -29,9 +32,12 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   selectedRounds: () => [],
   overallPickRange: () => [1, 61],
   preDraftTeamSearch: () => [],
+  selectedPositions: () => [],
+  ageRange: () => [18, 50],
   tradeFilter: () => 'all',
   availableYears: () => [],
-  allPreDraftTeams: () => []
+  allPreDraftTeams: () => [],
+  availableAges: () => []
 })
 
 const emit = defineEmits<{
@@ -42,6 +48,8 @@ const emit = defineEmits<{
   'update:selectedRounds': [value: (number | string)[]]
   'update:overallPickRange': [value: [number, number]]
   'update:preDraftTeamSearch': [value: string[]]
+  'update:selectedPositions': [value: string[]]
+  'update:ageRange': [value: [number, number]]
   'update:tradeFilter': [value: 'all' | 'traded' | 'not-traded']
 }>()
 
@@ -61,6 +69,15 @@ const roundOptions = [
   { value: 2, title: 'Round 2' },
   { value: '3+', title: 'Round 3+' }
 ]
+
+const positionOptions = [
+  { value: 'G', title: 'Guard (G)' },
+  { value: 'F', title: 'Forward (F)' },
+  { value: 'C', title: 'Center (C)' }
+]
+
+const minAge = computed(() => props.availableAges.length > 0 ? Math.min(...props.availableAges) : 18)
+const maxAge = computed(() => props.availableAges.length > 0 ? Math.max(...props.availableAges) : 50)
 
 const minYear = computed(() => props.availableYears.length > 0 ? Math.min(...props.availableYears) : 1950)
 const maxYear = computed(() => props.availableYears.length > 0 ? Math.max(...props.availableYears) : 2025)
@@ -225,6 +242,12 @@ const hasActiveFilters = computed(() => {
   
   // Pre-draft team filter active
   if (props.preDraftTeamSearch.length > 0) return true
+  
+  // Position filter active
+  if (props.selectedPositions.length > 0) return true
+  
+  // Age range filter active
+  if (props.ageRange[0] !== 18 || props.ageRange[1] !== 50) return true
   
   // Trade filter active
   if (props.tradeFilter !== 'all') return true
@@ -554,6 +577,42 @@ function getPositionColor(position: string): string {
                   prepend-inner-icon="mdi-school"
                   closable-chips
                 />
+              </v-col>
+
+              <!-- Position Filter -->
+              <v-col cols="12" md="6">
+                <v-select
+                  :model-value="props.selectedPositions"
+                  @update:model-value="emit('update:selectedPositions', $event)"
+                  :items="positionOptions"
+                  label="Position"
+                  variant="outlined"
+                  density="compact"
+                  multiple
+                  chips
+                  clearable
+                  hide-details
+                  prepend-inner-icon="mdi-account"
+                  closable-chips
+                />
+              </v-col>
+
+              <!-- Age Range Filter -->
+              <v-col cols="12" md="6">
+                <div class="px-2">
+                  <label class="text-caption text-medium-emphasis mb-2 d-block">Age Range</label>
+                  <v-range-slider
+                    :model-value="props.ageRange"
+                    @update:model-value="emit('update:ageRange', $event)"
+                    :min="minAge"
+                    :max="maxAge"
+                    :step="1"
+                    thumb-label="always"
+                    hide-details
+                    color="primary"
+                    class="mt-4"
+                  />
+                </div>
               </v-col>
 
               <!-- Trade Filter -->

@@ -18,10 +18,13 @@ const {
   selectedRounds,
   overallPickRange,
   preDraftTeamSearch,
+  selectedPositions,
+  ageRange,
   tradeFilter,
   filteredData,
   allPreDraftTeams,
   availableYears,
+  availableAges,
   loading,
   loadAllTeamData
 } = useDraftData()
@@ -73,9 +76,12 @@ onMounted(() => {
               v-model:selected-rounds="selectedRounds"
               v-model:overall-pick-range="overallPickRange"
               v-model:pre-draft-team-search="preDraftTeamSearch"
+              v-model:selected-positions="selectedPositions"
+              v-model:age-range="ageRange"
               v-model:trade-filter="tradeFilter"
               :available-years="availableYears"
               :all-pre-draft-teams="allPreDraftTeams"
+              :available-ages="availableAges"
             />
           </v-col>
         </v-row>

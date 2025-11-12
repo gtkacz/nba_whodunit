@@ -16,6 +16,8 @@ export function useDraftData() {
   const selectedRounds = ref<(number | string)[]>([])
   const overallPickRange = ref<[number, number]>([1, 61])
   const preDraftTeamSearch = ref<string[]>([])
+  const selectedPositions = ref<string[]>([])
+  const ageRange = ref<[number, number]>([18, 50])
   const tradeFilter = ref<'all' | 'traded' | 'not-traded'>('all')
 
   const allPreDraftTeams = computed(() => {
@@ -32,6 +34,16 @@ export function useDraftData() {
     const years = new Set<number>()
     allDraftPicks.value.forEach(pick => years.add(pick.year))
     return Array.from(years).sort((a, b) => b - a) // Sort descending
+  })
+
+  const availableAges = computed(() => {
+    const ages = new Set<number>()
+    allDraftPicks.value.forEach(pick => {
+      if (pick.age && pick.age > 0) {
+        ages.add(pick.age)
+      }
+    })
+    return Array.from(ages).sort((a, b) => a - b)
   })
 
   const filteredData = computed(() => {
@@ -91,6 +103,29 @@ export function useDraftData() {
       )
     }
 
+    // Position filter - check if any selected position matches the pick's position
+    if (selectedPositions.value.length > 0) {
+      filtered = filtered.filter(pick => {
+        if (!pick.position || pick.position.trim() === '') return false
+        // Remove "S" and "P" prefixes and split into individual letters
+        const normalizedPosition = pick.position.replace(/^[SP]/g, '')
+        const positionLetters = normalizedPosition.trim().split('').filter(char => char.match(/[A-Z]/))
+        // Check if any selected position matches any letter in the pick's position
+        return selectedPositions.value.some(selectedPos => 
+          positionLetters.includes(selectedPos)
+        )
+      })
+    }
+
+    // Age range filter
+    if (ageRange.value && ageRange.value.length === 2) {
+      const [minAge, maxAge] = ageRange.value
+      filtered = filtered.filter(pick => {
+        if (!pick.age || pick.age <= 0) return false
+        return pick.age >= minAge && pick.age <= maxAge
+      })
+    }
+
     // Trade filter
     if (tradeFilter.value === 'traded') {
       filtered = filtered.filter(pick => pick.draftTrades && pick.draftTrades.trim() !== '')
@@ -140,10 +175,13 @@ export function useDraftData() {
     selectedRounds,
     overallPickRange,
     preDraftTeamSearch,
+    selectedPositions,
+    ageRange,
     tradeFilter,
     filteredData,
     allPreDraftTeams,
     availableYears,
+    availableAges,
     loading,
     error,
     loadAllTeamData
