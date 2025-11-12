@@ -28,11 +28,11 @@ function handleContinue() {
       </h1>
 
       <div class="text-body-1 text-center px-8 pb-4 splash-text">
-        <p>As basketball fans, we've all felt the same frustration. You look up your favorite team's draft history to see how the roster was built, but the data is misleading.</p>
+        <p>As NBA fans, we've always felt the same frustration. You look up a team's draft history to see how the roster was built, but the data is misleading.</p>
 
         <br/>
 
-        <p>You see a player listed who never played a single game for your team, only to remember, "Oh, right, he was traded on draft night." Meanwhile, the player your team <em>actually</em> acquired in that deal is listed on another team's history, as if they were the ones who drafted him.</p>
+        <p>You see a player listed who never played a single game for your team, only to remember, "Oh, right, he was traded on draft night." Meanwhile, the player the team <em>actually</em> drafted is listed on another team's history, as if they were the ones who drafted him.</p>
 
         <br/>
 
@@ -47,7 +47,9 @@ function handleContinue() {
         <v-btn
           color="primary"
           size="large"
-          variant="elevated"
+          variant="outlined"
+          rounded="xl"
+          append-icon="mdi-chevron-right"
           @click="handleContinue"
         >
           Continue
@@ -64,21 +66,24 @@ function handleContinue() {
   justify-content: center;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  font-family: "Barlow", sans-serif;
 }
 
 .splash-content {
   animation: fadeIn 0.5s ease-in-out;
-  max-width: 80vw;
+  max-width: 60vw;
   z-index: 1;
   position: relative;
+  font-family: "Barlow", sans-serif;
+
+  h1 {
+    font-family: "Barlow", sans-serif !important;
+  }
 }
 
 .splash-text {
-  background-color: rgba(var(--v-theme-surface), 0.95);
-  border-radius: 8px;
-  padding: 24px;
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  // No background - just floating text over blur
+  font-family: "Barlow", sans-serif;
 }
 
 @keyframes fadeIn {
