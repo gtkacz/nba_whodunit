@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import type { TeamAbbreviation } from '@/types/team'
+import { getDataUrl } from '@/utils/dataUrl'
 
 const selectedTeam = defineModel<TeamAbbreviation | 'ALL'>({ required: true })
 
@@ -17,7 +18,7 @@ const teamOptions = ref<TeamOption[]>([])
 
 async function loadTeams() {
   try {
-    const response = await fetch('/data/teams.json')
+    const response = await fetch(getDataUrl('teams.json'))
     const data = await response.json() as TeamAbbreviation[]
     teams.value = data
 

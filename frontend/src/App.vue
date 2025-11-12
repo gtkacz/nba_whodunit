@@ -6,6 +6,7 @@ import DraftTable from './components/DraftTable.vue'
 import AppFooter from './components/AppFooter.vue'
 import { useSplashScreen } from './composables/useSplashScreen'
 import { useDraftData } from './composables/useDraftData'
+import { getDataUrl } from './utils/dataUrl'
 import type { TeamAbbreviation } from './types/team'
 
 const { showSplash, markSplashSeen } = useSplashScreen()
@@ -30,7 +31,7 @@ const availableYears = computed(() => {
 
 async function loadData() {
   try {
-    const response = await fetch('/data/teams.json')
+    const response = await fetch(getDataUrl('teams.json'))
     if (!response.ok) {
       console.error('Failed to fetch teams.json:', response.status)
       return

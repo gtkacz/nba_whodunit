@@ -3,6 +3,7 @@ import { computed, ref, onMounted } from 'vue'
 import type { DraftPick } from '@/types/draft'
 import type { TeamAbbreviation } from '@/types/team'
 import { getCanonicalTeam, getDisplayTeam } from '@/utils/teamAliases'
+import { getDataUrl } from '@/utils/dataUrl'
 
 interface DraftTableProps {
   data: DraftPick[]
@@ -56,7 +57,7 @@ const maxYear = computed(() => props.availableYears.length > 0 ? Math.max(...pro
 
 async function loadTeams() {
   try {
-    const response = await fetch('/data/teams.json')
+    const response = await fetch(getDataUrl('teams.json'))
     const data = await response.json() as TeamAbbreviation[]
     teams.value = data
 

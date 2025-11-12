@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import type { TeamAbbreviation } from '@/types/team'
+import { getDataUrl } from '@/utils/dataUrl'
 
 interface DraftFiltersProps {
   availableYears?: number[]
@@ -38,7 +39,7 @@ const roundOptions = [1, 2, 3, 4, 5, 6, 7]
 
 async function loadTeams() {
   try {
-    const response = await fetch('/data/teams.json')
+    const response = await fetch(getDataUrl('teams.json'))
     const data = await response.json() as TeamAbbreviation[]
     teams.value = data
 

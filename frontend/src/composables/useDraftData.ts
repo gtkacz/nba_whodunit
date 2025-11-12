@@ -2,6 +2,7 @@ import { ref, computed } from 'vue'
 import type { DraftPick } from '@/types/draft'
 import type { TeamAbbreviation } from '@/types/team'
 import { parseCSV } from '@/utils/csvParser'
+import { getDataUrl } from '@/utils/dataUrl'
 
 const allDraftPicks = ref<DraftPick[]>([])
 const loading = ref(false)
@@ -88,7 +89,7 @@ export function useDraftData() {
 
       for (const team of teams) {
         try {
-          const response = await fetch(`/data/csv/${team}.csv`)
+          const response = await fetch(getDataUrl(`csv/${team}.csv`))
           if (!response.ok) {
             console.error(`Failed to fetch ${team}.csv:`, response.status)
             continue
