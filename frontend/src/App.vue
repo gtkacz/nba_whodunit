@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
+import { computed, onMounted } from 'vue'
 import SplashScreen from './components/SplashScreen.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
-import TeamFilter from './components/TeamFilter.vue'
-import YearFilter from './components/YearFilter.vue'
+import DraftFilters from './components/DraftFilters.vue'
 import DraftTable from './components/DraftTable.vue'
 import AppFooter from './components/AppFooter.vue'
 import { useSplashScreen } from './composables/useSplashScreen'
@@ -11,7 +10,19 @@ import { useDraftData } from './composables/useDraftData'
 import type { TeamAbbreviation } from './types/team'
 
 const { showSplash, markSplashSeen } = useSplashScreen()
-const { selectedTeam, selectedYear, filteredData, loading, loadAllTeamData } = useDraftData()
+const {
+  selectedTeam,
+  selectedYear,
+  yearRange,
+  selectedRounds,
+  overallPickRange,
+  preDraftTeamSearch,
+  tradeFilter,
+  filteredData,
+  allPreDraftTeams,
+  loading,
+  loadAllTeamData
+} = useDraftData()
 
 const availableYears = computed(() => {
   const years = new Set<number>()
@@ -55,12 +66,17 @@ onMounted(() => {
     <v-main>
       <v-container fluid class="pa-4 pa-md-6">
         <v-row class="mb-4">
-          <v-col cols="12" md="6">
-            <TeamFilter v-model="selectedTeam" />
-          </v-col>
-
-          <v-col cols="12" md="6">
-            <YearFilter v-model="selectedYear" :available-years="availableYears" />
+          <v-col cols="12">
+            <DraftFilters
+              v-model:team="selectedTeam"
+              v-model:year-range="yearRange"
+              v-model:rounds="selectedRounds"
+              v-model:overall-pick-range="overallPickRange"
+              v-model:pre-draft-team="preDraftTeamSearch"
+              v-model:trade-filter="tradeFilter"
+              :available-years="availableYears"
+              :all-pre-draft-teams="allPreDraftTeams"
+            />
           </v-col>
         </v-row>
 

@@ -51,6 +51,12 @@ function parseDraftTrades(trades: string | null): string[] {
   if (!trades) return []
   return trades.split(',').map(t => t.trim()).filter(t => t)
 }
+
+function splitPosition(position: string): string[] {
+  if (!position || position.trim() === '') return []
+  // Split multi-position strings like "FC" into ["F", "C"], "GF" into ["G", "F"]
+  return position.trim().split('').filter(char => char.match(/[A-Z]/))
+}
 </script>
 
 <template>
@@ -117,9 +123,18 @@ function parseDraftTrades(trades: string | null): string[] {
       </template>
 
       <template #item.position="{ item }">
-        <v-chip size="small" variant="tonal" color="secondary">
-          {{ item.position || '-' }}
-        </v-chip>
+        <div class="d-flex gap-1">
+          <v-chip
+            v-for="(pos, index) in splitPosition(item.position)"
+            :key="index"
+            size="small"
+            variant="tonal"
+            color="secondary"
+          >
+            {{ pos }}
+          </v-chip>
+          <span v-if="!item.position || item.position.trim() === ''">-</span>
+        </div>
       </template>
 
       <template #item.height="{ item }">
