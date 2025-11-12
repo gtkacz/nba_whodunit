@@ -7,12 +7,25 @@
   padding: 0;
 }
 
-html, body {
+html,
+body {
   height: 100%;
-  font-family: "Barlow", sans-serif;
+  font-family: 'Barlow', sans-serif;
   font-size: 2ch;
 }
 
 #app {
   height: 100%;
+}
+
+.gap-1 {
+  gap: $spacing-base;
+}
+
+.gap-2 {
+  gap: $spacing-sm;
+}
+
+.gap-3 {
+  gap: $spacing-md;
 }

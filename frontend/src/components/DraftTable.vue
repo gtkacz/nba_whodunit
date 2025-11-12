@@ -5,6 +5,7 @@ import type { DraftPick } from '@/types/draft'
 import type { TeamAbbreviation } from '@/types/team'
 import { getCanonicalTeam, getDisplayTeam, getOriginalTeamName } from '@/utils/teamAliases'
 import { getDataUrl } from '@/utils/dataUrl'
+import { exportDraftPicksToCSV, downloadCSV as downloadCSVFile } from '@/utils/csvExporter'
 import PlayerCard from './PlayerCard.vue'
 
 const display = useDisplay()
@@ -78,6 +79,52 @@ const emit = defineEmits<{
 const filterMenu = ref(false)
 const teams = ref<TeamAbbreviation[]>([])
 const loadingTeams = ref(true)
+
+// Share functionality
+const shareSnackbar = ref(false)
+const shareSnackbarText = ref('')
+
+async function copyUrlToClipboard() {
+  try {
+    const url = window.location.href
+    await navigator.clipboard.writeText(url)
+    shareSnackbarText.value = 'URL copied to clipboard!'
+    shareSnackbar.value = true
+  } catch {
+    // Fallback for older browsers
+    try {
+      const textArea = document.createElement('textarea')
+      textArea.value = window.location.href
+      textArea.style.position = 'fixed'
+      textArea.style.left = '-999999px'
+      document.body.appendChild(textArea)
+      textArea.select()
+      document.execCommand('copy')
+      textArea.remove()
+      shareSnackbarText.value = 'URL copied to clipboard!'
+      shareSnackbar.value = true
+    } catch {
+      shareSnackbarText.value = 'Failed to copy URL'
+      shareSnackbar.value = true
+    }
+  }
+}
+
+// CSV download functionality
+function downloadCSV() {
+  try {
+    const csvContent = exportDraftPicksToCSV(items.value)
+    const date = new Date().toISOString().split('T')[0] // YYYY-MM-DD format
+    const filename = `nba_draft_data_${date}.csv`
+    downloadCSVFile(csvContent, filename)
+    shareSnackbarText.value = 'CSV downloaded successfully!'
+    shareSnackbar.value = true
+  } catch (error) {
+    console.error('Failed to download CSV:', error)
+    shareSnackbarText.value = 'Failed to download CSV'
+    shareSnackbar.value = true
+  }
+}
 
 // Pagination - use props with computed for two-way binding
 const currentPage = computed({
@@ -634,8 +681,29 @@ watch(currentPage, () => {
           {{ items.length }} picks
         </v-chip>
       </div>
-      <!-- Mobile: Bottom Sheet -->
-      <v-bottom-sheet v-model="filterMenu" v-if="isMobile">
+      <div class="d-flex align-center gap-2">
+        <!-- Download CSV Button -->
+        <v-btn
+          icon="mdi-download"
+          variant="outlined"
+          color="primary"
+          :size="isMobile ? 'default' : 'small'"
+          @click="downloadCSV"
+          title="Download CSV"
+        />
+        
+        <!-- Share Button -->
+        <v-btn
+          icon="mdi-share-variant"
+          variant="outlined"
+          color="primary"
+          :size="isMobile ? 'default' : 'small'"
+          @click="copyUrlToClipboard"
+          title="Share URL"
+        />
+        
+        <!-- Mobile: Bottom Sheet -->
+        <v-bottom-sheet v-model="filterMenu" v-if="isMobile">
         <template #activator="{ props: sheetProps }">
           <v-badge
             :model-value="hasActiveFilters"
@@ -1135,7 +1203,21 @@ watch(currentPage, () => {
           </v-card-text>
         </v-card>
       </v-menu>
+      </div>
     </v-card-title>
+
+    <!-- Share Notification Snackbar -->
+    <v-snackbar
+      v-model="shareSnackbar"
+      :timeout="3000"
+      color="success"
+      location="top"
+      rounded="xl"
+      timer="white"
+      elevation="2"
+    >
+      <p class="text-center">{{ shareSnackbarText }}</p>
+    </v-snackbar>
 
     <v-data-table
       :headers="headers"
