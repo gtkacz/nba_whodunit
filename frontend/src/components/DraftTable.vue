@@ -77,6 +77,7 @@ const emit = defineEmits<{
 }>()
 
 const filterMenu = ref(false)
+const actionsMenu = ref(false)
 const teams = ref<TeamAbbreviation[]>([])
 const loadingTeams = ref(true)
 
@@ -682,29 +683,71 @@ watch(currentPage, () => {
         </v-chip>
       </div>
       <div class="d-flex align-center gap-2">
-        <!-- Download CSV Button -->
-        <v-btn
-          icon="mdi-download"
-          variant="outlined"
-          color="primary"
-          :size="isMobile ? 'default' : 'small'"
-          @click="downloadCSV"
-          title="Download CSV"
-        />
-        
-        <!-- Share Button -->
-        <v-btn
-          icon="mdi-share-variant"
-          variant="outlined"
-          color="primary"
-          :size="isMobile ? 'default' : 'small'"
-          @click="copyUrlToClipboard"
-          title="Share URL"
-        />
-        
-        <!-- Mobile: Bottom Sheet -->
-        <v-bottom-sheet v-model="filterMenu" v-if="isMobile">
-        <template #activator="{ props: sheetProps }">
+        <!-- Mobile: Single menu button with all actions -->
+        <template v-if="isMobile">
+          <v-menu v-model="actionsMenu" location="bottom end">
+            <template #activator="{ props: menuProps }">
+              <v-btn
+                v-bind="menuProps"
+                icon="mdi-dots-vertical"
+                variant="outlined"
+                color="primary"
+                size="default"
+                title="Actions"
+              />
+            </template>
+            <v-list>
+              <v-list-item
+                prepend-icon="mdi-download"
+                title="Download CSV"
+                @click="() => { downloadCSV(); actionsMenu = false; }"
+              />
+              <v-list-item
+                prepend-icon="mdi-share-variant"
+                title="Share URL"
+                @click="() => { copyUrlToClipboard(); actionsMenu = false; }"
+              />
+              <v-list-item
+                prepend-icon="mdi-filter-variant"
+                title="Filters"
+                @click="() => { filterMenu = true; actionsMenu = false; }"
+              >
+                <template #append>
+                  <v-badge
+                    :model-value="hasActiveFilters"
+                    color="error"
+                    dot
+                    location="top end"
+                  />
+                </template>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+        </template>
+
+        <!-- Desktop: Three separate buttons -->
+        <template v-else>
+          <!-- Download CSV Button -->
+          <v-btn
+            icon="mdi-download"
+            variant="outlined"
+            color="primary"
+            size="small"
+            @click="downloadCSV"
+            title="Download CSV"
+          />
+          
+          <!-- Share Button -->
+          <v-btn
+            icon="mdi-share-variant"
+            variant="outlined"
+            color="primary"
+            size="small"
+            @click="copyUrlToClipboard"
+            title="Share URL"
+          />
+          
+          <!-- Filter Button -->
           <v-badge
             :model-value="hasActiveFilters"
             color="error"
@@ -712,14 +755,18 @@ watch(currentPage, () => {
             location="top end"
           >
             <v-btn
-              v-bind="sheetProps"
               icon="mdi-filter-variant"
               variant="outlined"
               color="primary"
-              :size="isMobile ? 'default' : 'small'"
+              size="small"
+              @click="filterMenu = true"
+              title="Filters"
             />
           </v-badge>
         </template>
+        
+        <!-- Mobile: Bottom Sheet for Filters -->
+        <v-bottom-sheet v-model="filterMenu" v-if="isMobile">
         <v-card class="filter-card">
           <v-card-title class="d-flex align-center justify-space-between pa-4">
             <div class="d-flex align-center">
@@ -958,23 +1005,12 @@ watch(currentPage, () => {
       </v-bottom-sheet>
 
       <!-- Desktop: Menu -->
-      <v-menu v-model="filterMenu" location="bottom end" :close-on-content-click="false" v-else>
-        <template #activator="{ props: menuProps }">
-          <v-badge
-            :model-value="hasActiveFilters"
-            color="error"
-            dot
-            location="top end"
-          >
-            <v-btn
-              v-bind="menuProps"
-              icon="mdi-filter-variant"
-              variant="outlined"
-              color="primary"
-              :size="isMobile ? 'default' : 'small'"
-            />
-          </v-badge>
-        </template>
+      <v-menu 
+        v-model="filterMenu" 
+        location="bottom end" 
+        :close-on-content-click="false" 
+        v-else
+      >
         <v-card class="filter-card pa-6">
           <v-card-title class="d-flex align-center mb-4">
             <v-icon icon="mdi-filter-variant" class="mr-2" />
