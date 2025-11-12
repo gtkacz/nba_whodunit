@@ -33,18 +33,18 @@ function getTeamLogoUrl(team: string): string {
   return `https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/${team.toLowerCase()}.svg`
 }
 
-function parseTradeChain(trades: string | null): { original: string; final: string } | null {
-  if (!trades) return null
+function parseTradeChain(trades: string | null): { original: string } | null {
+  if (!trades || trades.trim() === '') return null
 
-  // Parse trade chain format like "X traded to Y traded to Z"
-  const parts = trades.split('traded to').map(t => t.trim())
+  // Parse trade chain format like "NOP to  ATL" or "CHA to  BOS BOS  to ATL"
+  // Extract the first team (original drafter)
+  const firstToIndex = trades.indexOf(' to ')
+  if (firstToIndex === -1) return null
 
-  if (parts.length < 2) return null
+  const original = trades.substring(0, firstToIndex).trim()
+  if (!original) return null
 
-  return {
-    original: parts[0],
-    final: parts[parts.length - 1]
-  }
+  return { original }
 }
 
 function parseDraftTrades(trades: string | null): string[] {
@@ -56,11 +56,11 @@ function parseDraftTrades(trades: string | null): string[] {
 <template>
   <v-card elevation="2" class="draft-table">
     <v-card-title class="d-flex align-center">
-      <v-avatar size="32" class="mr-2">
+      <v-avatar size="32" class="mr-2" rounded="0">
         <v-img
           src="https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/nba.svg"
           alt="NBA"
-          cover
+          contain
         />
       </v-avatar>
       NBA Draft History
@@ -82,17 +82,22 @@ function parseDraftTrades(trades: string | null): string[] {
         { value: 500, title: '500' },
         { value: -1, title: 'All' }
       ]"
+      :sort-by="[
+        { key: 'year', order: 'desc' },
+        { key: 'round', order: 'asc' },
+        { key: 'pick', order: 'asc' }
+      ]"
       items-per-page-text="Picks per page:"
       density="comfortable"
       hover
     >
       <template #item.team="{ item }">
         <div class="d-flex align-center">
-          <v-avatar size="32" class="mr-2">
+          <v-avatar size="32" class="mr-2" rounded="0">
             <v-img
               :src="getTeamLogoUrl(item.team)"
               :alt="item.team"
-              cover
+              contain
             />
           </v-avatar>
           <div class="d-flex flex-column">
@@ -218,6 +223,11 @@ function parseDraftTrades(trades: string | null): string[] {
     flex-wrap: wrap;
     gap: 4px;
     max-width: 300px;
+  }
+
+  :deep(.v-avatar img),
+  :deep(.v-avatar .v-img__img) {
+    object-fit: contain !important;
   }
 }
 </style>
