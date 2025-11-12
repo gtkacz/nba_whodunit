@@ -81,7 +81,7 @@ onMounted(() => {
     <v-expansion-panel>
       <v-expansion-panel-title>
         <v-icon icon="mdi-filter-variant" class="mr-2" />
-        Advanced Filters
+        Filters
       </v-expansion-panel-title>
       <v-expansion-panel-text>
         <v-row dense>

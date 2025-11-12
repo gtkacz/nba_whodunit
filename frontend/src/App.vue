@@ -2,7 +2,6 @@
 import { computed, onMounted } from 'vue'
 import SplashScreen from './components/SplashScreen.vue'
 import ThemeToggle from './components/ThemeToggle.vue'
-import DraftFilters from './components/DraftFilters.vue'
 import DraftTable from './components/DraftTable.vue'
 import AppFooter from './components/AppFooter.vue'
 import { useSplashScreen } from './composables/useSplashScreen'
@@ -12,7 +11,6 @@ import type { TeamAbbreviation } from './types/team'
 const { showSplash, markSplashSeen } = useSplashScreen()
 const {
   selectedTeam,
-  selectedYear,
   yearRange,
   selectedRounds,
   overallPickRange,
@@ -64,25 +62,21 @@ onMounted(() => {
     </v-app-bar>
 
     <v-main>
-      <v-container fluid class="pa-8 pa-md-10 pa-lg-12">
-        <v-row class="mb-4">
+      <v-container fluid class="table-container">
+        <v-row>
           <v-col cols="12">
-            <DraftFilters
-              v-model:team="selectedTeam"
+            <DraftTable
+              :data="filteredData"
+              :loading="loading"
+              v-model:selected-team="selectedTeam"
               v-model:year-range="yearRange"
-              v-model:rounds="selectedRounds"
+              v-model:selected-rounds="selectedRounds"
               v-model:overall-pick-range="overallPickRange"
-              v-model:pre-draft-team="preDraftTeamSearch"
+              v-model:pre-draft-team-search="preDraftTeamSearch"
               v-model:trade-filter="tradeFilter"
               :available-years="availableYears"
               :all-pre-draft-teams="allPreDraftTeams"
             />
-          </v-col>
-        </v-row>
-
-        <v-row>
-          <v-col cols="12">
-            <DraftTable :data="filteredData" :loading="loading" />
           </v-col>
         </v-row>
       </v-container>
@@ -95,5 +89,22 @@ onMounted(() => {
 <style scoped>
 .v-main {
   min-height: calc(100vh - 64px - 72px);
+}
+
+.table-container {
+  padding: 10vw 10vw !important;
+  max-width: 100%;
+}
+
+@media (min-width: 960px) {
+  .table-container {
+    padding: 8vw 10vw !important;
+  }
+}
+
+@media (min-width: 1280px) {
+  .table-container {
+    padding: 6vw 10vw !important;
+  }
 }
 </style>

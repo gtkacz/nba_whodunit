@@ -1,28 +1,95 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import type { DraftPick } from '@/types/draft'
+import type { TeamAbbreviation } from '@/types/team'
 
 interface DraftTableProps {
   data: DraftPick[]
   loading?: boolean
+  selectedTeam?: TeamAbbreviation | 'ALL'
+  yearRange?: [number, number]
+  selectedRounds?: number[]
+  overallPickRange?: [number, number]
+  preDraftTeamSearch?: string
+  tradeFilter?: 'all' | 'traded' | 'not-traded'
+  availableYears?: number[]
+  allPreDraftTeams?: string[]
 }
 
 const props = withDefaults(defineProps<DraftTableProps>(), {
-  loading: false
+  loading: false,
+  selectedTeam: () => 'ALL',
+  yearRange: () => [1950, 2025],
+  selectedRounds: () => [],
+  overallPickRange: () => [1, 420],
+  preDraftTeamSearch: () => '',
+  tradeFilter: () => 'all',
+  availableYears: () => [],
+  allPreDraftTeams: () => []
+})
+
+const emit = defineEmits<{
+  'update:selectedTeam': [value: TeamAbbreviation | 'ALL']
+  'update:yearRange': [value: [number, number]]
+  'update:selectedRounds': [value: number[]]
+  'update:overallPickRange': [value: [number, number]]
+  'update:preDraftTeamSearch': [value: string]
+  'update:tradeFilter': [value: 'all' | 'traded' | 'not-traded']
+}>()
+
+const filterMenu = ref(false)
+const teams = ref<TeamAbbreviation[]>([])
+const loadingTeams = ref(true)
+
+interface TeamOption {
+  value: TeamAbbreviation | 'ALL'
+  title: string
+  logo?: string
+}
+
+const teamOptions = ref<TeamOption[]>([])
+const roundOptions = [1, 2, 3, 4, 5, 6, 7]
+
+const minYear = computed(() => props.availableYears.length > 0 ? Math.min(...props.availableYears) : 1950)
+const maxYear = computed(() => props.availableYears.length > 0 ? Math.max(...props.availableYears) : 2025)
+
+async function loadTeams() {
+  try {
+    const response = await fetch('/data/teams.json')
+    const data = await response.json() as TeamAbbreviation[]
+    teams.value = data
+
+    teamOptions.value = [
+      { value: 'ALL', title: 'All Teams' },
+      ...data.map((abbr) => ({
+        value: abbr,
+        title: abbr,
+        logo: `https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/${abbr.toLowerCase()}.svg`
+      }))
+    ]
+  } catch (error) {
+    console.error('Failed to load teams:', error)
+  } finally {
+    loadingTeams.value = false
+  }
+}
+
+onMounted(() => {
+  loadTeams()
 })
 
 const headers = [
-  { title: 'Team', key: 'team', sortable: true, minWidth: '140px' },
+  { title: 'Team', key: 'team', sortable: true, minWidth: '70px' },
+  { title: 'Player', key: 'player', sortable: true, minWidth: '150px' },
   { title: 'Year', key: 'year', sortable: true, width: '80px' },
   { title: 'Round', key: 'round', sortable: true, width: '80px' },
-  { title: 'Pick', key: 'pick', sortable: true, width: '70px' },
-  { title: 'Player', key: 'player', sortable: true, minWidth: '150px' },
-  { title: 'Position', key: 'position', sortable: true, width: '70px' },
-  { title: 'Height', key: 'height', sortable: true, width: '70px' },
-  { title: 'Weight', key: 'weight', sortable: true, width: '70px' },
-  { title: 'Age', key: 'age', sortable: true, width: '70px' },
-  { title: 'Pre-Draft Team', key: 'preDraftTeam', sortable: true, minWidth: '120px' },
-  { title: 'Draft Trades', key: 'draftTrades', sortable: false, minWidth: '200px' }
+  { title: 'Overall Pick', key: 'pick', sortable: true, width: '35px' },
+  { title: 'Position', key: 'position', sortable: true, width: '35px' },
+  { title: 'Height', key: 'height', sortable: true, width: '35px' },
+  { title: 'Weight', key: 'weight', sortable: true, width: '35px' },
+  { title: 'Age', key: 'age', sortable: true, width: '35px' },
+  { title: 'Pre-Draft Team', key: 'preDraftTeam', sortable: true, minWidth: '20px' },
+  { title: 'Draft Trades', key: 'draftTrades', sortable: false, minWidth: '80px' }
 ]
 
 const items = computed(() => props.data)
@@ -52,6 +119,8 @@ function parseDraftTrades(trades: string | null): string[] {
 
 function splitPosition(position: string): string[] {
   if (!position || position.trim() === '') return []
+  // Remove "S" and "P" prefixes from position (e.g., "SG" -> "G", "PF" -> "F")
+  position = position.replace(/^[SP]/g, '')
   // Split multi-position strings like "FC" into ["F", "C"], "GF" into ["G", "F"]
   return position.trim().split('').filter(char => char.match(/[A-Z]/))
 }
@@ -72,18 +141,159 @@ function getPositionColor(position: string): string {
 
 <template>
   <v-card elevation="2" class="draft-table">
-    <v-card-title class="d-flex align-center">
-      <v-avatar size="32" class="mr-2" rounded="0">
-        <v-img
-          src="https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/nba.svg"
-          alt="NBA"
-          contain
-        />
-      </v-avatar>
-      NBA Draft History
-      <v-chip class="ml-2" color="primary" size="small" variant="flat">
-        {{ items.length }} picks
-      </v-chip>
+    <v-card-title class="d-flex align-center justify-space-between pa-4">
+      <div class="d-flex align-center">
+        <v-avatar size="32" class="mr-2" rounded="0">
+          <v-img
+            src="https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/nba.svg"
+            alt="NBA"
+            contain
+          />
+        </v-avatar>
+        NBA Draft History
+        <v-chip class="ml-2" color="primary" size="small" variant="flat">
+          {{ items.length }} picks
+        </v-chip>
+      </div>
+      <v-menu v-model="filterMenu" location="bottom end" :close-on-content-click="false">
+        <template #activator="{ props: menuProps }">
+          <v-btn
+            v-bind="menuProps"
+            icon="mdi-filter-variant"
+            variant="outlined"
+            color="primary"
+            size="small"
+          />
+        </template>
+        <v-card min-width="600" class="pa-4">
+          <v-card-title class="d-flex align-center mb-4">
+            <v-icon icon="mdi-filter-variant" class="mr-2" />
+            Filters
+          </v-card-title>
+          <v-card-text>
+            <v-row dense>
+              <!-- Team Filter -->
+              <v-col cols="12" md="6">
+                <v-select
+                  :model-value="props.selectedTeam"
+                  @update:model-value="emit('update:selectedTeam', $event)"
+                  :items="teamOptions"
+                  :loading="loadingTeams"
+                  label="Team"
+                  variant="outlined"
+                  density="compact"
+                  hide-details
+                  prepend-inner-icon="mdi-basketball"
+                >
+                  <template #item="{ props: itemProps, item }">
+                    <v-list-item v-bind="itemProps">
+                      <template #prepend v-if="item.raw.logo">
+                        <v-avatar size="28" class="mr-2" rounded="0">
+                          <v-img :src="item.raw.logo" :alt="item.raw.title" contain />
+                        </v-avatar>
+                      </template>
+                    </v-list-item>
+                  </template>
+
+                  <template #selection="{ item }">
+                    <div class="d-flex align-center">
+                      <v-avatar v-if="item.raw.logo" size="24" class="mr-2" rounded="0">
+                        <v-img :src="item.raw.logo" :alt="item.raw.title" contain />
+                      </v-avatar>
+                      <span>{{ item.raw.title }}</span>
+                    </div>
+                  </template>
+                </v-select>
+              </v-col>
+
+              <!-- Year Range Filter -->
+              <v-col cols="12" md="6">
+                <div class="px-2">
+                  <label class="text-caption text-medium-emphasis mb-2 d-block">Year Range</label>
+                  <v-range-slider
+                    :model-value="props.yearRange"
+                    @update:model-value="emit('update:yearRange', $event)"
+                    :min="minYear"
+                    :max="maxYear"
+                    :step="1"
+                    thumb-label="always"
+                    hide-details
+                    color="primary"
+                    class="mt-4"
+                  />
+                </div>
+              </v-col>
+
+              <!-- Round Filter -->
+              <v-col cols="12" md="6">
+                <v-select
+                  :model-value="props.selectedRounds"
+                  @update:model-value="emit('update:selectedRounds', $event)"
+                  :items="roundOptions"
+                  label="Rounds"
+                  variant="outlined"
+                  density="compact"
+                  multiple
+                  chips
+                  hide-details
+                  prepend-inner-icon="mdi-numeric"
+                />
+              </v-col>
+
+              <!-- Overall Pick Range -->
+              <v-col cols="12" md="6">
+                <div class="px-2">
+                  <label class="text-caption text-medium-emphasis mb-2 d-block">Overall Pick Range</label>
+                  <v-range-slider
+                    :model-value="props.overallPickRange"
+                    @update:model-value="emit('update:overallPickRange', $event)"
+                    :min="1"
+                    :max="420"
+                    :step="1"
+                    thumb-label="always"
+                    hide-details
+                    color="primary"
+                    class="mt-4"
+                  />
+                </div>
+              </v-col>
+
+              <!-- Pre-Draft Team Search -->
+              <v-col cols="12" md="6">
+                <v-autocomplete
+                  :model-value="props.preDraftTeamSearch"
+                  @update:model-value="emit('update:preDraftTeamSearch', $event)"
+                  :items="props.allPreDraftTeams"
+                  label="Pre-Draft Team"
+                  variant="outlined"
+                  density="compact"
+                  hide-details
+                  clearable
+                  prepend-inner-icon="mdi-school"
+                />
+              </v-col>
+
+              <!-- Trade Filter -->
+              <v-col cols="12" md="6">
+                <v-select
+                  :model-value="props.tradeFilter"
+                  @update:model-value="emit('update:tradeFilter', $event)"
+                  :items="[
+                    { value: 'all', title: 'All Picks' },
+                    { value: 'traded', title: 'Traded Only' },
+                    { value: 'not-traded', title: 'Not Traded' }
+                  ]"
+                  label="Trade Status"
+                  variant="outlined"
+                  density="compact"
+                  hide-details
+                  prepend-inner-icon="mdi-swap-horizontal"
+                />
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-menu>
     </v-card-title>
 
     <v-data-table
@@ -214,10 +424,12 @@ function getPositionColor(position: string): string {
     text-transform: uppercase;
     font-size: 0.75rem;
     letter-spacing: 0.5px;
+    padding: 24px 20px !important;
   }
 
   :deep(.v-data-table__td) {
     white-space: nowrap;
+    padding: 16px 28px !important;
   }
 
   :deep(.v-data-table__tr:hover) {
