@@ -27,5 +27,6 @@ def load_team_data(team_name: str, *, data_path: str = "data/html") -> pd.DataFr
         data = pd.read_html(StringIO(f.read()))  # pyright: ignore[reportUnknownMemberType]
 
     df = pd.concat((data[0], data[1]))
+    df["Team"] = team_name
 
     return df[~df["Draft Trades"].str.contains(f"{team_name} to ", na=False)]
