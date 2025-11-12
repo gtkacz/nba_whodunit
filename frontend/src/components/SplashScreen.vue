@@ -27,7 +27,7 @@ function handleContinue() {
         Real Draft History
       </h1>
 
-      <div class="text-body-1 text-center px-8 pb-4 splash-text">
+      <div class="text-body-1 text-center px-4 pb-4 splash-text">
         <p>As NBA fans, we've always felt the same frustration. You look up a team's draft history to see how the roster was built, but the data is misleading.</p>
 
         <br/>
@@ -43,7 +43,7 @@ function handleContinue() {
         <p>This website was built to solve that one, simple problem.</p>
       </div>
 
-      <div class="d-flex justify-center pb-8">
+      <div class="d-flex justify-center pb-4 pb-md-8">
         <v-btn
           color="primary"
           size="large"
@@ -51,6 +51,7 @@ function handleContinue() {
           rounded="xl"
           append-icon="mdi-chevron-right"
           @click="handleContinue"
+          class="continue-btn"
         >
           Continue
         </v-btn>
@@ -71,19 +72,63 @@ function handleContinue() {
 
 .splash-content {
   animation: fadeIn 0.5s ease-in-out;
-  max-width: 60vw;
+  max-width: 90vw;
+  width: 100%;
   z-index: 1;
   position: relative;
   font-family: "Barlow", sans-serif;
+  padding: 16px;
 
   h1 {
     font-family: "Barlow", sans-serif !important;
+    font-size: 1.75rem;
+    padding: 16px 8px !important;
+  }
+
+  @media (min-width: 600px) {
+    max-width: 80vw;
+    padding: 24px;
+    
+    h1 {
+      font-size: 2.125rem;
+      padding: 24px 16px !important;
+    }
+  }
+
+  @media (min-width: 960px) {
+    max-width: 60vw;
+    padding: 32px;
+    
+    h1 {
+      font-size: 3rem;
+      padding: 32px !important;
+    }
   }
 }
 
 .splash-text {
   // No background - just floating text over blur
   font-family: "Barlow", sans-serif;
+  
+  p {
+    margin-bottom: 12px;
+    line-height: 1.6;
+  }
+
+  @media (min-width: 600px) {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+
+  @media (min-width: 960px) {
+    padding-left: 32px !important;
+    padding-right: 32px !important;
+  }
+}
+
+.continue-btn {
+  min-width: 120px;
+  min-height: 44px;
 }
 
 @keyframes fadeIn {

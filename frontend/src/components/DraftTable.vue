@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, onMounted, watch } from 'vue'
+import { useDisplay } from 'vuetify'
 import type { DraftPick } from '@/types/draft'
 import type { TeamAbbreviation } from '@/types/team'
 import { getCanonicalTeam, getDisplayTeam, getOriginalTeamName } from '@/utils/teamAliases'
 import { getDataUrl } from '@/utils/dataUrl'
+
+const display = useDisplay()
+const isMobile = computed(() => display.mobile.value)
 
 interface DraftTableProps {
   data: DraftPick[]
@@ -57,6 +61,8 @@ const filterMenu = ref(false)
 const teams = ref<TeamAbbreviation[]>([])
 const loadingTeams = ref(true)
 const currentPage = ref(1)
+// Set lower default items per page on mobile for better performance
+// Initialize with a default, will be updated reactively
 const itemsPerPage = ref(30)
 
 interface TeamOption {
@@ -282,6 +288,10 @@ const headerTitle = computed(() => {
 
 onMounted(() => {
   loadTeams()
+  // Set initial items per page based on mobile state
+  if (isMobile.value) {
+    itemsPerPage.value = 20
+  }
   // Inject page input between chevrons after table is rendered
   setTimeout(() => {
     injectPageInput()
@@ -520,6 +530,25 @@ const totalPages = computed(() => {
   return Math.ceil(items.value.length / itemsPerPage.value)
 })
 
+const itemsPerPageOptions = computed(() => {
+  if (isMobile.value) {
+    return [
+      { value: 20, title: '20' },
+      { value: 30, title: '30' },
+      { value: 50, title: '50' },
+      { value: 100, title: '100' },
+      { value: -1, title: 'All' }
+    ]
+  }
+  return [
+    { value: 30, title: '30' },
+    { value: 60, title: '60' },
+    { value: 100, title: '100' },
+    { value: 250, title: '250' },
+    { value: 500, title: '500' },
+    { value: -1, title: 'All' }
+  ]
+})
 
 const pageInput = ref('')
 
@@ -560,7 +589,252 @@ watch(currentPage, () => {
           {{ items.length }} picks
         </v-chip>
       </div>
-      <v-menu v-model="filterMenu" location="bottom end" :close-on-content-click="false">
+      <!-- Mobile: Bottom Sheet -->
+      <v-bottom-sheet v-model="filterMenu" v-if="isMobile">
+        <template #activator="{ props: sheetProps }">
+          <v-badge
+            :model-value="hasActiveFilters"
+            color="error"
+            dot
+            location="top end"
+          >
+            <v-btn
+              v-bind="sheetProps"
+              icon="mdi-filter-variant"
+              variant="outlined"
+              color="primary"
+              :size="isMobile ? 'default' : 'small'"
+            />
+          </v-badge>
+        </template>
+        <v-card class="filter-card">
+          <v-card-title class="d-flex align-center justify-space-between pa-4">
+            <div class="d-flex align-center">
+              <v-icon icon="mdi-filter-variant" class="mr-2" />
+              Filters
+            </div>
+            <v-btn
+              icon="mdi-close"
+              variant="text"
+              @click="filterMenu = false"
+            />
+          </v-card-title>
+          <v-card-text class="pa-4">
+            <v-row>
+              <!-- Team Filter -->
+              <v-col cols="12" md="6" class="mb-2">
+                <v-select
+                  :model-value="props.selectedTeam"
+                  @update:model-value="emit('update:selectedTeam', $event)"
+                  :items="teamOptions"
+                  :loading="loadingTeams"
+                  label="Team"
+                  variant="outlined"
+                  hide-details
+                  multiple
+                  chips
+                  clearable
+                  closable-chips
+                >
+                  <template #prepend-inner>
+                    <div class="team-logo-container mr-2" style="width: 24px; height: 24px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                      <img
+                        src="https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/nba.svg"
+                        alt="NBA"
+                        style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;"
+                      />
+                    </div>
+                  </template>
+                  <template #item="{ props: itemProps, item }">
+                    <v-list-item v-bind="itemProps">
+                      <template #prepend v-if="item.raw.logo">
+                        <div class="team-logo-container mr-2" style="width: 28px; height: 28px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                          <img 
+                            :src="item.raw.logo" 
+                            :alt="item.raw.title" 
+                            style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;"
+                          />
+                        </div>
+                      </template>
+                    </v-list-item>
+                  </template>
+
+                  <template #selection="{ item }">
+                    <v-chip
+                      v-if="item.raw"
+                      size="small"
+                      class="mr-1"
+                    >
+                      <div v-if="item.raw.logo" class="team-logo-container mr-1" style="width: 20px; height: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;">
+                        <img 
+                          :src="item.raw.logo" 
+                          :alt="item.raw.title" 
+                          style="max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain;"
+                        />
+                      </div>
+                      <span>{{ item.raw.title }}</span>
+                    </v-chip>
+                  </template>
+                </v-select>
+              </v-col>
+
+              <!-- Year Filter -->
+              <v-col cols="12" md="6" class="mb-2">
+                <div class="px-1">
+                  <div class="d-flex align-center justify-space-between mb-3">
+                    <label class="text-caption text-medium-emphasis">Year</label>
+                    <v-btn-toggle
+                      :model-value="props.useYearRange ? 'range' : 'single'"
+                      @update:model-value="emit('update:useYearRange', $event === 'range')"
+                      variant="outlined"
+                      mandatory
+                    >
+                      <v-btn value="single">Single</v-btn>
+                      <v-btn value="range">Range</v-btn>
+                    </v-btn-toggle>
+                  </div>
+                  <v-range-slider
+                    v-if="props.useYearRange"
+                    :model-value="props.yearRange"
+                    @update:model-value="emit('update:yearRange', $event)"
+                    :min="minYear"
+                    :max="maxYear"
+                    :step="1"
+                    thumb-label="always"
+                    thumb-label-location="bottom"
+                    hide-details
+                    color="primary"
+                    class="mt-2"
+                  />
+                  <v-select
+                    v-else
+                    :model-value="props.selectedYear"
+                    @update:model-value="emit('update:selectedYear', $event)"
+                    :items="props.availableYears"
+                    label="Select Year"
+                    variant="outlined"
+                    hide-details
+                    clearable
+                    class="mt-2"
+                  />
+                </div>
+              </v-col>
+
+              <!-- Round Filter -->
+              <v-col cols="12" md="6" class="mb-2">
+                <v-select
+                  :model-value="props.selectedRounds"
+                  @update:model-value="emit('update:selectedRounds', $event)"
+                  :items="roundOptions"
+                  label="Rounds"
+                  variant="outlined"
+                  multiple
+                  chips
+                  hide-details
+                  prepend-inner-icon="mdi-numeric"
+                />
+              </v-col>
+
+              <!-- Overall Pick Range -->
+              <v-col cols="12" md="6" class="mb-2">
+                <div class="px-1">
+                  <label class="text-caption text-medium-emphasis mb-3 d-block">
+                    Overall Pick Range
+                    <span v-if="props.overallPickRange && props.overallPickRange[1] === 61" class="ml-2 text-primary">
+                      (61+)
+                    </span>
+                  </label>
+                  <v-range-slider
+                    :model-value="props.overallPickRange"
+                    @update:model-value="emit('update:overallPickRange', $event)"
+                    :min="1"
+                    :max="61"
+                    :step="1"
+                    thumb-label="always"
+                    thumb-label-location="bottom"
+                    hide-details
+                    color="primary"
+                    class="mt-2"
+                  />
+                </div>
+              </v-col>
+
+              <!-- Pre-Draft Team Search -->
+              <v-col cols="12" md="6" class="mb-2">
+                <v-autocomplete
+                  :model-value="props.preDraftTeamSearch"
+                  @update:model-value="emit('update:preDraftTeamSearch', $event)"
+                  :items="props.allPreDraftTeams"
+                  label="Drafted From"
+                  variant="outlined"
+                  hide-details
+                  multiple
+                  chips
+                  clearable
+                  prepend-inner-icon="mdi-school"
+                  closable-chips
+                />
+              </v-col>
+
+              <!-- Position Filter -->
+              <v-col cols="12" md="6" class="mb-2">
+                <v-select
+                  :model-value="props.selectedPositions"
+                  @update:model-value="emit('update:selectedPositions', $event)"
+                  :items="positionOptions"
+                  label="Position"
+                  variant="outlined"
+                  multiple
+                  chips
+                  clearable
+                  hide-details
+                  prepend-inner-icon="mdi-account"
+                  closable-chips
+                />
+              </v-col>
+
+              <!-- Age Range Filter -->
+              <v-col cols="12" md="6" class="mb-2">
+                <div class="px-1">
+                  <label class="text-caption text-medium-emphasis mb-3 d-block">Age Range</label>
+                  <v-range-slider
+                    :model-value="props.ageRange"
+                    @update:model-value="emit('update:ageRange', $event)"
+                    :min="minAge"
+                    :max="maxAge"
+                    :step="1"
+                    thumb-label="always"
+                    thumb-label-location="bottom"
+                    hide-details
+                    color="primary"
+                    class="mt-2"
+                  />
+                </div>
+              </v-col>
+
+              <!-- Trade Filter -->
+              <v-col cols="12" md="6" class="mb-2">
+                <v-select
+                  :model-value="props.tradeFilter"
+                  @update:model-value="emit('update:tradeFilter', $event)"
+                  :items="[
+                    { value: 'all', title: 'All Picks' },
+                    { value: 'traded', title: 'Traded Only' },
+                    { value: 'not-traded', title: 'Not Traded' }
+                  ]"
+                  label="Trade Status"
+                  variant="outlined"
+                  hide-details
+                  prepend-inner-icon="mdi-swap-horizontal"
+                />
+              </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </v-bottom-sheet>
+
+      <!-- Desktop: Menu -->
+      <v-menu v-model="filterMenu" location="bottom end" :close-on-content-click="false" v-else>
         <template #activator="{ props: menuProps }">
           <v-badge
             :model-value="hasActiveFilters"
@@ -573,11 +847,11 @@ watch(currentPage, () => {
               icon="mdi-filter-variant"
               variant="outlined"
               color="primary"
-              size="small"
+              :size="isMobile ? 'default' : 'small'"
             />
           </v-badge>
         </template>
-        <v-card min-width="650" max-width="650" class="pa-6">
+        <v-card class="filter-card">
           <v-card-title class="d-flex align-center mb-4">
             <v-icon icon="mdi-filter-variant" class="mr-2" />
             Filters
@@ -803,18 +1077,11 @@ watch(currentPage, () => {
       :loading="loading"
       v-model:page="currentPage"
       v-model:items-per-page="itemsPerPage"
-      :items-per-page-options="[
-        { value: 30, title: '30' },
-        { value: 60, title: '60' },
-        { value: 100, title: '100' },
-        { value: 250, title: '250' },
-        { value: 500, title: '500' },
-        { value: -1, title: 'All' }
-      ]"
+      :items-per-page-options="itemsPerPageOptions"
       :sort-by="sortBy"
       @update:sort-by="handleSortUpdate"
       items-per-page-text="Picks per page:"
-      density="comfortable"
+      :density="isMobile ? 'compact' : 'comfortable'"
       hover
     >
       <template #item.team="{ item }">
@@ -932,6 +1199,13 @@ watch(currentPage, () => {
     padding: 24px 20px !important;
   }
 
+  @media (max-width: 959px) {
+    :deep(.v-data-table__th) {
+      padding: 12px 8px !important;
+      font-size: 0.7rem;
+    }
+  }
+
   // Hide sort priority numbers (for initial multi-sort)
   :deep(.v-data-table-header__sort-badge),
   :deep(.v-data-table__sort-badge) {
@@ -941,6 +1215,12 @@ watch(currentPage, () => {
   :deep(.v-data-table__td) {
     white-space: nowrap;
     padding: 16px 28px !important;
+  }
+
+  @media (max-width: 959px) {
+    :deep(.v-data-table__td) {
+      padding: 8px 4px !important;
+    }
   }
 
   :deep(.v-data-table__tr:hover) {
@@ -1045,9 +1325,27 @@ watch(currentPage, () => {
     flex-shrink: 0;
   }
   
-  // Ensure filter menu card maintains fixed width
+  // Responsive filter menu card
+  .filter-card {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  @media (min-width: 960px) {
+    .filter-card {
+      min-width: 650px;
+      max-width: 650px;
+    }
+  }
+
   :deep(.v-menu__content) {
-    max-width: 650px !important;
+    max-width: 100% !important;
+  }
+
+  @media (min-width: 960px) {
+    :deep(.v-menu__content) {
+      max-width: 650px !important;
+    }
   }
 
   .pre-draft-team-text {
@@ -1073,6 +1371,66 @@ watch(currentPage, () => {
 
   .page-input-field {
     text-align: center;
+  }
+
+  // Mobile touch target improvements
+  @media (max-width: 959px) {
+    // Ensure buttons meet minimum 44x44px touch target
+    :deep(.v-btn) {
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    // Improve spacing between filter controls
+    .filter-card {
+      .v-col {
+        margin-bottom: 16px !important;
+      }
+    }
+
+    // Larger touch targets for sliders
+    :deep(.v-slider-thumb) {
+      width: 20px !important;
+      height: 20px !important;
+    }
+
+    // Better spacing for toggle buttons
+    :deep(.v-btn-toggle .v-btn) {
+      min-height: 44px;
+      padding: 8px 16px;
+    }
+
+    // Improve chip spacing in selects
+    :deep(.v-select__selection .v-chip),
+    :deep(.v-autocomplete__selection .v-chip) {
+      margin: 2px 4px 2px 0;
+    }
+
+    // Optimize pagination controls for mobile
+    :deep(.v-data-table-footer) {
+      flex-wrap: wrap;
+      padding: 8px 4px !important;
+    }
+
+    :deep(.v-data-table-footer__pagination) {
+      margin: 8px 0;
+    }
+
+    :deep(.v-data-table-footer__items-per-page) {
+      margin: 8px 0;
+    }
+
+    // Ensure pagination buttons are touch-friendly
+    :deep(.v-data-table-footer .v-btn) {
+      min-width: 44px;
+      min-height: 44px;
+    }
+
+    // Make page input touch-friendly
+    .page-input-field {
+      min-height: 44px;
+      font-size: 16px; // Prevents zoom on iOS
+    }
   }
 }
 </style>
