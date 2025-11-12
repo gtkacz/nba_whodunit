@@ -12,22 +12,19 @@ import type { TeamAbbreviation } from './types/team'
 const { showSplash, markSplashSeen } = useSplashScreen()
 const {
   selectedTeam,
+  selectedYear,
   yearRange,
+  useYearRange,
   selectedRounds,
   overallPickRange,
   preDraftTeamSearch,
   tradeFilter,
   filteredData,
   allPreDraftTeams,
+  availableYears,
   loading,
   loadAllTeamData
 } = useDraftData()
-
-const availableYears = computed(() => {
-  const years = new Set<number>()
-  filteredData.value.forEach(pick => years.add(pick.year))
-  return Array.from(years)
-})
 
 async function loadData() {
   try {
@@ -71,6 +68,8 @@ onMounted(() => {
               :loading="loading"
               v-model:selected-team="selectedTeam"
               v-model:year-range="yearRange"
+              v-model:selected-year="selectedYear"
+              v-model:use-year-range="useYearRange"
               v-model:selected-rounds="selectedRounds"
               v-model:overall-pick-range="overallPickRange"
               v-model:pre-draft-team-search="preDraftTeamSearch"

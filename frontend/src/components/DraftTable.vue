@@ -8,9 +8,11 @@ import { getDataUrl } from '@/utils/dataUrl'
 interface DraftTableProps {
   data: DraftPick[]
   loading?: boolean
-  selectedTeam?: TeamAbbreviation | 'ALL'
+  selectedTeam?: TeamAbbreviation[]
   yearRange?: [number, number]
-  selectedRounds?: number[]
+  selectedYear?: number | null
+  useYearRange?: boolean
+  selectedRounds?: (number | string)[]
   overallPickRange?: [number, number]
   preDraftTeamSearch?: string
   tradeFilter?: 'all' | 'traded' | 'not-traded'
@@ -20,10 +22,12 @@ interface DraftTableProps {
 
 const props = withDefaults(defineProps<DraftTableProps>(), {
   loading: false,
-  selectedTeam: () => 'ALL',
+  selectedTeam: () => [],
   yearRange: () => [1950, 2025],
+  selectedYear: null,
+  useYearRange: () => true,
   selectedRounds: () => [],
-  overallPickRange: () => [1, 420],
+  overallPickRange: () => [1, 61],
   preDraftTeamSearch: () => '',
   tradeFilter: () => 'all',
   availableYears: () => [],
@@ -31,9 +35,11 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
 })
 
 const emit = defineEmits<{
-  'update:selectedTeam': [value: TeamAbbreviation | 'ALL']
+  'update:selectedTeam': [value: TeamAbbreviation[]]
   'update:yearRange': [value: [number, number]]
-  'update:selectedRounds': [value: number[]]
+  'update:selectedYear': [value: number | null]
+  'update:useYearRange': [value: boolean]
+  'update:selectedRounds': [value: (number | string)[]]
   'update:overallPickRange': [value: [number, number]]
   'update:preDraftTeamSearch': [value: string]
   'update:tradeFilter': [value: 'all' | 'traded' | 'not-traded']
@@ -44,13 +50,17 @@ const teams = ref<TeamAbbreviation[]>([])
 const loadingTeams = ref(true)
 
 interface TeamOption {
-  value: TeamAbbreviation | 'ALL'
+  value: TeamAbbreviation
   title: string
   logo?: string
 }
 
 const teamOptions = ref<TeamOption[]>([])
-const roundOptions = [1, 2, 3, 4, 5, 6, 7]
+const roundOptions = [
+  { value: 1, title: 'Round 1' },
+  { value: 2, title: 'Round 2' },
+  { value: '3+', title: 'Round 3+' }
+]
 
 const minYear = computed(() => props.availableYears.length > 0 ? Math.min(...props.availableYears) : 1950)
 const maxYear = computed(() => props.availableYears.length > 0 ? Math.max(...props.availableYears) : 2025)
@@ -61,14 +71,11 @@ async function loadTeams() {
     const data = await response.json() as TeamAbbreviation[]
     teams.value = data
 
-    teamOptions.value = [
-      { value: 'ALL', title: 'All Teams' },
-      ...data.map((abbr) => ({
-        value: abbr,
-        title: abbr,
-        logo: `https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/${abbr.toLowerCase()}.svg`
-      }))
-    ]
+    teamOptions.value = data.map((abbr) => ({
+      value: abbr,
+      title: abbr,
+      logo: `https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/${abbr.toLowerCase()}.svg`
+    }))
   } catch (error) {
     console.error('Failed to load teams:', error)
   } finally {
@@ -93,16 +100,20 @@ const headers = [
 
 // Sort state - initial multi-sort by year (desc) and pick (asc)
 // Users can only sort by single columns, but initial state uses multi-sort
-const sortBy = ref([
+type SortItem = { key: string; order: 'asc' | 'desc' }
+const sortBy = ref<SortItem[]>([
   { key: 'year', order: 'desc' },
   { key: 'pick', order: 'asc' }
 ])
 
-function handleSortUpdate(newSort: Array<{ key: string; order: 'asc' | 'desc' }>) {
+function handleSortUpdate(newSort: SortItem[]) {
   // Only allow single column sorting - if user tries to sort multiple columns,
   // just use the first one
-  if (newSort.length > 0) {
-    sortBy.value = [newSort[0]]
+  if (newSort.length > 0 && newSort[0]) {
+    const firstSort = newSort[0]
+    if (firstSort.order === 'asc' || firstSort.order === 'desc') {
+      sortBy.value = [{ key: firstSort.key, order: firstSort.order }]
+    }
   } else {
     // If all sorts cleared, restore default multi-sort
     sortBy.value = [
@@ -112,7 +123,90 @@ function handleSortUpdate(newSort: Array<{ key: string; order: 'asc' | 'desc' }>
   }
 }
 
-const items = computed(() => props.data)
+// Custom sort function that handles all column types
+function sortItems(items: DraftPick[], sortBy: SortItem[]): DraftPick[] {
+  if (!sortBy || sortBy.length === 0) {
+    return items
+  }
+
+  return [...items].sort((a, b) => {
+    for (const sort of sortBy) {
+      const { key, order } = sort
+      let aVal: string | number | null | undefined = a[key as keyof DraftPick] as string | number | null | undefined
+      let bVal: string | number | null | undefined = b[key as keyof DraftPick] as string | number | null | undefined
+
+      // Handle null/undefined values
+      if (aVal == null && bVal == null) continue
+      if (aVal == null) return order === 'asc' ? 1 : -1
+      if (bVal == null) return order === 'asc' ? -1 : 1
+
+      // Handle string comparisons (case-insensitive)
+      if (typeof aVal === 'string' && typeof bVal === 'string') {
+        aVal = aVal.toLowerCase().trim()
+        bVal = bVal.toLowerCase().trim()
+        if (aVal === bVal) continue
+        const comparison = aVal < bVal ? -1 : 1
+        return order === 'asc' ? comparison : -comparison
+      }
+
+      // Handle numeric comparisons
+      if (typeof aVal === 'number' && typeof bVal === 'number') {
+        if (aVal === bVal) continue
+        const comparison = aVal < bVal ? -1 : 1
+        return order === 'asc' ? comparison : -comparison
+      }
+
+      // Handle height (format: "6-8" or "6'8\"" etc.)
+      if (key === 'height') {
+        const aHeight = parseHeight(aVal as string | null | undefined)
+        const bHeight = parseHeight(bVal as string | null | undefined)
+        if (aHeight === bHeight) continue
+        const comparison = aHeight < bHeight ? -1 : 1
+        return order === 'asc' ? comparison : -comparison
+      }
+
+      // Fallback: convert to string and compare
+      const aStr = String(aVal).toLowerCase()
+      const bStr = String(bVal).toLowerCase()
+      if (aStr === bStr) continue
+      const comparison = aStr < bStr ? -1 : 1
+      return order === 'asc' ? comparison : -comparison
+    }
+    return 0
+  })
+}
+
+// Helper function to parse height strings like "6-8" or "6'8\"" into inches
+function parseHeight(height: string | null | undefined): number {
+  if (!height) return 0
+  const str = String(height).trim()
+  
+  // Try format "6-8" (feet-inches)
+  const match1 = str.match(/(\d+)[-'](\d+)/)
+  if (match1 && match1[1] && match1[2]) {
+    const feet = parseInt(match1[1], 10)
+    const inches = parseInt(match1[2], 10)
+    return feet * 12 + inches
+  }
+  
+  // Try format "6'8\"" (feet'inches")
+  const match2 = str.match(/(\d+)'(\d+)"/)
+  if (match2 && match2[1] && match2[2]) {
+    const feet = parseInt(match2[1], 10)
+    const inches = parseInt(match2[2], 10)
+    return feet * 12 + inches
+  }
+  
+  // Try to parse as just a number (assume inches)
+  const num = parseFloat(str)
+  if (!isNaN(num)) return num
+  
+  return 0
+}
+
+const items = computed(() => {
+  return sortItems(props.data, sortBy.value)
+})
 
 onMounted(() => {
   loadTeams()
@@ -221,7 +315,7 @@ function getPositionColor(position: string): string {
   <v-card elevation="2" class="draft-table">
     <v-card-title class="d-flex align-center justify-space-between pa-4">
       <div class="d-flex align-center">
-        <v-avatar size="32" class="mr-2" rounded="0">
+        <v-avatar size="32" class="mr-2" rounded="0" style="background: transparent;">
           <v-img
             src="https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/nba.svg"
             alt="NBA"
@@ -261,34 +355,70 @@ function getPositionColor(position: string): string {
                   variant="outlined"
                   density="compact"
                   hide-details
-                  prepend-inner-icon="mdi-basketball"
+                  multiple
+                  chips
+                  clearable
                 >
+                  <template #prepend-inner>
+                    <v-avatar size="24" class="mr-2" rounded="0">
+                      <v-img
+                        src="https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/nba.svg"
+                        alt="NBA"
+                        contain
+                      />
+                    </v-avatar>
+                  </template>
                   <template #item="{ props: itemProps, item }">
                     <v-list-item v-bind="itemProps">
                       <template #prepend v-if="item.raw.logo">
-                        <v-avatar size="28" class="mr-2" rounded="0">
-                          <v-img :src="item.raw.logo" :alt="item.raw.title" contain />
+                        <v-avatar size="28" class="mr-2" rounded="0" style="flex-shrink: 0; background: transparent;">
+                          <v-img 
+                            :src="item.raw.logo" 
+                            :alt="item.raw.title" 
+                            contain
+                          />
                         </v-avatar>
                       </template>
                     </v-list-item>
                   </template>
 
                   <template #selection="{ item }">
-                    <div class="d-flex align-center">
-                      <v-avatar v-if="item.raw.logo" size="24" class="mr-2" rounded="0">
-                        <v-img :src="item.raw.logo" :alt="item.raw.title" contain />
+                    <v-chip
+                      v-if="item.raw"
+                      size="small"
+                      class="mr-1"
+                    >
+                      <v-avatar v-if="item.raw.logo" size="20" class="mr-1" rounded="0" style="flex-shrink: 0; background: transparent;">
+                        <v-img 
+                          :src="item.raw.logo" 
+                          :alt="item.raw.title" 
+                          contain
+                        />
                       </v-avatar>
                       <span>{{ item.raw.title }}</span>
-                    </div>
+                    </v-chip>
                   </template>
                 </v-select>
               </v-col>
 
-              <!-- Year Range Filter -->
+              <!-- Year Filter -->
               <v-col cols="12" md="6">
                 <div class="px-2">
-                  <label class="text-caption text-medium-emphasis mb-2 d-block">Year Range</label>
+                  <div class="d-flex align-center justify-space-between mb-2">
+                    <label class="text-caption text-medium-emphasis">Year</label>
+                    <v-btn-toggle
+                      :model-value="props.useYearRange ? 'range' : 'single'"
+                      @update:model-value="emit('update:useYearRange', $event === 'range')"
+                      density="compact"
+                      variant="outlined"
+                      mandatory
+                    >
+                      <v-btn value="single" size="small">Single</v-btn>
+                      <v-btn value="range" size="small">Range</v-btn>
+                    </v-btn-toggle>
+                  </div>
                   <v-range-slider
+                    v-if="props.useYearRange"
                     :model-value="props.yearRange"
                     @update:model-value="emit('update:yearRange', $event)"
                     :min="minYear"
@@ -298,6 +428,18 @@ function getPositionColor(position: string): string {
                     hide-details
                     color="primary"
                     class="mt-4"
+                  />
+                  <v-select
+                    v-else
+                    :model-value="props.selectedYear"
+                    @update:model-value="emit('update:selectedYear', $event)"
+                    :items="props.availableYears"
+                    label="Select Year"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    clearable
+                    class="mt-2"
                   />
                 </div>
               </v-col>
@@ -321,12 +463,17 @@ function getPositionColor(position: string): string {
               <!-- Overall Pick Range -->
               <v-col cols="12" md="6">
                 <div class="px-2">
-                  <label class="text-caption text-medium-emphasis mb-2 d-block">Overall Pick Range</label>
+                  <label class="text-caption text-medium-emphasis mb-2 d-block">
+                    Overall Pick Range
+                    <span v-if="props.overallPickRange && props.overallPickRange[1] === 61" class="ml-2 text-primary">
+                      (61+)
+                    </span>
+                  </label>
                   <v-range-slider
                     :model-value="props.overallPickRange"
                     @update:model-value="emit('update:overallPickRange', $event)"
                     :min="1"
-                    :max="420"
+                    :max="61"
                     :step="1"
                     thumb-label="always"
                     hide-details
@@ -387,16 +534,15 @@ function getPositionColor(position: string): string {
         { value: 500, title: '500' },
         { value: -1, title: 'All' }
       ]"
-      v-model:sort-by="sortBy"
+      :sort-by="sortBy"
       @update:sort-by="handleSortUpdate"
-      multi-sort
       items-per-page-text="Picks per page:"
       density="comfortable"
       hover
     >
       <template #item.team="{ item }">
         <div class="d-flex align-center">
-          <v-avatar size="32" class="mr-2" rounded="0">
+          <v-avatar size="32" class="mr-2" rounded="0" style="background: transparent;">
             <v-img
               :src="getTeamLogoUrl(item.team)"
               :alt="item.team"
@@ -456,7 +602,7 @@ function getPositionColor(position: string): string {
         <template v-if="item.draftTrades">
           <div class="trade-chain">
             <template v-for="(team, index) in parseTradeChain(item.draftTrades)" :key="index">
-              <v-avatar size="24" class="mr-1" rounded="0">
+              <v-avatar size="24" class="mr-1" rounded="0" style="background: transparent;">
                 <v-img
                   :src="getTeamLogoUrl(team)"
                   :alt="team"
@@ -559,6 +705,22 @@ function getPositionColor(position: string): string {
   :deep(.v-avatar img),
   :deep(.v-avatar .v-img__img) {
     object-fit: contain !important;
+    background: transparent !important;
+  }
+  
+  :deep(.v-avatar) {
+    background: transparent !important;
+  }
+  
+  // Fix logo clipping in dropdown
+  :deep(.v-list-item__prepend) {
+    width: auto !important;
+    min-width: auto !important;
+  }
+  
+  :deep(.v-select__selection) {
+    overflow-x: auto;
+    flex-wrap: nowrap;
   }
 
   .pre-draft-team-text {
