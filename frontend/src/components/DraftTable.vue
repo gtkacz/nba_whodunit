@@ -40,6 +40,7 @@ interface DraftTableProps {
   availableAges?: number[]
   availableNationalities?: string[]
   showPlayerMeasurements?: boolean
+  resetFilters?: () => void
 }
 
 const props = withDefaults(defineProps<DraftTableProps>(), {
@@ -65,7 +66,8 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   allPreDraftTeams: () => [],
   availableAges: () => [],
   availableNationalities: () => [],
-  showPlayerMeasurements: false
+  showPlayerMeasurements: false,
+  resetFilters: undefined
 })
 
 const emit = defineEmits<{
@@ -389,9 +391,9 @@ const headerLogo = computed(() => {
 
 const headerTitle = computed(() => {
   if (singleSelectedTeam.value) {
-    return `${getTeamFullName(singleSelectedTeam.value)} Draft History`
+    return `Real ${getTeamFullName(singleSelectedTeam.value)} Draft History`
   }
-  return 'NBA Draft History'
+  return 'Real NBA Draft History'
 })
 
 onMounted(() => {
@@ -780,6 +782,13 @@ watch(currentPage, () => {
                   />
                 </template>
               </v-list-item>
+              <v-list-item
+                v-if="props.resetFilters"
+                prepend-icon="mdi-refresh"
+                title="Reset Filters"
+                :disabled="!hasActiveFilters"
+                @click="() => { props.resetFilters?.(); actionsMenu = false; }"
+              />
             </v-list>
           </v-menu>
         </template>
@@ -830,15 +839,27 @@ watch(currentPage, () => {
               </v-badge>
             </template>
             <v-card class="filter-card pa-6">
-              <v-card-title class="d-flex align-center mb-4">
-                <v-icon icon="mdi-filter-variant" class="mr-2" />
-                Filters
+              <v-card-title class="d-flex align-center justify-space-between mb-4">
+                <div class="d-flex align-center">
+                  <v-icon icon="mdi-filter-variant" class="mr-2" />
+                  Filters
+                </div>
+                <v-btn
+                  v-if="props.resetFilters"
+                  icon="mdi-refresh"
+                  variant="text"
+                  color="primary"
+                  size="small"
+                  :disabled="!hasActiveFilters"
+                  @click="props.resetFilters"
+                  title="Reset all filters to default"
+                />
               </v-card-title>
               <v-card-text class="pa-0">
                 <v-row>
                   <!-- Team Filter -->
                   <v-col cols="12" md="6" class="mb-2">
-                    <v-select
+                    <v-autocomplete
                       :model-value="props.selectedTeam"
                       @update:model-value="emit('update:selectedTeam', $event)"
                       :items="teamOptions"
@@ -849,6 +870,7 @@ watch(currentPage, () => {
                       multiple
                       chips
                       clearable
+                      persistent-clear
                       closable-chips
                     >
                       <template #prepend-inner>
@@ -890,7 +912,7 @@ watch(currentPage, () => {
                           <span>{{ item.raw.title }}</span>
                         </v-chip>
                       </template>
-                    </v-select>
+                    </v-autocomplete>
                   </v-col>
 
                   <!-- Year Filter -->
@@ -930,6 +952,7 @@ watch(currentPage, () => {
                         variant="outlined"
                         hide-details
                         clearable
+                        persistent-clear
                         class="mt-2"
                       />
                     </div>
@@ -986,6 +1009,7 @@ watch(currentPage, () => {
                       multiple
                       chips
                       clearable
+                      persistent-clear
                       prepend-inner-icon="mdi-school"
                       closable-chips
                     />
@@ -1002,6 +1026,7 @@ watch(currentPage, () => {
                       multiple
                       chips
                       clearable
+                      persistent-clear
                       hide-details
                       prepend-inner-icon="mdi-account"
                       closable-chips
@@ -1046,7 +1071,7 @@ watch(currentPage, () => {
 
                   <!-- Nationality Filter -->
                   <v-col cols="12" md="6" class="mb-2">
-                    <v-select
+                    <v-autocomplete
                       :model-value="props.selectedNationalities"
                       @update:model-value="emit('update:selectedNationalities', $event)"
                       :items="nationalityOptions"
@@ -1057,6 +1082,7 @@ watch(currentPage, () => {
                       multiple
                       chips
                       clearable
+                      persistent-clear
                       closable-chips
                     >
                       <template #prepend-inner>
@@ -1090,7 +1116,7 @@ watch(currentPage, () => {
                           <span>{{ item.raw.title }}</span>
                         </v-chip>
                       </template>
-                    </v-select>
+                    </v-autocomplete>
                   </v-col>
 
                   <!-- Player Measurements Toggle -->
@@ -1116,17 +1142,29 @@ watch(currentPage, () => {
               <v-icon icon="mdi-filter-variant" class="mr-2" />
               Filters
             </div>
-            <v-btn
-              icon="mdi-close"
-              variant="text"
-              @click="filterMenu = false"
-            />
+            <div class="d-flex align-center gap-2">
+              <v-btn
+                v-if="props.resetFilters"
+                icon="mdi-refresh"
+                variant="text"
+                color="primary"
+                size="small"
+                :disabled="!hasActiveFilters"
+                @click="props.resetFilters"
+                title="Reset all filters to default"
+              />
+              <v-btn
+                icon="mdi-close"
+                variant="text"
+                @click="filterMenu = false"
+              />
+            </div>
           </v-card-title>
           <v-card-text class="pa-4">
             <v-row>
               <!-- Team Filter -->
               <v-col cols="12" md="6" class="mb-2">
-                <v-select
+                <v-autocomplete
                   :model-value="props.selectedTeam"
                   @update:model-value="emit('update:selectedTeam', $event)"
                   :items="teamOptions"
@@ -1137,6 +1175,7 @@ watch(currentPage, () => {
                   multiple
                   chips
                   clearable
+                  persistent-clear
                   closable-chips
                 >
                   <template #prepend-inner>
@@ -1178,7 +1217,7 @@ watch(currentPage, () => {
                       <span>{{ item.raw.title }}</span>
                     </v-chip>
                   </template>
-                </v-select>
+                </v-autocomplete>
               </v-col>
 
               <!-- Year Filter -->
@@ -1218,6 +1257,7 @@ watch(currentPage, () => {
                     variant="outlined"
                     hide-details
                     clearable
+                    persistent-clear
                     class="mt-2"
                   />
                 </div>
@@ -1274,6 +1314,7 @@ watch(currentPage, () => {
                   multiple
                   chips
                   clearable
+                  persistent-clear
                   prepend-inner-icon="mdi-school"
                   closable-chips
                 />
@@ -1290,6 +1331,7 @@ watch(currentPage, () => {
                   multiple
                   chips
                   clearable
+                  persistent-clear
                   hide-details
                   prepend-inner-icon="mdi-account"
                   closable-chips
@@ -1345,6 +1387,7 @@ watch(currentPage, () => {
                   multiple
                   chips
                   clearable
+                  persistent-clear
                   closable-chips
                 >
                   <template #prepend-inner>

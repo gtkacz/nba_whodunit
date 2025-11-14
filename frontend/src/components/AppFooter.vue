@@ -6,6 +6,12 @@ const copyrightYears = computed(() => {
   const startYear = 2025
   return startYear === currentYear.value ? startYear : `${startYear}-${currentYear.value}`
 })
+
+// Get app version from package.json (injected by Vite)
+const appVersion = computed(() => {
+  // @ts-expect-error - __APP_VERSION__ is injected by Vite at build time
+  return typeof __APP_VERSION__ !== 'undefined' ? __APP_VERSION__ : '1.0.0'
+})
 </script>
 
 <template>
@@ -32,6 +38,9 @@ const copyrightYears = computed(() => {
               <span>RealGM</span>
             </a>
             and used under fair use.
+            <p id="app-version" class="text-caption text-medium-emphasis">
+              v{{ appVersion }}
+            </p>
           </div>
         </v-col>
       </v-row>
@@ -45,6 +54,10 @@ const copyrightYears = computed(() => {
 
   :deep(*) {
     opacity: .8;
+  }
+
+  #app-version {
+    opacity: 0.6;
   }
 
   a {

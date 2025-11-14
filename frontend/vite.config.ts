@@ -1,9 +1,13 @@
 import { fileURLToPath, URL } from 'node:url'
-
+import { readFileSync } from 'node:fs'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import vueJsx from '@vitejs/plugin-vue-jsx'
 import vuetify from 'vite-plugin-vuetify'
+
+// Read version from package.json
+const packageJson = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf-8'))
+const appVersion = packageJson.version || '1.0.0'
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -14,6 +18,9 @@ export default defineConfig({
     vueJsx(),
     vuetify({ autoImport: true }),
   ],
+  define: {
+    __APP_VERSION__: JSON.stringify(appVersion),
+  },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

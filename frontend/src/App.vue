@@ -9,6 +9,7 @@ import { useDraftData } from './composables/useDraftData'
 import { useFilterUrlSync } from './composables/useFilterUrlSync'
 import { useCountryData } from './composables/useCountryData'
 import { useTeamData } from './composables/useTeamData'
+import { initializeCache } from './utils/csvCache'
 import type { TeamAbbreviation } from './types/team'
 
 const { showSplash, markSplashSeen } = useSplashScreen()
@@ -39,7 +40,7 @@ const {
 } = useDraftData()
 
 // Sync filters with URL query strings
-useFilterUrlSync({
+const { resetFilters } = useFilterUrlSync({
   selectedTeam,
   selectedYear,
   yearRange,
@@ -69,6 +70,8 @@ async function loadData() {
 }
 
 onMounted(() => {
+  // Initialize cache first (check version and invalidate if needed)
+  initializeCache()
   loadData()
   loadCountryData()
 })
@@ -114,6 +117,7 @@ onMounted(() => {
               :all-pre-draft-teams="allPreDraftTeams"
               :available-ages="availableAges"
               :available-nationalities="availableNationalities"
+              :reset-filters="resetFilters"
             />
           </v-col>
         </v-row>

@@ -384,10 +384,35 @@ export function useFilterUrlSync(
     { deep: true }
   )
 
+  // Reset all filters to default values
+  function resetFilters() {
+    filters.selectedTeam.value = [...DEFAULT_FILTERS.selectedTeam]
+    filters.selectedYear.value = DEFAULT_FILTERS.selectedYear
+    filters.yearRange.value = [...DEFAULT_FILTERS.yearRange]
+    filters.useYearRange.value = DEFAULT_FILTERS.useYearRange
+    filters.selectedRounds.value = [...DEFAULT_FILTERS.selectedRounds]
+    filters.overallPickRange.value = [...DEFAULT_FILTERS.overallPickRange]
+    filters.preDraftTeamSearch.value = [...DEFAULT_FILTERS.preDraftTeamSearch]
+    filters.selectedPositions.value = [...DEFAULT_FILTERS.selectedPositions]
+    filters.ageRange.value = [...DEFAULT_FILTERS.ageRange]
+    filters.tradeFilter.value = DEFAULT_FILTERS.tradeFilter
+    filters.selectedNationalities.value = [...DEFAULT_FILTERS.selectedNationalities]
+    filters.sortBy.value = [...DEFAULT_FILTERS.sortBy]
+    filters.currentPage.value = DEFAULT_FILTERS.currentPage
+    filters.itemsPerPage.value = DEFAULT_FILTERS.itemsPerPage
+    
+    // Update URL to reflect defaults (which will be empty query string)
+    updateUrlFromFilters()
+  }
+
   // Load filters from URL on mount
   onMounted(() => {
     loadFiltersFromUrl()
     isInitializing = false
   })
+
+  return {
+    resetFilters
+  }
 }
 

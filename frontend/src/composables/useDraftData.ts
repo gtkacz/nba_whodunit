@@ -3,6 +3,7 @@ import type { DraftPick } from '@/types/draft'
 import type { TeamAbbreviation } from '@/types/team'
 import { parseCSV } from '@/utils/csvParser'
 import { getDataUrl } from '@/utils/dataUrl'
+import { getCachedCSV, setCachedCSV, initializeCache } from '@/utils/csvCache'
 
 const allDraftPicks = ref<DraftPick[]>([])
 const loading = ref(false)
@@ -172,41 +173,71 @@ export function useDraftData() {
     loading.value = true
     error.value = null
 
+    // Initialize cache (check version and invalidate if needed)
+    initializeCache()
+
     try {
       const picks: DraftPick[] = []
 
       for (const team of teams) {
         try {
-          // Try enriched CSV first, fall back to regular CSV if not found
-          let response = await fetch(getDataUrl(`csv/${team}_enriched.csv`))
           let csvText = ''
+          let isEnriched = true
+          
+          // Try to get from cache first (enriched)
+          csvText = getCachedCSV(team, true)
+          
+          if (csvText) {
+            // Found enriched CSV in cache
+            isEnriched = true
+          } else {
+            // Not in cache, try to fetch enriched CSV
+            let response = await fetch(getDataUrl(`csv/${team}_enriched.csv`))
 
-          if (!response.ok) {
-            // If enriched CSV doesn't exist, try regular CSV
-            console.log(`Enriched CSV not found for ${team}, trying regular CSV`)
-            response = await fetch(getDataUrl(`csv/${team}.csv`))
-            if (!response.ok) {
-              console.error(`Failed to fetch ${team}.csv:`, response.status)
-              continue
+            if (response.ok) {
+              csvText = await response.text()
+              isEnriched = true
+              
+              // Check if we got HTML instead of CSV
+              if (csvText.trim().startsWith('<!DOCTYPE') || csvText.trim().startsWith('<html')) {
+                csvText = ''
+              }
+            }
+
+            // If enriched CSV not available, try regular CSV
+            if (!csvText) {
+              // Try cache for regular CSV
+              csvText = getCachedCSV(team, false)
+              
+              if (csvText) {
+                isEnriched = false
+              } else {
+                // Fetch regular CSV
+                response = await fetch(getDataUrl(`csv/${team}.csv`))
+                if (!response.ok) {
+                  console.error(`Failed to fetch ${team}.csv:`, response.status)
+                  continue
+                }
+                
+                csvText = await response.text()
+                isEnriched = false
+                
+                // Check if we got HTML instead of CSV
+                if (csvText.trim().startsWith('<!DOCTYPE') || csvText.trim().startsWith('<html')) {
+                  console.error(`Received HTML for ${team}.csv, skipping`)
+                  continue
+                }
+              }
+            }
+            
+            // Cache the fetched CSV if it came from network
+            if (csvText && !getCachedCSV(team, isEnriched)) {
+              setCachedCSV(team, isEnriched, csvText)
             }
           }
 
-          csvText = await response.text()
-
-          // Check if we got HTML instead of CSV (404 page, error page, etc.)
-          if (csvText.trim().startsWith('<!DOCTYPE') || csvText.trim().startsWith('<html')) {
-            console.error(`Received HTML instead of CSV for ${team}, trying regular CSV file`)
-            // Try regular CSV
-            response = await fetch(getDataUrl(`csv/${team}.csv`))
-            if (!response.ok) {
-              console.error(`Failed to fetch ${team}.csv:`, response.status)
-              continue
-            }
-            csvText = await response.text()
-            if (csvText.trim().startsWith('<!DOCTYPE') || csvText.trim().startsWith('<html')) {
-              console.error(`Received HTML for ${team}.csv as well, skipping`)
-              continue
-            }
+          if (!csvText) {
+            continue
           }
 
           const teamPicks = await parseCSV(csvText, team)
