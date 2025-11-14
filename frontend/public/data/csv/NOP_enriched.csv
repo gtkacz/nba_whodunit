@@ -21,7 +21,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2022,1,8,Dyson Daniels,GF,6-7,199,19,NBA G League Ignite,2003 DOB,,3,1630700.0,AU,2025,0.0
 2022,2,41,E.J. Liddell,PF,6-6,240,21,Ohio State,Jr *,,3,1630604.0,US,2025,0.0
 2022,2,52,Karlo Matkovic,PF,6-10,231,21,KK Mega Bemax (Serbia),2001 DOB *,,1,1631255.0,BA,2025,0.0
-2021,2,35,Herb Jones,SF,6-7,206,22,Alabama,Sr *,,4,,,,
+2021,2,35,Herb Jones,SF,6-7,206,22,Alabama,Sr *,,4,1630529.0,US,2025,0.0
 2020,1,13,"Kira Lewis, Jr.",PG,6-1,170,19,Alabama,So *,,4,1630184.0,US,2023,0.0
 2019,1,1,Zion Williamson,PF,6-6,284,18,Duke,Fr *,,6,1629627.0,US,2025,0.0
 2018,2,51,Tony Carr,PG,6-5,200,20,Penn State,So *,,0,,,,
@@ -34,7 +34,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2007,2,43,Adam Haluska,G,6-5,210,23,Iowa,Sr,,1,,,,
 2006,1,12,Hilton Armstrong,C,6-11,235,21,UConn,Sr,,6,200756.0,US,2013,0.0
 2006,1,15,Cedric Simmons,FC,6-9,235,20,NC State,So *,,3,200759.0,US,2008,0.0
-2006,2,43,Marquinhos Vinicius,F,6-9,225,22,Objetivo Sao Carlos (Brazil),1984 DOB,,2,,,,
+2006,2,43,Marquinhos Vinicius,F,6-9,225,22,Objetivo Sao Carlos (Brazil),1984 DOB,,2,200790.0,BR,2007,0.0
 2005,1,4,Chris Paul,PG,6-0,175,20,Wake Forest,So *,,20,101108.0,US,2025,0.0
 2005,2,33,Brandon Bass,PF,6-8,250,20,LSU,So *,,12,101138.0,US,2016,0.0
 2004,1,18,J.R. Smith,SG,6-6,225,18,Saint Benedict's Preparatory School (New Jersey),1985 DOB *,,15,2747.0,US,2019,0.0

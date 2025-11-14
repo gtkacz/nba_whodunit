@@ -52,14 +52,44 @@ def main() -> None:  # noqa: D103
 
         curr_df["treated_name"] = curr_df["Player"].apply(treat_name).apply(unidecode.unidecode)
 
-        # For all matched players, copy the nba_id to the current DataFrame
-        curr_df = curr_df.merge(
-            nba_df[["nba_id", "treated_name", "COUNTRY", "TO_YEAR", "IS_DEFUNCT"]],
-            on="treated_name",
+        # First match by Year/Round/Pick to DRAFT_YEAR/DRAFT_ROUND/DRAFT_NUMBER
+        curr_df_merged = curr_df.merge(
+            nba_df[["nba_id", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER", "COUNTRY", "TO_YEAR", "IS_DEFUNCT"]],
+            left_on=["Year", "Round", "Pick"],
+            right_on=["DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER"],
             how="left",
+            suffixes=("", "_draft"),
         )
 
-        curr_df = curr_df.drop(columns=["treated_name"])
+        # For rows that didn't match (nba_id is NaN), try name matching as fallback
+        unmatched_mask = curr_df_merged["nba_id"].isna()
+
+        if unmatched_mask.any():
+            # Get unmatched rows
+            unmatched_df = curr_df_merged[unmatched_mask].copy()
+
+            # Drop the columns from the first merge attempt
+            unmatched_df = unmatched_df.drop(
+                columns=["nba_id", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER", "COUNTRY", "TO_YEAR", "IS_DEFUNCT"]
+            )
+
+            # Try matching by name and year
+            unmatched_df = unmatched_df.merge(
+                nba_df[["nba_id", "treated_name", "DRAFT_YEAR", "COUNTRY", "TO_YEAR", "IS_DEFUNCT"]],
+                left_on=["treated_name", "Year"],
+                right_on=["treated_name", "DRAFT_YEAR"],
+                how="left",
+                suffixes=("", "_name"),
+            )
+
+            # Update the original merged dataframe with the name matches
+            curr_df_merged.loc[unmatched_mask, "nba_id"] = unmatched_df["nba_id"].values
+            curr_df_merged.loc[unmatched_mask, "COUNTRY"] = unmatched_df["COUNTRY"].values
+            curr_df_merged.loc[unmatched_mask, "TO_YEAR"] = unmatched_df["TO_YEAR"].values
+            curr_df_merged.loc[unmatched_mask, "IS_DEFUNCT"] = unmatched_df["IS_DEFUNCT"].values
+
+        # Clean up columns
+        curr_df = curr_df_merged.drop(columns=["treated_name", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER"])
 
         curr_df = curr_df.drop_duplicates(subset=["Year", "Round", "Pick"])
 

@@ -102,7 +102,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1984,4,71,Ralph Jackson,G,6-2,190.0,21.0,UCLA,Sr,,1,77107.0,US,1984,0.0
 1984,5,94,Gene Smith,G,6-2,170.0,,Georgetown,Sr,,2,,,,
 1984,6,117,Clyde Vaughn,GF,6-4,190.0,,Pittsburgh,Sr,,0,,,,
-1984,7,140,Kenton Edelin,F,6-8,205.0,22.0,Virginia,Sr,,1,,,,
+1984,7,140,Kenton Edelin,F,6-8,205.0,22.0,Virginia,Sr,,1,76637.0,US,1984,0.0
 1984,8,163,Tom Heitz,F,6-9,215.0,23.0,Kentucky,Sr,,0,,,,
 1984,9,185,Brian Martin,F,6-9,212.0,21.0,Kansas,Sr,,2,77469.0,US,1985,0.0
 1984,10,207,Gary Carver,,,,,Western Kentucky,Sr,,0,,,,
@@ -113,8 +113,8 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1983,4,72,Terry Fair,SF,6-7,215.0,,Georgia,Sr,,0,,,,
 1983,5,95,Roger Stieg,,,,,Ole Miss,Sr,,0,,,,
 1983,6,118,Cliff Pruitt,F,6-7,,,UAB,Sr,,0,,,,
-1983,7,141,Tony Brown,G,6-2,,,Indiana,Sr,,0,76268.0,US,1991,0.0
-1983,8,164,Ray McCallum,G,5-9,,22.0,Ball State,Sr,,1,203492.0,US,2015,0.0
+1983,7,141,Tony Brown,G,6-2,,,Indiana,Sr,,0,,,,
+1983,8,164,Ray McCallum,G,5-9,,22.0,Ball State,Sr,,1,,,,
 1983,9,186,Lynn Mitchem,F,,,,Butler,Sr,,0,,,,
 1983,10,207,Mark Smed,,,,,Augustana College,Sr,,0,,,,
 1982,1,8,Clark Kellogg,F,6-7,225.0,20.0,Ohio State,Jr *,,5,77236.0,US,1986,0.0
@@ -150,7 +150,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1979,1,13,Dudley Bradley,GF,6-6,195.0,22.0,North Carolina,Sr,,10,76231.0,US,1988,0.0
 1979,2,32,Tony Zeno,SF,6-8,210.0,21.0,Arizona State,Sr,,1,78643.0,US,1979,0.0
 1979,4,74,Don Newman,PG,6-2,185.0,21.0,Idaho,Jr,,0,,,,
-1979,5,98,Billy Reid,SG,6-5,190.0,21.0,San Francisco,Jr,,1,77937.0,US,1980,0.0
+1979,5,98,Billy Reid,SG,6-5,190.0,21.0,San Francisco,Jr,,1,,,,
 1979,6,117,Greg Guye,,,,,Stetson,Jr,,0,,,,
 1979,7,136,Dirk Ewing,,,,,Stetson,Sr,,0,,,,
 1979,8,157,Brian Magid,G,6-2,,,George Washington,Sr,,0,,,,

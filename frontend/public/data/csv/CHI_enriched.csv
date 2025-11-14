@@ -12,7 +12,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2004,2,39,Albert Miralles,FC,6-10,238.0,22.0,Roseto Sharks (Italy),1982 DOB,TOR to  MIA MIA  to BOS BOS  to MIL MIL  to CLE CLE  to CHI,0,,,,
 2001,1,2,Tyson Chandler,C,7-1,240.0,18.0,Dominguez High School (California),1982 DOB *,LAC to  CHI,19,2199.0,US,2019,0.0
 2000,1,8,Jamal Crawford,SG,6-5,195.0,20.0,Michigan,Fr *,CLE to  CHI,19,2037.0,US,2019,0.0
-1998,2,49,Corry Carr,G,6-3,212.0,22.0,Texas Tech,Sr,ATL to  CHI,2,,,,
+1998,2,49,Corry Carr,G,6-3,212.0,22.0,Texas Tech,Sr,ATL to  CHI,2,1757.0,US,1998,0.0
 1987,1,5,Scottie Pippen,SF,6-8,228.0,21.0,Central Arkansas,Sr,SEA to  CHI,18,937.0,US,2003,0.0
 1985,1,9,Charles Oakley,PF,6-8,225.0,21.0,Virginia Union,Sr,CLE to  CHI,18,891.0,US,2003,0.0
 1985,2,25,Mike Smrek,C,7-0,250.0,22.0,Canisius,Sr,POR to  CHI,8,1091.0,US,1991,0.0
@@ -142,7 +142,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1981,4,84,Oliver Lee,F,6-7,215.0,,Marquette,Sr,,0,,,,
 1981,5,108,Johnny Nash,F,,,,Arizona State,Sr,,0,,,,
 1981,6,130,Roger Burkman,SG,6-5,175.0,23.0,Louisville,Sr,,1,76304.0,US,1981,0.0
-1981,7,154,Scott Williams,,,,,South Alabama,Sr,,0,281.0,US,2004,0.0
+1981,7,154,Scott Williams,,,,,South Alabama,Sr,,0,,,,
 1981,8,175,Ben Mitchell,,,,,Alabama-Huntsville,Sr,,0,,,,
 1981,9,197,Terry Martin,,,,,Lambuth,Sr,,0,,,,
 1981,10,216,Kenny Easley,,,,22.0,UCLA,Sr,,0,,,,
@@ -171,7 +171,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1978,5,97,Ron Anthony,F,6-8,220.0,,Jacksonville,Sr,,0,,,,
 1978,6,119,John Shoemaker,PG,,,,Miami (OH),Sr,,0,,,,
 1978,7,140,Jarvis Reynolds,,,,,West Georgia,Sr,,0,,,,
-1978,8,159,Chubby Cox,SG,6-2,180.0,22.0,San Francisco,Sr,,3,,,,
+1978,8,159,Chubby Cox,SG,6-2,180.0,22.0,San Francisco,Sr,,3,76463.0,US,1982,0.0
 1978,9,176,Joe Ponsetto,F,,,,DePaul,Sr,,1,,,,
 1978,10,191,Mark Tucker,,,,,Oklahoma,Sr,,0,,,,
 1977,1,13,Tate Armstrong,SG,6-3,175.0,21.0,Duke,Sr,,2,76059.0,US,1978,0.0
@@ -181,17 +181,17 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1977,4,79,Mike McConalthy,SG,6-2,175.0,,Louisiana Tech,Sr,,0,,,,
 1977,5,101,Nate Davis,,,,,South Carolina,Sr,,0,,,,
 1977,6,123,Jay Chessman,F,6-6,190.0,22.0,Brigham Young,Sr,,1,,,,
-1977,7,143,Mike Smith,,,,,Evansville,Sr,,1,2065.0,US,2000,0.0
+1977,7,143,Mike Smith,,,,,Evansville,Sr,,1,,,,
 1977,8,162,Rich Rhodes,,,,,Eastern Illinois,Sr,,1,,,,
 1976,1,2,Scott May,SF,6-7,215.0,22.0,Indiana,Sr,,7,77490.0,US,1982,0.0
 1976,2,18,Willie Smith,PG,6-2,170.0,22.0,Missouri,Sr,,4,78208.0,US,1979,0.0
 1976,3,35,Dallas Smith,C,6-10,210.0,,West Texas A&M,Sr,,1,,,,
-1976,3,37,Lars Hansen,C,6-10,225.0,21.0,Washington,Sr,,2,76941.0,US,1978,0.0
+1976,3,37,Lars Hansen,C,6-10,225.0,21.0,Washington,Sr,,2,,,,
 1976,4,52,Keith Starr,SG,6-6,190.0,22.0,Pittsburgh,Sr,,2,78243.0,US,1976,0.0
 1976,5,69,Nate Williams,G,6-4,185.0,,Illinois,Sr,,0,78561.0,US,1978,0.0
 1976,6,87,Tom Paulin,,,,,Winston-Salem State,Sr,,0,,,,
 1976,7,105,Barry McLeod,,,,,Centenary (LA),Sr,,0,,,,
-1976,9,141,John Thomas,C,6-8,,,UConn,Sr,,0,1519.0,US,2005,0.0
+1976,9,141,John Thomas,C,6-8,,,UConn,Sr,,0,,,,
 1976,10,158,John Hudson,,,,,Concord,Sr,,1,,,,
 1975,2,30,Steve Green,SF,6-7,220.0,21.0,Indiana,Sr,,3,76878.0,US,1978,0.0
 1975,2,32,John Laskowski,SG,6-6,185.0,21.0,Indiana,Sr,,2,77341.0,US,1976,0.0
@@ -211,7 +211,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1974,8,142,Sam McCants,G,6-3,,,Oral Roberts,Jr,,1,,,,
 1974,9,159,Jerry Davenport,,,,,Cameron,Sr,,0,,,,
 1974,10,176,Rick Hockenos,,,,,St. Francis (PA),Sr,,0,,,,
-1973,2,24,Kevin Stacom,SG,6-3,185.0,21.0,Providence,Jr,,6,78237.0,US,1981,0.0
+1973,2,24,Kevin Stacom,SG,6-3,185.0,21.0,Providence,Jr,,6,,,,
 1973,2,30,Wendell Hudson,F,6-6,185.0,22.0,Alabama,Sr,,0,,,,
 1973,3,39,Martin Terry,G,6-4,,,Arkansas,Sr,,1,,,,
 1973,3,47,Steve Newsome,PF,6-8,200.0,,Houston,Sr,,0,,,,
@@ -262,7 +262,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1970,3,45,Lou Herndon,G,6-4,185.0,,Jackson State,Sr,,0,,,,
 1970,4,57,John Davis,F,6-7,,,Alabama State,Sr,,0,,,,
 1970,4,62,Jim Wilson,G,5-10,175.0,,Cheyney (PA),Sr,,0,,,,
-1970,5,79,George Johnson,FC,6-11,205.0,21.0,Dillard,Sr,,16,77147.0,US,1973,0.0
+1970,5,79,George Johnson,FC,6-11,205.0,21.0,Dillard,Sr,,16,77149.0,US,1985,0.0
 1970,6,96,Lonnie Kluttz,,,,24.0,North Carolina A&T,Sr,,0,,,,
 1970,7,113,Lou West,,,,,Seattle,Sr,,0,,,,
 1970,8,130,Mike Casey,G,6-4,187.0,21.0,Kentucky,RS-Jr,,0,,,,
@@ -300,7 +300,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1968,10,123,Mike Weaver,F,,,,Northwestern,Sr,,0,,,,
 1968,11,137,Jim McGonigle,,,,,Iowa State,Sr,,0,,,,
 1968,12,150,John Lallensack,F,,,,Wisconsin-Oshkosh,Sr,,0,,,,
-1968,13,163,Herm Gilliam,G,6-3,190.0,21.0,Purdue,Jr,,8,76815.0,US,1976,0.0
+1968,13,163,Herm Gilliam,G,6-3,190.0,21.0,Purdue,Jr,,8,,,,
 1968,14,174,Dave Carr,,,,,Washington,Sr,,0,,,,
 1968,15,183,Mickey McCarthy,F,6-5,255.0,21.0,TCU,Sr,,0,,,,
 1968,16,191,Fred Holden,G,6-3,,,Louisville,Sr,,0,,,,

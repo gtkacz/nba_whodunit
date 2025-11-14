@@ -8,7 +8,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2021,1,10,Ziaire Williams,F,6-9,185,19,Stanford,Fr *,NOP to  MEM,4,1630533.0,US,2025,0.0
 2021,1,30,Santi Aldama,C,7-0,215,20,Loyola (MD),So *,UTA to  MEM,4,1630583.0,ES,2025,0.0
 2020,1,30,Desmond Bane,SG,6-6,215,22,TCU,Sr,BOS to  MEM,5,1630217.0,US,2025,0.0
-2020,2,35,"Xavier Tillman, Sr.",PF,6-8,245,21,Michigan State,Jr *,SAC to  MEM,5,,,,
+2020,2,35,"Xavier Tillman, Sr.",PF,6-8,245,21,Michigan State,Jr *,SAC to  MEM,5,1630214.0,US,2025,0.0
 2020,2,51,Justinian Jessup,SF,6-5,202,22,Boise State,Sr,GSW to  MEM,0,,,,
 2019,1,21,Brandon Clarke,PF,6-8,215,22,Gonzaga,Jr *,OKC to  MEM,6,1629634.0,CA,2025,0.0
 2017,2,35,Ivan Rabb,PF,6-10,220,20,California,So *,ORL to  MEM,3,1628397.0,US,2018,0.0
@@ -41,9 +41,9 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2024,2,39,Jaylen Wells,F,6-7,206,20,Washington State,Jr *,,1,1642377.0,US,2025,0.0
 2023,2,45,G.G. Jackson,PF,6-9,210,18,South Carolina,Fr *,,2,1641713.0,US,2025,0.0
 2023,2,56,Tarik Biberovic,G,6-7,218,22,Fenerbahce Beko (Turkey),2001 DOB,,0,,,,
-2022,2,47,"Vincent Williams, Jr.",SF,6-4,205,21,VCU,Sr *,,3,,,,
+2022,2,47,"Vincent Williams, Jr.",SF,6-4,205,21,VCU,Sr *,,3,1631246.0,US,2025,0.0
 2019,1,2,Ja Morant,G,6-2,174,19,Murray State,So *,,6,1629630.0,US,2025,0.0
-2018,1,4,"Jaren Jackson, Jr.",PF,6-10,242,18,Michigan State,Fr *,,7,1114.0,US,2001,0.0
+2018,1,4,"Jaren Jackson, Jr.",PF,6-10,242,18,Michigan State,Fr *,,7,1628991.0,US,2025,0.0
 2018,2,32,Jevon Carter,PG,6-0,200,22,West Virginia,Sr,,7,1628975.0,US,2025,0.0
 2016,1,17,Wade Baldwin IV,G,6-4,220,20,Vanderbilt,So *,,3,1627735.0,US,2018,0.0
 2015,1,25,Jarell Martin,F,6-10,239,21,LSU,So *,,4,1626185.0,US,2018,0.0

@@ -45,7 +45,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2008,1,26,George Hill,G,6-3,188.0,22.0,IU Indy,Jr *,,15,201588.0,US,2022,0.0
 2008,2,57,James Gist,PF,6-9,235.0,21.0,Maryland,Sr,,0,,,,
 2007,1,28,Tiago Splitter,F,6-11,245.0,22.0,Baskonia (Spain),1985 DOB,,7,201168.0,BR,2016,0.0
-2007,2,33,Marcus E. Williams,F,6-7,207.0,20.0,Arizona,So *,,2,,,,
+2007,2,33,Marcus E. Williams,F,6-7,207.0,20.0,Arizona,So *,,2,201173.0,US,2008,0.0
 2005,1,28,Ian Mahinmi,C,6-11,262.0,18.0,STB Le Havre (France),1986 DOB *,,13,101133.0,FR,2019,0.0
 2004,1,28,Beno Udrih,G,6-4,205.0,21.0,AX Armani Exchange Milan (Italy),1982 DOB,,13,2757.0,SI,2016,0.0
 2004,2,52,Romain Sato,GF,6-5,205.0,23.0,Xavier,Sr,,1,,,,
@@ -70,7 +70,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1988,3,56,Barry Sumpter,FC,6-11,215.0,22.0,Austin Peay,Sr,,1,78654.0,US,1988,0.0
 1988,3,75,Archie Marshall,F,6-7,190.0,23.0,Kansas,Jr,,1,,,,
 1987,1,1,David Robinson,C,7-1,250.0,21.0,Navy,Sr,,14,764.0,US,2002,0.0
-1987,1,23,Cadillac Anderson,PF,6-10,230.0,22.0,Houston,Sr,,10,,,,
+1987,1,23,Cadillac Anderson,PF,6-10,230.0,22.0,Houston,Sr,,10,246.0,US,1997,0.0
 1987,2,27,Nate Blackwell,G,6-4,170.0,22.0,Temple,Sr,,1,76179.0,US,1987,0.0
 1987,3,50,Phil Zevenbergen,FC,6-10,230.0,23.0,Washington,Sr,,1,78644.0,US,1987,0.0
 1987,4,73,Todd May,PF,6-8,225.0,22.0,Pikeville,Sr,,0,,,,
@@ -83,7 +83,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1986,4,79,Carlos Briggs,PG,6-0,185.0,,Baylor,Sr,,0,,,,
 1986,5,102,Earl Kelley,G,6-2,,,UConn,Sr,,0,,,,
 1986,6,125,Kevin Lewis,F,6-6,200.0,21.0,Southern Methodist,Sr,,0,,,,
-1986,7,148,Michael Anderson,,,,,Texas-RGV,Sr,,0,76042.0,US,1988,0.0
+1986,7,148,Michael Anderson,,,,,Texas-RGV,Sr,,0,,,,
 1985,1,14,Alfredrick Hughes,GF,6-5,215.0,22.0,Loyola (IL),Sr,,2,77076.0,US,1985,0.0
 1985,2,29,Mike Brittain,C,7-0,235.0,21.0,South Carolina,Sr,,2,76260.0,US,1986,0.0
 1985,2,35,Tyrone Corbin,F,6-6,210.0,22.0,DePaul,Sr,,16,895.0,US,2000,0.0

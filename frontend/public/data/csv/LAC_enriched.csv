@@ -3,7 +3,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2022,2,46,Ismael Kamagate,C,6-11,220.0,21.0,Paris Basketball (France),2001 DOB *,DET to  POR POR  to DEN DEN  to LAC,0,,,,
 2021,1,21,Keon Johnson,PG,6-5,185.0,19.0,Tennessee,Fr *,NYK to  LAC,4,1630553.0,US,2024,0.0
 2021,2,33,Jason Preston,G,6-3,181.0,21.0,Ohio,Jr *,ORL to  LAC,4,1630554.0,US,2023,0.0
-2021,2,51,"B.J. Boston, Jr.",SG,6-6,188.0,19.0,Kentucky,Fr *,MEM to  NOP NOP  to LAC,4,,,,
+2021,2,51,"B.J. Boston, Jr.",SG,6-6,188.0,19.0,Kentucky,Fr *,MEM to  NOP NOP  to LAC,4,1630527.0,US,2024,0.0
 2020,2,33,Daniel Oturu,FC,6-8,240.0,21.0,Minnesota,So *,MIN to  LAC,2,1630187.0,US,2021,0.0
 2020,2,55,Jay Scrubb,SG,6-4,220.0,20.0,John A. Logan,So *,BKN to  LAC,3,1630206.0,US,2022,0.0
 2019,1,27,Mfiondu Kabengele,SF,6-10,250.0,21.0,Florida State,So *,BKN to  LAC,3,1629662.0,CA,2022,0.0
@@ -19,7 +19,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1997,2,36,James Collins,SG,6-4,196.0,23.0,Florida State,Sr,PHI to  LAC,4,1530.0,US,1997,0.0
 1995,1,15,Brent Barry,G,6-7,210.0,23.0,Oregon State,Sr,DEN to  LAC,14,699.0,US,2008,0.0
 1994,1,15,Eric Piatkowski,G-F,6-7,210.0,23.0,Nebraska,Sr,IND to  LAC,14,15.0,US,2007,0.0
-1988,1,3,Charles Daniel Smith,PF,6-10,230.0,22.0,Pittsburgh,Sr,PHI to  LAC,10,,,,
+1988,1,3,Charles Daniel Smith,PF,6-10,230.0,22.0,Pittsburgh,Sr,PHI to  LAC,10,293.0,US,1996,0.0
 1988,1,15,Gary Grant,G,6-3,185.0,23.0,Michigan,Sr,SEA to  LAC,13,202.0,US,2000,0.0
 1984,2,31,Jay Murphy,FC,6-9,220.0,21.0,Boston College,Sr,GSW to  LAC,4,77670.0,US,1987,0.0
 1983,3,56,Larry Anderson,SG,6-6,185.0,22.0,UNLV,Sr,CLE to  SDC,1,,,,
@@ -28,7 +28,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1973,1,12,Kevin Kunnert,FC,7-0,230.0,21.0,Iowa,Sr,CHI to  BUF,9,77323.0,US,1981,0.0
 1966,8,69,Mike Silliman,SF,6-6,225.0,22.0,Army West Point,Sr,NYK to  BUF,1,78152.0,US,1970,0.0
 2025,1,30,Yanic Konan Niederhauser,F,6-11,242.0,22.0,Penn State,Jr *,,0,1642949.0,CH,2025,0.0
-2024,2,46,Cameron Christie,SG,6-5,190.0,18.0,Minnesota,Fr *,,1,,,,
+2024,2,46,Cameron Christie,SG,6-5,190.0,18.0,Minnesota,Fr *,,1,1642353.0,US,2025,0.0
 2023,1,30,Kobe Brown,GF,6-7,250.0,23.0,Missouri,Sr *,,2,1641738.0,US,2025,0.0
 2023,2,48,Jordan Miller,G,6-5,194.0,23.0,Miami (FL),Sr,,2,1641757.0,US,2025,0.0
 2022,2,43,Moussa Diabate,PF,6-10,210.0,20.0,Michigan,Fr *,,3,1631217.0,FR,2025,0.0
@@ -61,7 +61,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1999,2,31,Rico Hill,F,6-7,230.0,22.0,Baloncesto Fuenlabrada (Spain),1977 DOB,,1,,,,
 1998,1,1,Michael Olowokandi,C,7-0,270.0,23.0,Pacific,Sr,,9,1709.0,NG,2006,0.0
 1998,1,22,Brian Skinner,FC,6-9,255.0,22.0,Baylor,Sr,,14,1730.0,US,2011,0.0
-1997,1,14,Mo Taylor,F,6-9,265.0,20.0,Michigan,Jr *,,10,,,,
+1997,1,14,Mo Taylor,F,6-9,265.0,20.0,Michigan,Jr *,,10,1508.0,US,2006,0.0
 1996,1,7,Lorenzen Wright,F-C,6-11,255.0,20.0,Memphis,So *,,13,953.0,US,2008,0.0
 1995,2,53,Constantin Popa,C,7-3,235.0,24.0,Miami (FL),Sr,,1,,,,
 1994,1,7,Lamond Murray,SF,6-7,236.0,21.0,California,Jr *,,12,441.0,US,2005,0.0
@@ -77,7 +77,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1989,2,33,Jay Edwards,SG,6-4,185.0,20.0,Indiana,So *,,2,76643.0,US,1989,0.0
 1988,1,1,Danny Manning,F,6-10,230.0,22.0,Kansas,Sr,,15,330.0,US,2002,0.0
 1988,2,45,Tom Garrick,G,6-2,185.0,21.0,Rhode Island,Sr,,5,76790.0,US,1991,0.0
-1988,3,51,Rob Lock,PF,6-9,225.0,22.0,Kentucky,Sr,,1,,,,
+1988,3,51,Rob Lock,PF,6-9,225.0,22.0,Kentucky,Sr,,1,77398.0,US,1988,0.0
 1987,1,4,Reggie Williams,GF,6-7,190.0,23.0,Georgetown,Sr,,10,199.0,US,1996,0.0
 1987,1,13,Joe Wolf,C,6-11,230.0,22.0,North Carolina,Sr,,11,341.0,US,1998,0.0
 1987,1,19,Ken Norman,F,6-8,215.0,22.0,Illinois,Jr,,10,80.0,US,1996,0.0
@@ -95,7 +95,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1985,3,52,Anicet Lavodrama,PF,6-9,180.0,21.0,Houston Christian,Sr,,1,,,,
 1985,4,74,Jim Deines,PF,6-9,,,Arizona State,Sr,,0,,,,
 1985,5,99,Wayne Carlander,PF,6-8,,,USC,Sr,,0,,,,
-1985,6,121,Malcolm Thomas,,,,,Missouri,Sr,,0,202952.0,US,2014,0.0
+1985,6,121,Malcolm Thomas,,,,,Missouri,Sr,,0,,,,
 1985,7,143,Gary Maloncon,PF,6-8,,,UCLA,Sr,,0,,,,
 1984,1,8,Lancaster Gordon,G,6-3,185.0,21.0,Louisville,Sr,,4,76834.0,US,1987,0.0
 1984,1,14,Michael Cage,PF,6-9,224.0,22.0,San Diego State,Sr,,16,262.0,US,1999,0.0
@@ -107,11 +107,11 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1984,9,189,Dave Schultz,,,,,Westmont,Sr,,0,,,,
 1984,10,211,Dick Mumma,C,6-11,,,Penn State,Sr,,0,,,,
 1983,1,4,Byron Scott,SG,6-3,195.0,22.0,Arizona State,Jr *,SDC to LAL,14,2.0,US,1996,0.0
-1983,5,97,Manute Bol,C,7-7,200.0,20.0,Bridgeport,So *,,11,76195.0,US,1994,0.0
+1983,5,97,Manute Bol,C,7-7,200.0,20.0,Bridgeport,So *,,11,,,,
 1983,7,143,Dan Evans,,,,,Oregon State,Sr,,0,,,,
 1983,8,166,Mark Gannon,F,,,,Iowa,Sr,,0,,,,
 1983,9,188,David Maxwell,G,,,,Fordham,Sr,,0,,,,
-1983,10,209,Keith Smith,,,,,San Diego State,Sr,,0,78192.0,US,1986,0.0
+1983,10,209,Keith Smith,,,,,San Diego State,Sr,,0,,,,
 1982,1,2,Terry Cummings,PF,6-9,220.0,21.0,DePaul,Jr *,,19,187.0,US,1999,0.0
 1982,2,32,Richard Anderson,FC,6-10,240.0,21.0,UC Santa Barbara,Sr,,7,76045.0,US,1989,0.0
 1982,3,48,Craig Hodges,G,6-2,190.0,22.0,Long Beach State,Sr,,10,77034.0,US,1991,0.0
@@ -151,12 +151,12 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1978,4,68,Jim Boylan,PG,6-2,175.0,23.0,Marquette,Sr,,1,,,,
 1978,4,73,Larry Harris,F,6-6,205.0,,Pittsburgh,Sr,,1,,,,
 1978,4,76,Leroy McDonald,SG,6-5,195.0,22.0,Wake Forest,Sr,,1,,,,
-1978,5,90,David Thompson,F,6-8,195.0,,Florida State,Sr,,1,78326.0,US,1983,0.0
+1978,5,90,David Thompson,F,6-8,195.0,,Florida State,Sr,,1,,,,
 1978,6,112,Bob Miscevicious,,,,,Providence,Sr,,0,,,,
 1978,7,133,Stan Pietkiewicz,SG,6-5,200.0,21.0,Auburn,Sr,,3,77858.0,US,1980,0.0
 1978,8,154,Felton Young,,,,,Jacksonville,Sr,,0,,,,
 1978,9,172,Bobby White,,,,,Centenary (LA),Sr,,0,,,,
-1977,2,24,Larry Johnson,SG,6-3,205.0,22.0,Kentucky,Sr,,1,913.0,US,2000,0.0
+1977,2,24,Larry Johnson,SG,6-3,205.0,22.0,Kentucky,Sr,,1,77156.0,US,1977,0.0
 1977,4,68,Melvin Watkins,PG,6-4,204.0,22.0,Charlotte,Sr,,1,,,,
 1977,5,90,Mike Hanley,,,,,Niagara,Sr,,0,,,,
 1977,6,112,Curvan Lewis,,,,,Virginia Union,Sr,,1,,,,
@@ -187,7 +187,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1974,9,153,John Falconi,,,,,Davidson,Sr,,0,,,,
 1974,10,170,Andy Rimol,,,,,Princeton,Sr,,0,,,,
 1973,1,3,Ernie DiGregorio,PG,6-0,180.0,22.0,Providence,Sr,,6,76568.0,US,1977,0.0
-1973,3,38,Kenny Charles,SG,6-3,180.0,21.0,Fordham,Sr,,5,,,,
+1973,3,38,Kenny Charles,SG,6-3,180.0,21.0,Fordham,Sr,,5,76383.0,US,1977,0.0
 1973,4,54,Doug Little,G,6-4,200.0,,Oregon,Sr,,0,,,,
 1973,5,72,Randy Noll,PF,6-8,210.0,,Marshall,Jr,,0,,,,
 1973,6,88,Mike Macaluso,SF,6-5,210.0,21.0,Canisius,Sr,,1,77428.0,US,1973,0.0
@@ -213,12 +213,12 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1972,6,82,Ed Czernota,,,,,Sacred Heart,Sr,,0,,,,
 1972,7,99,Greg Kohls,G,6-1,170.0,,Syracuse,Sr,,0,,,,
 1972,8,115,Andy Denny,,,,,South Alabama,Sr,,0,,,,
-1972,9,131,John Collins,,,,,SUNY Brockport,Sr,,1,1628381.0,US,2025,0.0
+1972,9,131,John Collins,,,,,SUNY Brockport,Sr,,1,,,,
 1972,11,158,Jim Prokell,,,,,Edinboro,Sr,,0,,,,
 1972,12,167,Frank Dewitt,F,,,,Virginia,Sr,,0,,,,
 1972,13,176,Kim Huband,G,6-4,,,North Carolina,Sr,,0,,,,
 1972,14,182,Greg Corson,,,,,North Carolina,Sr,,0,,,,
-1972,15,189,Paul Hoffman,G,,,,St. Bonaventure,Sr,,0,77036.0,US,1954,1.0
+1972,15,189,Paul Hoffman,G,,,,St. Bonaventure,Sr,,0,,,,
 1972,16,194,Norman Bounds,,,,,SUNY Brockport,Sr,,0,,,,
 1971,1,3,Elmore Smith,C,7-0,250.0,21.0,Kentucky State,Sr,,8,78188.0,US,1978,0.0
 1971,2,19,Fred Hilton,SG,6-3,185.0,23.0,Grambling State,Sr,,2,77029.0,US,1972,0.0
