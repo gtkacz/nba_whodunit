@@ -8,11 +8,12 @@ import { useSplashScreen } from './composables/useSplashScreen'
 import { useDraftData } from './composables/useDraftData'
 import { useFilterUrlSync } from './composables/useFilterUrlSync'
 import { useCountryData } from './composables/useCountryData'
-import { getDataUrl } from './utils/dataUrl'
+import { useTeamData } from './composables/useTeamData'
 import type { TeamAbbreviation } from './types/team'
 
 const { showSplash, markSplashSeen } = useSplashScreen()
 const { loadCountryData } = useCountryData()
+const { loadTeamData, getAllTeamAbbreviations } = useTeamData()
 const {
   selectedTeam,
   selectedYear,
@@ -59,12 +60,8 @@ const showPlayerMeasurements = ref(false)
 
 async function loadData() {
   try {
-    const response = await fetch(getDataUrl('teams.json'))
-    if (!response.ok) {
-      console.error('Failed to fetch teams.json:', response.status)
-      return
-    }
-    const teams = await response.json() as TeamAbbreviation[]
+    await loadTeamData()
+    const teams = getAllTeamAbbreviations()
     await loadAllTeamData(teams)
   } catch (err) {
     console.error('Error in loadData:', err)

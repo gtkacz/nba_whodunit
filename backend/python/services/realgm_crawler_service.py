@@ -44,7 +44,7 @@ def scrape_draft_history(
 
     try:
         # Navigate to the page
-        url = f"https://basketball.realgm.com/nba/teams/{team_name}/{team_id}/Draft-History"
+        url = f"https://basketball.realgm.com/nba/teams/{team_name.replace(" ", "-")}/{team_id}/Draft-History"
         print(f"Accessing: {url}")
         driver.get(url)
 
@@ -132,7 +132,7 @@ def scrape_draft_history(
 
 
 if __name__ == "__main__":
-    with pathlib.Path("data/realgm_mapping.json").open("r", encoding="utf-8") as f:
+    with pathlib.Path("data/teams_mapping.json").open("r", encoding="utf-8") as f:
         team_mapping = json.load(f)
 
     for team_abbreviation, (team_name, team_id) in team_mapping.items():

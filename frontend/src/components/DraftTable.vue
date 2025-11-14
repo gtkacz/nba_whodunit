@@ -8,11 +8,13 @@ import { getDataUrl } from '@/utils/dataUrl'
 import { exportDraftPicksToCSV, downloadCSV as downloadCSVFile } from '@/utils/csvExporter'
 import { getCountryCode } from '@/utils/countryCodeConverter'
 import { useCountryData } from '@/composables/useCountryData'
+import { useTeamData } from '@/composables/useTeamData'
 import PlayerCard from './PlayerCard.vue'
 
 const display = useDisplay()
 const isMobile = computed(() => display.mobile.value)
 const { getFormattedCountryName } = useCountryData()
+const { loadTeamData, getTeamFullName, getAllTeamAbbreviations } = useTeamData()
 
 type SortItem = { key: string; order: 'asc' | 'desc' }
 
@@ -187,13 +189,13 @@ const maxYear = computed(() => props.availableYears.length > 0 ? Math.max(...pro
 
 async function loadTeams() {
   try {
-    const response = await fetch(getDataUrl('teams.json'))
-    const data = await response.json() as TeamAbbreviation[]
+    await loadTeamData()
+    const data = getAllTeamAbbreviations()
     teams.value = data
 
     teamOptions.value = data.map((abbr) => ({
       value: abbr,
-      title: abbr,
+      title: getTeamFullName(abbr),
       logo: `https://raw.githubusercontent.com/gtkacz/nba-logo-api/main/icons/${abbr.toLowerCase()}.svg`
     }))
   } catch (error) {
@@ -387,7 +389,7 @@ const headerLogo = computed(() => {
 
 const headerTitle = computed(() => {
   if (singleSelectedTeam.value) {
-    return `${singleSelectedTeam.value} Draft History`
+    return `${getTeamFullName(singleSelectedTeam.value)} Draft History`
   }
   return 'NBA Draft History'
 })
@@ -499,6 +501,18 @@ function getOriginalTeam(trades: string | null, year?: number): string | null {
 
   // Return the display name (preserves alias if it's an alias)
   return getDisplayTeam(original, year)
+}
+
+/**
+ * Gets the full team name for display, handling aliases correctly.
+ * First gets the original team name (for aliases), then gets the full name.
+ */
+function getTeamDisplayName(team: string | null | undefined, year?: number): string {
+  if (!team) return 'Unknown'
+  // Get the original team name (handles aliases)
+  const originalTeam = getOriginalTeamName(team, year)
+  // Get the full name for that team
+  return getTeamFullName(originalTeam)
 }
 
 function isDifferentTeam(originalTeam: string | null, currentTeam: string, year?: number): boolean {
@@ -1536,7 +1550,7 @@ watch(currentPage, () => {
                 />
               </template>
               <span v-if="getPlayerRetirementStatus(item.played_until_year) === 'active' && item.plays_for && getCanonicalTeam(item.plays_for, item.year) !== getCanonicalTeam(item.team, item.year)">
-                Plays for {{ getOriginalTeamName(item.plays_for, item.year) }}
+                Currently plays for the {{ getTeamDisplayName(item.plays_for, item.year) }}
               </span>
               <span v-else>{{ getRetirementTooltipText(item.played_until_year) }}</span>
             </v-tooltip>
@@ -1588,7 +1602,7 @@ watch(currentPage, () => {
               <v-avatar size="24" class="mr-1" rounded="0" style="background: transparent;">
                 <v-img
                   :src="getTeamLogoUrl(team, item.year)"
-                  :alt="team"
+                  :alt="getTeamDisplayName(team, item.year)"
                   contain
                 />
               </v-avatar>

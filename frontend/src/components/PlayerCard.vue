@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { DraftPick } from '@/types/draft'
-import { getCanonicalTeam } from '@/utils/teamAliases'
+import { getCanonicalTeam, getOriginalTeamName } from '@/utils/teamAliases'
+import { useTeamData } from '@/composables/useTeamData'
 
 interface PlayerCardProps {
   player: DraftPick | null
@@ -24,10 +25,18 @@ function getPlayerHeadshotUrl(nbaId: string | number | undefined): string {
   return `https://cdn.nba.com/headshots/nba/latest/1040x760/${nbaId}.png`
 }
 
+const { getTeamFullName } = useTeamData()
+
 const teamCode = computed(() => {
   if (!props.player) return ''
   return getCanonicalTeam(props.player.team, props.player.year)
 })
+
+function getTeamDisplayName(team: string | null | undefined, year?: number): string {
+  if (!team) return 'Unknown'
+  const originalTeam = getOriginalTeamName(team, year)
+  return getTeamFullName(originalTeam)
+}
 
 function getTeamLogoUrl(team: string, year?: number): string {
   const canonicalTeam = getCanonicalTeam(team, year)
@@ -77,14 +86,14 @@ const teamColorAccent = computed(() => {
           <div class="team-logo-container mr-2">
             <v-img
               :src="teamLogoUrl"
-              :alt="player.team"
+              :alt="getTeamDisplayName(player.team, player.year)"
               contain
               class="team-logo-img"
             />
           </div>
           <div>
             <div class="text-h6 font-weight-bold">{{ player.player }}</div>
-            <div class="text-caption text-medium-emphasis">{{ player.team }} • {{ player.year }}</div>
+            <div class="text-caption text-medium-emphasis">{{ getTeamDisplayName(player.team, player.year) }} • {{ player.year }}</div>
           </div>
         </div>
         <v-btn
