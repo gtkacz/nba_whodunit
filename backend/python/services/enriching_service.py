@@ -54,7 +54,7 @@ def main() -> None:  # noqa: D103
 
         # First match by Year/Round/Pick to DRAFT_YEAR/DRAFT_ROUND/DRAFT_NUMBER
         curr_df_merged = curr_df.merge(
-            nba_df[["nba_id", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER", "COUNTRY", "TO_YEAR", "IS_DEFUNCT"]],
+            nba_df[["nba_id", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER", "COUNTRY", "TO_YEAR", "IS_DEFUNCT", "real_team"]],
             left_on=["Year", "Round", "Pick"],
             right_on=["DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER"],
             how="left",
@@ -70,12 +70,12 @@ def main() -> None:  # noqa: D103
 
             # Drop the columns from the first merge attempt
             unmatched_df = unmatched_df.drop(
-                columns=["nba_id", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER", "COUNTRY", "TO_YEAR", "IS_DEFUNCT"]
+                columns=["nba_id", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER", "COUNTRY", "TO_YEAR", "IS_DEFUNCT", "real_team"],
             )
 
             # Try matching by name and year
             unmatched_df = unmatched_df.merge(
-                nba_df[["nba_id", "treated_name", "DRAFT_YEAR", "COUNTRY", "TO_YEAR", "IS_DEFUNCT"]],
+                nba_df[["nba_id", "treated_name", "DRAFT_YEAR", "COUNTRY", "TO_YEAR", "IS_DEFUNCT", "real_team"]],
                 left_on=["treated_name", "Year"],
                 right_on=["treated_name", "DRAFT_YEAR"],
                 how="left",
@@ -87,6 +87,7 @@ def main() -> None:  # noqa: D103
             curr_df_merged.loc[unmatched_mask, "COUNTRY"] = unmatched_df["COUNTRY"].values
             curr_df_merged.loc[unmatched_mask, "TO_YEAR"] = unmatched_df["TO_YEAR"].values
             curr_df_merged.loc[unmatched_mask, "IS_DEFUNCT"] = unmatched_df["IS_DEFUNCT"].values
+            curr_df_merged.loc[unmatched_mask, "real_team"] = unmatched_df["real_team"].values
 
         # Clean up columns
         curr_df = curr_df_merged.drop(columns=["treated_name", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER"])
@@ -98,6 +99,7 @@ def main() -> None:  # noqa: D103
                 "COUNTRY": "origin_country",
                 "TO_YEAR": "played_until_year",
                 "IS_DEFUNCT": "is_defunct",
+                "real_team": "plays_for",
             },
         )
 

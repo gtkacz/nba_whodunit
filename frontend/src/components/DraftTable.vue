@@ -1508,10 +1508,26 @@ watch(currentPage, () => {
               </template>
               <span>{{ getFormattedCountryName(item.origin_country) }}</span>
             </v-tooltip>
-            <!-- Retired/Active Indicator - always show -->
+            <!-- Retired/Active Indicator - show team logo if active and plays for different team, otherwise show status icon -->
             <v-tooltip location="top">
               <template #activator="{ props: tooltipProps }">
+                <template v-if="getPlayerRetirementStatus(item.played_until_year) === 'active' && item.plays_for && getCanonicalTeam(item.plays_for, item.year) !== getCanonicalTeam(item.team, item.year)">
+                  <v-avatar
+                    v-bind="tooltipProps"
+                    size="16"
+                    rounded="0"
+                    style="background: transparent;"
+                    class="player-status-icon"
+                  >
+                    <v-img
+                      :src="getTeamLogoUrl(item.plays_for, item.year)"
+                      :alt="item.plays_for"
+                      contain
+                    />
+                  </v-avatar>
+                </template>
                 <v-icon
+                  v-else
                   v-bind="tooltipProps"
                   :icon="getPlayerRetirementStatus(item.played_until_year) === 'retired' ? 'mdi-account-off' : getPlayerRetirementStatus(item.played_until_year) === 'active' ? 'mdi-account-check' : 'mdi-account-question'"
                   size="16"
@@ -1519,7 +1535,10 @@ watch(currentPage, () => {
                   class="player-status-icon"
                 />
               </template>
-              <span>{{ getRetirementTooltipText(item.played_until_year) }}</span>
+              <span v-if="getPlayerRetirementStatus(item.played_until_year) === 'active' && item.plays_for && getCanonicalTeam(item.plays_for, item.year) !== getCanonicalTeam(item.team, item.year)">
+                Plays for {{ getOriginalTeamName(item.plays_for, item.year) }}
+              </span>
+              <span v-else>{{ getRetirementTooltipText(item.played_until_year) }}</span>
             </v-tooltip>
           </div>
         </div>

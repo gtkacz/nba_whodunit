@@ -7,15 +7,19 @@ export interface CountryInfo {
 
 type CountryDataMap = Record<string, CountryInfo>
 
-const COUNTRY_DATA_CACHE_KEY = 'nba_whodunit_country_data'
-const COUNTRY_DATA_VERSION = '1.2.0' // Increment if data structure changes
+const COUNTRY_DATA_CACHE_KEY = 'iso_country_data'
+const COUNTRY_DATA_VERSION = '1.2.1' // Increment if data structure changes
 
 /**
  * Language preference map for countries with multiple official languages
  * Maps country code (cca2) to preferred language code(s) - will try each in order
  */
 const LANGUAGE_PREFERENCES: Record<string, string[]> = {
-  il: ['heb', 'he'], // Israel -> Hebrew (try both 'heb' and 'he' codes)
+  il: ['heb', 'he'],
+  ar: ['spa', 'es'],
+  pr: ['spa', 'es'],
+  cm: ['fra', 'fr'],
+  tz: ['swa'],
 }
 
 const countryDataMap = ref<CountryDataMap>({})

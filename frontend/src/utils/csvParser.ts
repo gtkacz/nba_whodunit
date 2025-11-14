@@ -56,6 +56,7 @@ export async function parseCSV(csvText: string, teamAbbreviation: string): Promi
   const originCountryIndex = getColumnIndex('origin_country')
   const playedUntilYearIndex = getColumnIndex('played_until_year')
   const isDefunctIndex = getColumnIndex('is_defunct')
+  const playsForIndex = getColumnIndex('plays_for')
   
   // Check if we have the minimum required columns (Team is no longer required)
   const requiredIndices = [yearIndex, roundIndex, pickIndex, playerIndex, posIndex, htIndex, wtIndex, ageIndex, preDraftTeamIndex, classIndex, draftTradesIndex, yosIndex]
@@ -114,6 +115,10 @@ export async function parseCSV(csvText: string, teamAbbreviation: string): Promi
         })()
       : undefined
     
+    const playsFor = playsForIndex >= 0 && playsForIndex < values.length && values[playsForIndex] && values[playsForIndex].trim() !== ''
+      ? values[playsForIndex].trim()
+      : undefined
+    
     // Skip picks that were traded away from this team (same logic as backend parser)
     // If trade string starts with "{teamAbbreviation} to " or any alias, it means this team traded the pick away
     // Need to check both the canonical team and all its aliases (e.g., SEA is an alias for OKC)
@@ -156,7 +161,8 @@ export async function parseCSV(csvText: string, teamAbbreviation: string): Promi
       nba_id: nbaId ? (isNaN(Number(nbaId)) ? nbaId : Number(nbaId)) : undefined,
       origin_country: originCountry,
       played_until_year: playedUntilYear,
-      is_defunct: isDefunct
+      is_defunct: isDefunct,
+      plays_for: playsFor
     })
   }
 

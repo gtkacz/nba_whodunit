@@ -17,6 +17,7 @@ export interface DraftPick {
   origin_country?: string
   played_until_year?: number
   is_defunct?: number
+  plays_for?: string
 }
 
 export interface TradeStep {
