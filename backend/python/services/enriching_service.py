@@ -70,7 +70,7 @@ def main() -> None:  # noqa: D103
             f"Team: {team} - Matched players: {total_matched}/{total_players} ({(total_matched / total_players) * 100:.2f}%)"
         )
 
-        curr_df.to_csv(f"data/csv/{team}_enriched.csv", index=False)
+        curr_df.to_csv(f"frontend/public/data/csv/{team}_enriched.csv", index=False)
 
 
 if __name__ == "__main__":
