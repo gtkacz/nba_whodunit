@@ -21,6 +21,7 @@ def treat_name(name: str) -> str:
         name.removesuffix(" Jr")
         .removesuffix(" Jr.")
         .replace("Cam", "Cameron")
+        .replace("Moe", "Moritz")
         .removesuffix(" II")
         .removesuffix(" III")
         .removesuffix(" IV")

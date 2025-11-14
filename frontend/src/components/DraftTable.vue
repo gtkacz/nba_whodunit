@@ -658,11 +658,22 @@ function handlePageInput(event: Event) {
   }
 }
 
-function isPlayerRetired(playedUntilYear: number | undefined): boolean {
-  // If no retirement data, assume retired
-  if (playedUntilYear === undefined) return true
+function getPlayerRetirementStatus(playedUntilYear: number | undefined): 'active' | 'retired' | 'unknown' {
+  // If no retirement data, return unknown
+  if (playedUntilYear === undefined) return 'unknown'
   const currentYear = new Date().getFullYear()
-  return playedUntilYear < currentYear
+  return playedUntilYear < currentYear ? 'retired' : 'active'
+}
+
+function getRetirementTooltipText(playedUntilYear: number | undefined): string {
+  const status = getPlayerRetirementStatus(playedUntilYear)
+  if (status === 'active') {
+    return 'Active'
+  } else if (status === 'retired') {
+    return `Retired in ${playedUntilYear}`
+  } else {
+    return 'Unknown'
+  }
 }
 
 
@@ -1326,9 +1337,25 @@ watch(currentPage, () => {
                 </div>
               </template>
             </v-img>
-            <div v-else class="d-flex align-center justify-center fill-height">
-              <v-icon icon="mdi-account" size="24" color="grey-lighten-1" />
-            </div>
+            <v-img
+              v-else
+              :src="getPlayerHeadshotUrl(202382)"
+              :alt="item.player"
+              cover
+              eager
+              class="player-headshot-img"
+            >
+              <template #placeholder>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-icon icon="mdi-account" size="24" color="grey-lighten-1" />
+                </div>
+              </template>
+              <template #error>
+                <div class="d-flex align-center justify-center fill-height">
+                  <v-icon icon="mdi-account" size="24" color="grey-lighten-1" />
+                </div>
+              </template>
+            </v-img>
           </v-avatar>
           <div class="d-flex align-center flex-wrap gap-1">
             <span class="font-weight-bold text-primary">{{ item.player }}</span>
@@ -1339,13 +1366,18 @@ watch(currentPage, () => {
               class="player-flag-icon"
             />
             <!-- Retired/Active Indicator - always show -->
-            <v-icon
-              :icon="isPlayerRetired(item.played_until_year) ? 'mdi-account-off' : 'mdi-account-check'"
-              :title="isPlayerRetired(item.played_until_year) ? 'Retired' : 'Active'"
-              size="16"
-              :color="isPlayerRetired(item.played_until_year) ? 'grey' : 'success'"
-              class="player-status-icon"
-            />
+            <v-tooltip location="top">
+              <template #activator="{ props: tooltipProps }">
+                <v-icon
+                  v-bind="tooltipProps"
+                  :icon="getPlayerRetirementStatus(item.played_until_year) === 'retired' ? 'mdi-account-off' : getPlayerRetirementStatus(item.played_until_year) === 'active' ? 'mdi-account-check' : 'mdi-account-question'"
+                  size="16"
+                  :color="getPlayerRetirementStatus(item.played_until_year) === 'retired' ? 'grey' : getPlayerRetirementStatus(item.played_until_year) === 'active' ? 'success' : 'warning'"
+                  class="player-status-icon"
+                />
+              </template>
+              <span>{{ getRetirementTooltipText(item.played_until_year) }}</span>
+            </v-tooltip>
             <!-- Deceased Indicator -->
             <v-icon
               v-if="item.is_defunct === 1"

@@ -117,9 +117,25 @@ const teamColorAccent = computed(() => {
               </div>
             </template>
           </v-img>
-          <div v-else class="player-card-image-placeholder d-flex align-center justify-center">
-            <v-icon icon="mdi-account" size="60" color="grey-lighten-1" />
-          </div>
+          <v-img
+            v-else
+            :src="getPlayerHeadshotUrl(202382)"
+            :alt="player.player"
+            contain
+            class="player-card-image"
+            height="150"
+          >
+            <template #placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-icon icon="mdi-account" size="60" color="grey-lighten-1" />
+              </div>
+            </template>
+            <template #error>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-icon icon="mdi-account" size="60" color="grey-lighten-1" />
+              </div>
+            </template>
+          </v-img>
         </div>
 
         <!-- Player Info -->
