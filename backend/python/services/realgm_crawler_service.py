@@ -76,7 +76,7 @@ def scrape_draft_history(
         all_data = pd.concat([all_data, df], ignore_index=True)
         print(f"Added {len(df)} rows from page 1")
 
-        # Loop through next 5 pages
+        # Loop through next 5 pages TODO: Make this dynamic
         for page_num in range(2, 7):  # Pages 2-6
             try:
                 # Wait a bit to avoid being detected as a bot
@@ -137,4 +137,4 @@ if __name__ == "__main__":
 
     for team_abbreviation, (team_name, team_id) in team_mapping.items():
         print(f"\nScraping draft history for {team_abbreviation}...")
-        scrape_draft_history(team_name, team_id)
+        scrape_draft_history(team_abbreviation, team_name, team_id)
