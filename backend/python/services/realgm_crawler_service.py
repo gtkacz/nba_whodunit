@@ -1,3 +1,5 @@
+import json  # noqa: CPY001, D100
+import pathlib
 import time
 
 import pandas as pd
@@ -6,16 +8,26 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as EC  # noqa: N812
 from selenium.webdriver.support.ui import WebDriverWait
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-def scrape_celtics_draft_history():
+def scrape_draft_history(
+    team_abbreviation: str, team_name: str, team_id: int, save_to: str = "data/csv"
+) -> pd.DataFrame:  # noqa: PLR0915
     """
-    Scrape Boston Celtics draft history from RealGM website.
-    """
+    Scrape draft history data for a given NBA team from RealGM.
 
+    Args:
+        team_abbreviation (str): Abbreviation of the NBA team (e.g., "BOS" for Boston Celtics)
+        team_name (str): Name of the NBA team (e.g., "Boston-Celtics")
+        team_id (int): ID of the NBA team (e.g., 9 for Boston Celtics)
+        save_to (str): Directory to save the HTML files. Defaults to "data/html".
+
+    Returns:
+        pd.DataFrame: DataFrame containing the draft history data.
+    """
     # Setup Chrome options for better stability
     chrome_options = Options()
     chrome_options.add_argument("--disable-gpu")
@@ -24,7 +36,7 @@ def scrape_celtics_draft_history():
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option("useAutomationExtension", False)
+    chrome_options.add_experimental_option("useAutomationExtension", False)  # noqa: FBT003
 
     # Initialize the Chrome driver with webdriver-manager
     service = Service(ChromeDriverManager().install())
@@ -32,7 +44,7 @@ def scrape_celtics_draft_history():
 
     try:
         # Navigate to the page
-        url = "https://basketball.realgm.com/nba/teams/Boston-Celtics/2/Draft-History"
+        url = f"https://basketball.realgm.com/nba/teams/{team_name}/{team_id}/Draft-History"
         print(f"Accessing: {url}")
         driver.get(url)
 
@@ -103,7 +115,7 @@ def scrape_celtics_draft_history():
         print(f"Columns: {list(all_data.columns)}")
 
         # Save to CSV
-        output_file = "celtics_draft_history.csv"
+        output_file = pathlib.Path(save_to) / f"{team_abbreviation.upper()}.csv"
         all_data.to_csv(output_file, index=False)
         print(f"\nData saved to {output_file}")
 
@@ -120,11 +132,9 @@ def scrape_celtics_draft_history():
 
 
 if __name__ == "__main__":
-    # Run the scraper
-    df = scrape_celtics_draft_history()
+    with pathlib.Path("data/realgm_mapping.json").open("r", encoding="utf-8") as f:
+        team_mapping = json.load(f)
 
-    # Display first few rows if successful
-    if df is not None:
-        print("\nFirst 5 rows of the scraped data:")
-        print(df.head())
-        print(f"\nShape of dataframe: {df.shape}")
+    for team_abbreviation, (team_name, team_id) in team_mapping.items():
+        print(f"\nScraping draft history for {team_abbreviation}...")
+        scrape_draft_history(team_name, team_id)
