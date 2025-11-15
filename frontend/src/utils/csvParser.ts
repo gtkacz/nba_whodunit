@@ -10,7 +10,15 @@ function parseCSVLine(line: string): string[] {
     const char = line[i]
 
     if (char === '"') {
-      inQuotes = !inQuotes
+      // Check for escaped quote (two consecutive quotes)
+      if (i + 1 < line.length && line[i + 1] === '"' && inQuotes) {
+        // Escaped quote - add one quote to current and skip the next character
+        current += '"'
+        i++ // Skip the next quote
+      } else {
+        // Regular quote - toggle quote state
+        inQuotes = !inQuotes
+      }
     } else if (char === ',' && !inQuotes) {
       result.push(current.trim())
       current = ''
@@ -57,6 +65,7 @@ export async function parseCSV(csvText: string, teamAbbreviation: string): Promi
   const playedUntilYearIndex = getColumnIndex('played_until_year')
   const isDefunctIndex = getColumnIndex('is_defunct')
   const playsForIndex = getColumnIndex('plays_for')
+  const awardsIndex = getColumnIndex('awards')
   
   // Check if we have the minimum required columns (Team is no longer required)
   const requiredIndices = [yearIndex, roundIndex, pickIndex, playerIndex, posIndex, htIndex, wtIndex, ageIndex, preDraftTeamIndex, classIndex, draftTradesIndex, yosIndex]
@@ -119,6 +128,43 @@ export async function parseCSV(csvText: string, teamAbbreviation: string): Promi
       ? values[playsForIndex].trim()
       : undefined
     
+    // Extract awards JSON if available
+    const awards = awardsIndex >= 0 && awardsIndex < values.length && values[awardsIndex] && values[awardsIndex].trim() !== ''
+      ? (() => {
+          try {
+            let awardsStr = values[awardsIndex].trim()
+            if (awardsStr === '' || awardsStr === 'null' || awardsStr === 'undefined') {
+              return undefined
+            }
+            // Remove outer double quotes if present (CSV might have JSON wrapped in quotes)
+            if (awardsStr.startsWith('"') && awardsStr.endsWith('"')) {
+              awardsStr = awardsStr.slice(1, -1)
+            }
+            // Handle CSV-escaped quotes ("" becomes ") and backslash-escaped quotes (\" becomes ")
+            awardsStr = awardsStr.replace(/""/g, '"').replace(/\\"/g, '"')
+            // Convert Python-style single quotes to JSON double quotes
+            // This handles cases like {'key': 1} -> {"key": 1}
+            awardsStr = awardsStr.replace(/'/g, '"')
+            const parsed = JSON.parse(awardsStr)
+            // Validate that it's an object with string keys and number values
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+              const validAwards: Record<string, number> = {}
+              for (const [key, value] of Object.entries(parsed)) {
+                if (typeof key === 'string' && typeof value === 'number') {
+                  validAwards[key] = value
+                }
+              }
+              return Object.keys(validAwards).length > 0 ? validAwards : undefined
+            }
+            return undefined
+          } catch (error) {
+            // Log error for debugging but don't break the parsing
+            console.warn(`Failed to parse awards JSON for ${teamAbbreviation}:`, values[awardsIndex], error)
+            return undefined
+          }
+        })()
+      : undefined
+    
     // Skip picks that were traded away from this team (same logic as backend parser)
     // If trade string starts with "{teamAbbreviation} to " or any alias, it means this team traded the pick away
     // Need to check both the canonical team and all its aliases (e.g., SEA is an alias for OKC)
@@ -162,7 +208,8 @@ export async function parseCSV(csvText: string, teamAbbreviation: string): Promi
       origin_country: originCountry,
       played_until_year: playedUntilYear,
       is_defunct: isDefunct,
-      plays_for: playsFor
+      plays_for: playsFor,
+      awards: awards
     })
   }
 

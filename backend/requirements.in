@@ -3,4 +3,5 @@ pandas
 selenium
 Unidecode
 webdriver-manager
-undetected-chromedriver
+loguru
+tqdm

@@ -97,7 +97,28 @@ const teamColorAccent = computed(() => {
             />
           </div>
           <div>
-            <div class="text-h6 font-weight-bold">{{ player.player }}</div>
+            <div class="d-flex align-center flex-wrap gap-1">
+              <span class="text-h6 font-weight-bold">{{ player.player }}</span>
+              <!-- Awards Star Icon -->
+              <v-tooltip v-if="player.awards && Object.keys(player.awards).length > 0" location="top">
+                <template #activator="{ props: tooltipProps }">
+                  <v-icon
+                    v-bind="tooltipProps"
+                    icon="mdi-star"
+                    size="16"
+                    color="warning"
+                    class="player-awards-icon"
+                  />
+                </template>
+                <div>
+                  <ul style="margin: 0; padding-left: 20px; text-align: left;">
+                    <li v-for="(times, awardName) in player.awards" :key="awardName">
+                      {{ awardName }} ({{ times }} {{ times === 1 ? 'time' : 'times' }})
+                    </li>
+                  </ul>
+                </div>
+              </v-tooltip>
+            </div>
             <div class="text-caption text-medium-emphasis">{{ getTeamDisplayName(player.team, player.year) }} • {{ player.year }}</div>
           </div>
         </div>

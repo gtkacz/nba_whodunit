@@ -36,6 +36,7 @@ interface DraftTableProps {
   tradeFilter?: 'all' | 'traded' | 'not-traded'
   retiredFilter?: 'all' | 'retired' | 'not-retired'
   selectedNationalities?: string[]
+  selectedAwards?: string[]
   playerSearch?: string
   sortBy?: SortItem[]
   currentPage?: number
@@ -44,6 +45,7 @@ interface DraftTableProps {
   allPreDraftTeams?: string[]
   availableAges?: number[]
   availableNationalities?: string[]
+  availableAwards?: string[]
   minHeight?: number
   maxHeight?: number
   minWeight?: number
@@ -69,6 +71,7 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   tradeFilter: () => 'all',
   retiredFilter: () => 'all',
   selectedNationalities: () => [],
+  selectedAwards: () => [],
   playerSearch: '',
   sortBy: () => [
     { key: 'year', order: 'desc' },
@@ -80,6 +83,7 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   allPreDraftTeams: () => [],
   availableAges: () => [],
   availableNationalities: () => [],
+  availableAwards: () => [],
   minHeight: 60,
   maxHeight: 96,
   minWeight: 140,
@@ -104,6 +108,7 @@ const emit = defineEmits<{
   'update:tradeFilter': [value: 'all' | 'traded' | 'not-traded']
   'update:retiredFilter': [value: 'all' | 'retired' | 'not-retired']
   'update:selectedNationalities': [value: string[]]
+  'update:selectedAwards': [value: string[]]
   'update:playerSearch': [value: string]
   'update:sortBy': [value: SortItem[]]
   'update:currentPage': [value: number]
@@ -196,6 +201,16 @@ interface NationalityOption {
   title: string
   flag?: string
 }
+
+const awardOptions = computed(() => {
+  if (!props.availableAwards || props.availableAwards.length === 0) {
+    return []
+  }
+  return props.availableAwards.map(award => ({
+    value: award,
+    title: award
+  }))
+})
 
 const nationalityOptions = computed<NationalityOption[]>(() => {
   return props.availableNationalities.map((cca2) => ({
@@ -1307,6 +1322,27 @@ const shareTooltipText = computed(() => {
 
                     <v-col cols="12" md="6" class="mb-2">
                       <v-autocomplete
+                        :model-value="props.selectedAwards"
+                        @update:model-value="emit('update:selectedAwards', $event)"
+                        :items="awardOptions"
+                        :loading="false"
+                        label="Awards"
+                        variant="outlined"
+                        hide-details
+                        multiple
+                        chips
+                        clearable
+                        persistent-clear
+                        closable-chips
+                      >
+                        <template #prepend-inner>
+                          <v-icon icon="mdi-star" size="20" class="mr-2" />
+                        </template>
+                      </v-autocomplete>
+                    </v-col>
+
+                    <v-col cols="12" md="6" class="mb-2">
+                      <v-autocomplete
                         :model-value="props.preDraftTeamSearch"
                         @update:model-value="emit('update:preDraftTeamSearch', $event)"
                         :items="props.allPreDraftTeams"
@@ -1770,6 +1806,27 @@ const shareTooltipText = computed(() => {
 
                 <v-col cols="12" md="6" class="mb-2">
                   <v-autocomplete
+                    :model-value="props.selectedAwards"
+                    @update:model-value="emit('update:selectedAwards', $event)"
+                    :items="props.availableAwards"
+                    :loading="false"
+                    label="Awards"
+                    variant="outlined"
+                    hide-details
+                    multiple
+                    chips
+                    clearable
+                    persistent-clear
+                    closable-chips
+                  >
+                    <template #prepend-inner>
+                      <v-icon icon="mdi-star" size="20" class="mr-2" />
+                    </template>
+                  </v-autocomplete>
+                </v-col>
+
+                <v-col cols="12" md="6" class="mb-2">
+                  <v-autocomplete
                     :model-value="props.preDraftTeamSearch"
                     @update:model-value="emit('update:preDraftTeamSearch', $event)"
                     :items="props.allPreDraftTeams"
@@ -2214,6 +2271,25 @@ const shareTooltipText = computed(() => {
                 class="player-deceased-icon"
               />
             </span>
+            <!-- Awards Star Icon -->
+            <v-tooltip v-if="item.awards && Object.keys(item.awards).length > 0" location="top">
+              <template #activator="{ props: tooltipProps }">
+                <v-icon
+                  v-bind="tooltipProps"
+                  icon="mdi-star"
+                  size="16"
+                  color="warning"
+                  class="player-awards-icon"
+                />
+              </template>
+              <div>
+                <ul style="margin: 0; padding-left: 20px; text-align: left;">
+                  <li v-for="(times, awardName) in item.awards" :key="awardName">
+                    {{ awardName }} ({{ times }} {{ times === 1 ? 'time' : 'times' }})
+                  </li>
+                </ul>
+              </div>
+            </v-tooltip>
             <!-- Nationality Flag - always show, fallback to 'un' -->
             <v-tooltip location="top">
               <template #activator="{ props: tooltipProps }">

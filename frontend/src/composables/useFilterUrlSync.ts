@@ -20,6 +20,7 @@ interface FilterDefaults {
   tradeFilter: 'all' | 'traded' | 'not-traded'
   retiredFilter: 'all' | 'retired' | 'not-retired'
   selectedNationalities: string[]
+  selectedAwards: string[]
   playerSearch: string
   sortBy: SortItem[]
   currentPage: number
@@ -43,6 +44,7 @@ const DEFAULT_FILTERS: FilterDefaults = {
   tradeFilter: 'all',
   retiredFilter: 'all',
   selectedNationalities: [],
+  selectedAwards: [],
   playerSearch: '',
   sortBy: [
     { key: 'year', order: 'desc' },
@@ -70,6 +72,7 @@ export function useFilterUrlSync(
     tradeFilter: Ref<'all' | 'traded' | 'not-traded'>
     retiredFilter: Ref<'all' | 'retired' | 'not-retired'>
     selectedNationalities: Ref<string[]>
+    selectedAwards: Ref<string[]>
     playerSearch: Ref<string>
     sortBy: Ref<SortItem[]>
     currentPage: Ref<number>
@@ -164,6 +167,7 @@ export function useFilterUrlSync(
       filters.tradeFilter.value = DEFAULT_FILTERS.tradeFilter
       filters.retiredFilter.value = DEFAULT_FILTERS.retiredFilter
       filters.selectedNationalities.value = [...DEFAULT_FILTERS.selectedNationalities]
+      filters.selectedAwards.value = [...DEFAULT_FILTERS.selectedAwards]
       filters.playerSearch.value = DEFAULT_FILTERS.playerSearch
       filters.sortBy.value = [...DEFAULT_FILTERS.sortBy]
       filters.currentPage.value = DEFAULT_FILTERS.currentPage
@@ -279,6 +283,14 @@ export function useFilterUrlSync(
       const nationalities = deserializeArray(query.nationalities, 'string')
       if (nationalities.length > 0) {
         filters.selectedNationalities.value = nationalities as string[]
+      }
+    }
+
+    // Load selectedAwards
+    if (query.awards) {
+      const awards = deserializeArray(query.awards, 'string')
+      if (awards.length > 0) {
+        filters.selectedAwards.value = awards as string[]
       }
     }
 
@@ -412,6 +424,10 @@ export function useFilterUrlSync(
       query.nationalities = serializeArray(filters.selectedNationalities.value)
     }
 
+    if (isNonDefault(filters.selectedAwards.value, DEFAULT_FILTERS.selectedAwards)) {
+      query.awards = serializeArray(filters.selectedAwards.value)
+    }
+
     // Only add playerSearch if it's different from default (non-empty)
     if (filters.playerSearch.value && filters.playerSearch.value.trim() !== '') {
       query.playerSearch = filters.playerSearch.value.trim()
@@ -460,6 +476,7 @@ export function useFilterUrlSync(
       filters.tradeFilter.value,
       filters.retiredFilter.value,
       filters.selectedNationalities.value,
+      filters.selectedAwards.value,
       filters.sortBy.value,
       filters.currentPage.value,
       filters.itemsPerPage.value,
@@ -519,6 +536,7 @@ export function useFilterUrlSync(
     filters.tradeFilter.value = DEFAULT_FILTERS.tradeFilter
     filters.retiredFilter.value = DEFAULT_FILTERS.retiredFilter
     filters.selectedNationalities.value = [...DEFAULT_FILTERS.selectedNationalities]
+    filters.selectedAwards.value = [...DEFAULT_FILTERS.selectedAwards]
     filters.playerSearch.value = DEFAULT_FILTERS.playerSearch
     filters.sortBy.value = [...DEFAULT_FILTERS.sortBy]
     filters.currentPage.value = DEFAULT_FILTERS.currentPage

@@ -54,6 +54,7 @@ export function useDraftData() {
   const tradeFilter = ref<'all' | 'traded' | 'not-traded'>('all')
   const retiredFilter = ref<'all' | 'retired' | 'not-retired'>('all')
   const selectedNationalities = ref<string[]>([])
+  const selectedAwards = ref<string[]>([])
   const playerSearch = ref<string>('')
 
   // Sort state - initial multi-sort by year (desc) and pick (asc)
@@ -101,6 +102,20 @@ export function useDraftData() {
       }
     })
     return Array.from(nationalities).sort()
+  })
+
+  const availableAwards = computed(() => {
+    const awards = new Set<string>()
+    allDraftPicks.value.forEach((pick) => {
+      if (pick.awards && typeof pick.awards === 'object') {
+        Object.keys(pick.awards).forEach((awardName) => {
+          if (awardName && awardName.trim() !== '') {
+            awards.add(awardName)
+          }
+        })
+      }
+    })
+    return Array.from(awards).sort()
   })
 
   // Compute min/max height and weight from data
@@ -304,6 +319,15 @@ export function useDraftData() {
       })
     }
 
+    // Awards filter - multiple selection
+    if (selectedAwards.value.length > 0) {
+      filtered = filtered.filter((pick) => {
+        if (!pick.awards || typeof pick.awards !== 'object') return false
+        // Check if player has at least one of the selected awards
+        return selectedAwards.value.some((awardName) => awardName in pick.awards)
+      })
+    }
+
     // Player name search filter (with normalized matching for accents)
     if (playerSearch.value && playerSearch.value.trim() !== '') {
       const searchTerm = normalizeString(playerSearch.value.toLowerCase().trim())
@@ -420,6 +444,7 @@ export function useDraftData() {
     tradeFilter,
     retiredFilter,
     selectedNationalities,
+    selectedAwards,
     playerSearch,
     sortBy,
     currentPage,
@@ -429,6 +454,7 @@ export function useDraftData() {
     availableYears,
     availableAges,
     availableNationalities,
+    availableAwards,
     minHeight,
     maxHeight,
     minWeight,

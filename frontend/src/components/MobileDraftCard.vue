@@ -360,6 +360,19 @@ function handlePlayerClick() {
             </div>
           </div>
 
+          <!-- Awards -->
+          <div v-if="item.awards && Object.keys(item.awards).length > 0" class="mb-3">
+            <div class="text-caption text-medium-emphasis mb-1 d-flex align-center">
+              <v-icon icon="mdi-star" size="16" color="warning" class="mr-1" />
+              Awards
+            </div>
+            <ul class="text-body-1 font-weight-medium" style="margin: 0; padding-left: 20px;">
+              <li v-for="(times, awardName) in item.awards" :key="awardName">
+                {{ awardName }} ({{ times }} {{ times === 1 ? 'time' : 'times' }})
+              </li>
+            </ul>
+          </div>
+
           <!-- Additional Details Grid -->
           <v-row dense>
             <v-col cols="6">

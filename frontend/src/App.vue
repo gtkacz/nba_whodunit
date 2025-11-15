@@ -31,6 +31,7 @@ const {
   tradeFilter,
   retiredFilter,
   selectedNationalities,
+  selectedAwards,
   playerSearch,
   sortBy,
   currentPage,
@@ -40,6 +41,7 @@ const {
   availableYears,
   availableAges,
   availableNationalities,
+  availableAwards,
   minHeight,
   maxHeight,
   minWeight,
@@ -67,6 +69,7 @@ const { resetFilters: resetFiltersFromUrl } = useFilterUrlSync({
   tradeFilter,
   retiredFilter,
   selectedNationalities,
+  selectedAwards,
   playerSearch,
   sortBy,
   currentPage,
@@ -131,6 +134,7 @@ onMounted(() => {
               v-model:trade-filter="tradeFilter"
               v-model:retired-filter="retiredFilter"
               v-model:selected-nationalities="selectedNationalities"
+              v-model:selected-awards="selectedAwards"
               v-model:player-search="playerSearch"
               v-model:sort-by="sortBy"
               v-model:current-page="currentPage"
@@ -140,6 +144,7 @@ onMounted(() => {
               :all-pre-draft-teams="allPreDraftTeams"
               :available-ages="availableAges"
               :available-nationalities="availableNationalities"
+              :available-awards="availableAwards"
               :min-height="minHeight"
               :max-height="maxHeight"
               :min-weight="minWeight"

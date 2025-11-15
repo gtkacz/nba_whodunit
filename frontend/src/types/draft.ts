@@ -18,6 +18,7 @@ export interface DraftPick {
   played_until_year?: number
   is_defunct?: number
   plays_for?: string
+  awards?: Record<string, number>
 }
 
 export interface TradeStep {
