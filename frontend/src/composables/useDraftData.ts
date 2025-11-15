@@ -22,6 +22,7 @@ export function useDraftData() {
   const selectedPositions = ref<string[]>([])
   const ageRange = ref<[number, number]>([17, 50])
   const tradeFilter = ref<'all' | 'traded' | 'not-traded'>('all')
+  const retiredFilter = ref<'all' | 'retired' | 'not-retired'>('all')
   const selectedNationalities = ref<string[]>([])
   const playerSearch = ref<string>('')
 
@@ -179,6 +180,21 @@ export function useDraftData() {
       filtered = filtered.filter((pick) => !pick.draftTrades || pick.draftTrades.trim() === '')
     }
 
+    // Retired filter
+    if (retiredFilter.value !== 'all') {
+      const currentYear = new Date().getFullYear()
+      filtered = filtered.filter((pick) => {
+        const isRetired =
+          pick.played_until_year !== undefined && pick.played_until_year < currentYear
+        if (retiredFilter.value === 'retired') {
+          return isRetired
+        } else {
+          // 'not-retired'
+          return !isRetired
+        }
+      })
+    }
+
     // Nationality filter - multiple selection
     if (selectedNationalities.value.length > 0) {
       filtered = filtered.filter((pick) => {
@@ -300,6 +316,7 @@ export function useDraftData() {
     selectedPositions,
     ageRange,
     tradeFilter,
+    retiredFilter,
     selectedNationalities,
     playerSearch,
     sortBy,

@@ -33,6 +33,7 @@ interface DraftTableProps {
   selectedPositions?: string[]
   ageRange?: [number, number]
   tradeFilter?: 'all' | 'traded' | 'not-traded'
+  retiredFilter?: 'all' | 'retired' | 'not-retired'
   selectedNationalities?: string[]
   playerSearch?: string
   sortBy?: SortItem[]
@@ -59,6 +60,7 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   selectedPositions: () => [],
   ageRange: () => [17, 50],
   tradeFilter: () => 'all',
+  retiredFilter: () => 'all',
   selectedNationalities: () => [],
   playerSearch: '',
   sortBy: () => [
@@ -87,6 +89,7 @@ const emit = defineEmits<{
   'update:selectedPositions': [value: string[]]
   'update:ageRange': [value: [number, number]]
   'update:tradeFilter': [value: 'all' | 'traded' | 'not-traded']
+  'update:retiredFilter': [value: 'all' | 'retired' | 'not-retired']
   'update:selectedNationalities': [value: string[]]
   'update:playerSearch': [value: string]
   'update:sortBy': [value: SortItem[]]
@@ -390,6 +393,9 @@ const hasActiveFilters = computed(() => {
   // Trade filter active
   if (props.tradeFilter !== 'all') return true
   
+  // Retired filter active
+  if (props.retiredFilter !== 'all') return true
+  
   // Nationality filter active
   if (props.selectedNationalities && props.selectedNationalities.length > 0) return true
   
@@ -412,6 +418,7 @@ function getActiveFiltersCount(): number {
   if (props.selectedPositions.length > 0) count++
   if (props.ageRange[0] !== 17 || props.ageRange[1] !== 50) count++
   if (props.tradeFilter !== 'all') count++
+  if (props.retiredFilter !== 'all') count++
   if (props.selectedNationalities && props.selectedNationalities.length > 0) count++
   if (props.playerSearch && props.playerSearch.trim() !== '') count++
   return count
@@ -1174,6 +1181,22 @@ watch(currentPage, () => {
                         prepend-inner-icon="mdi-swap-horizontal"
                       />
                     </v-col>
+
+                    <v-col cols="12" md="6" class="mb-2">
+                      <v-select
+                        :model-value="props.retiredFilter"
+                        @update:model-value="emit('update:retiredFilter', $event)"
+                        :items="[
+                          { value: 'all', title: 'All Players' },
+                          { value: 'retired', title: 'Retired Only' },
+                          { value: 'not-retired', title: 'Active Only' }
+                        ]"
+                        label="Retirement Status"
+                        variant="outlined"
+                        hide-details
+                        prepend-inner-icon="mdi-account-off"
+                      />
+                    </v-col>
                   </v-row>
                 </div>
 
@@ -1567,6 +1590,22 @@ watch(currentPage, () => {
                     variant="outlined"
                     hide-details
                     prepend-inner-icon="mdi-swap-horizontal"
+                  />
+                </v-col>
+
+                <v-col cols="12" md="6" class="mb-2">
+                  <v-select
+                    :model-value="props.retiredFilter"
+                    @update:model-value="emit('update:retiredFilter', $event)"
+                    :items="[
+                      { value: 'all', title: 'All Players' },
+                      { value: 'retired', title: 'Retired Only' },
+                      { value: 'not-retired', title: 'Active Only' }
+                    ]"
+                    label="Retirement Status"
+                    variant="outlined"
+                    hide-details
+                    prepend-inner-icon="mdi-account-off"
                   />
                 </v-col>
               </v-row>

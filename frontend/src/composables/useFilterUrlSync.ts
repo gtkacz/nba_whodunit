@@ -16,6 +16,7 @@ interface FilterDefaults {
   selectedPositions: string[]
   ageRange: [number, number]
   tradeFilter: 'all' | 'traded' | 'not-traded'
+  retiredFilter: 'all' | 'retired' | 'not-retired'
   selectedNationalities: string[]
   playerSearch: string
   sortBy: SortItem[]
@@ -35,6 +36,7 @@ const DEFAULT_FILTERS: FilterDefaults = {
   selectedPositions: [],
   ageRange: [17, 50],
   tradeFilter: 'all',
+  retiredFilter: 'all',
   selectedNationalities: [],
   playerSearch: '',
   sortBy: [
@@ -58,6 +60,7 @@ export function useFilterUrlSync(
     selectedPositions: Ref<string[]>
     ageRange: Ref<[number, number]>
     tradeFilter: Ref<'all' | 'traded' | 'not-traded'>
+    retiredFilter: Ref<'all' | 'retired' | 'not-retired'>
     selectedNationalities: Ref<string[]>
     playerSearch: Ref<string>
     sortBy: Ref<SortItem[]>
@@ -148,6 +151,7 @@ export function useFilterUrlSync(
       filters.selectedPositions.value = [...DEFAULT_FILTERS.selectedPositions]
       filters.ageRange.value = [...DEFAULT_FILTERS.ageRange]
       filters.tradeFilter.value = DEFAULT_FILTERS.tradeFilter
+      filters.retiredFilter.value = DEFAULT_FILTERS.retiredFilter
       filters.selectedNationalities.value = [...DEFAULT_FILTERS.selectedNationalities]
       filters.playerSearch.value = DEFAULT_FILTERS.playerSearch
       filters.sortBy.value = [...DEFAULT_FILTERS.sortBy]
@@ -235,6 +239,11 @@ export function useFilterUrlSync(
     // Load tradeFilter
     if (query.tradeFilter && (query.tradeFilter === 'traded' || query.tradeFilter === 'not-traded' || query.tradeFilter === 'all')) {
       filters.tradeFilter.value = query.tradeFilter as 'all' | 'traded' | 'not-traded'
+    }
+
+    // Load retiredFilter
+    if (query.retiredFilter && (query.retiredFilter === 'retired' || query.retiredFilter === 'not-retired' || query.retiredFilter === 'all')) {
+      filters.retiredFilter.value = query.retiredFilter as 'all' | 'retired' | 'not-retired'
     }
 
     // Load selectedNationalities
@@ -354,6 +363,10 @@ export function useFilterUrlSync(
       query.tradeFilter = filters.tradeFilter.value
     }
 
+    if (filters.retiredFilter.value !== DEFAULT_FILTERS.retiredFilter) {
+      query.retiredFilter = filters.retiredFilter.value
+    }
+
     if (isNonDefault(filters.selectedNationalities.value, DEFAULT_FILTERS.selectedNationalities)) {
       query.nationalities = serializeArray(filters.selectedNationalities.value)
     }
@@ -397,6 +410,7 @@ export function useFilterUrlSync(
       filters.selectedPositions.value,
       filters.ageRange.value,
       filters.tradeFilter.value,
+      filters.retiredFilter.value,
       filters.selectedNationalities.value,
       filters.sortBy.value,
       filters.currentPage.value,
@@ -452,6 +466,7 @@ export function useFilterUrlSync(
     filters.selectedPositions.value = [...DEFAULT_FILTERS.selectedPositions]
     filters.ageRange.value = [...DEFAULT_FILTERS.ageRange]
     filters.tradeFilter.value = DEFAULT_FILTERS.tradeFilter
+    filters.retiredFilter.value = DEFAULT_FILTERS.retiredFilter
     filters.selectedNationalities.value = [...DEFAULT_FILTERS.selectedNationalities]
     filters.playerSearch.value = DEFAULT_FILTERS.playerSearch
     filters.sortBy.value = [...DEFAULT_FILTERS.sortBy]

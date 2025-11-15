@@ -27,6 +27,7 @@ const {
   selectedPositions,
   ageRange,
   tradeFilter,
+  retiredFilter,
   selectedNationalities,
   playerSearch,
   sortBy,
@@ -54,6 +55,7 @@ const { resetFilters: resetFiltersFromUrl } = useFilterUrlSync({
   selectedPositions,
   ageRange,
   tradeFilter,
+  retiredFilter,
   selectedNationalities,
   playerSearch,
   sortBy,
@@ -116,6 +118,7 @@ onMounted(() => {
               v-model:selected-positions="selectedPositions"
               v-model:age-range="ageRange"
               v-model:trade-filter="tradeFilter"
+              v-model:retired-filter="retiredFilter"
               v-model:selected-nationalities="selectedNationalities"
               v-model:player-search="playerSearch"
               v-model:sort-by="sortBy"

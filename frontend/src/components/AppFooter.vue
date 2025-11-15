@@ -24,7 +24,14 @@ const appVersion = computed(() => {
       <v-row align="center" justify="center">
         <v-col class="text-center">
           <div :class="isMobile ? 'text-body-1' : 'text-body-2'">
-            &copy; {{ copyrightYears }} Gabriel Mitelman Tkacz. All rights reserved.
+            <a
+              href="https://github.com/gtkacz/nba-real-draft-history/blob/main/LICENSE"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="copyright-link"
+            >
+              &copy; {{ copyrightYears }} Gabriel Mitelman Tkacz. All rights reserved.
+            </a>
           </div>
           <div :class="isMobile ? 'text-body-1' : 'text-body-2'" class="mt-2">
             Data sourced from
@@ -76,6 +83,19 @@ const appVersion = computed(() => {
 
     &:hover {
       opacity: 0.9;
+    }
+  }
+
+  .copyright-link {
+    color: inherit;
+    text-decoration: none;
+    display: inline;
+    min-height: auto;
+    padding: 0;
+    margin: 0;
+
+    &:hover {
+      opacity: 0.8;
     }
   }
 
