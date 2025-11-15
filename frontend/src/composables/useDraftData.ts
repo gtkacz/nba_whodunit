@@ -281,8 +281,11 @@ export function useDraftData() {
     if (retiredFilter.value !== 'all') {
       const currentYear = new Date().getFullYear()
       filtered = filtered.filter((pick) => {
-        const isRetired =
-          pick.played_until_year !== undefined && pick.played_until_year < currentYear
+        // Exclude players with unknown retirement status (played_until_year is undefined)
+        if (pick.played_until_year === undefined) {
+          return false
+        }
+        const isRetired = pick.played_until_year < currentYear
         if (retiredFilter.value === 'retired') {
           return isRetired
         } else {
