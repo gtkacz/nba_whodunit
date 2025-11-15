@@ -399,6 +399,24 @@ const hasActiveFilters = computed(() => {
   return false
 })
 
+// Count active filters
+function getActiveFiltersCount(): number {
+  let count = 0
+  if (props.selectedTeam.length > 0) count++
+  if (props.selectedPlaysFor.length > 0) count++
+  if (!props.useYearRange && props.selectedYear !== null) count++
+  if (props.useYearRange && (props.yearRange[0] !== 1947 || props.yearRange[1] !== 2025)) count++
+  if (props.selectedRounds.length > 0) count++
+  if (props.overallPickRange[0] !== 1 || props.overallPickRange[1] !== 61) count++
+  if (props.preDraftTeamSearch.length > 0) count++
+  if (props.selectedPositions.length > 0) count++
+  if (props.ageRange[0] !== 17 || props.ageRange[1] !== 50) count++
+  if (props.tradeFilter !== 'all') count++
+  if (props.selectedNationalities && props.selectedNationalities.length > 0) count++
+  if (props.playerSearch && props.playerSearch.trim() !== '') count++
+  return count
+}
+
 // Check if exactly one team is selected
 const singleSelectedTeam = computed(() => {
   if (props.selectedTeam.length === 1) {
