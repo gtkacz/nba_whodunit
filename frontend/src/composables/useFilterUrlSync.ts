@@ -15,6 +15,8 @@ interface FilterDefaults {
   preDraftTeamSearch: string[]
   selectedPositions: string[]
   ageRange: [number, number]
+  heightRange: [number, number]
+  weightRange: [number, number]
   tradeFilter: 'all' | 'traded' | 'not-traded'
   retiredFilter: 'all' | 'retired' | 'not-retired'
   selectedNationalities: string[]
@@ -35,6 +37,8 @@ const DEFAULT_FILTERS: FilterDefaults = {
   preDraftTeamSearch: [],
   selectedPositions: [],
   ageRange: [17, 50],
+  heightRange: [60, 96],
+  weightRange: [140, 350],
   tradeFilter: 'all',
   retiredFilter: 'all',
   selectedNationalities: [],
@@ -59,6 +63,8 @@ export function useFilterUrlSync(
     preDraftTeamSearch: Ref<string[]>
     selectedPositions: Ref<string[]>
     ageRange: Ref<[number, number]>
+    heightRange: Ref<[number, number]>
+    weightRange: Ref<[number, number]>
     tradeFilter: Ref<'all' | 'traded' | 'not-traded'>
     retiredFilter: Ref<'all' | 'retired' | 'not-retired'>
     selectedNationalities: Ref<string[]>
@@ -150,6 +156,8 @@ export function useFilterUrlSync(
       filters.preDraftTeamSearch.value = [...DEFAULT_FILTERS.preDraftTeamSearch]
       filters.selectedPositions.value = [...DEFAULT_FILTERS.selectedPositions]
       filters.ageRange.value = [...DEFAULT_FILTERS.ageRange]
+      filters.heightRange.value = [...DEFAULT_FILTERS.heightRange]
+      filters.weightRange.value = [...DEFAULT_FILTERS.weightRange]
       filters.tradeFilter.value = DEFAULT_FILTERS.tradeFilter
       filters.retiredFilter.value = DEFAULT_FILTERS.retiredFilter
       filters.selectedNationalities.value = [...DEFAULT_FILTERS.selectedNationalities]
@@ -233,6 +241,22 @@ export function useFilterUrlSync(
       const range = deserializeTuple(query.ageRange, DEFAULT_FILTERS.ageRange)
       if (isNonDefault(range, DEFAULT_FILTERS.ageRange)) {
         filters.ageRange.value = range
+      }
+    }
+
+    // Load heightRange
+    if (query.heightRange) {
+      const range = deserializeTuple(query.heightRange, DEFAULT_FILTERS.heightRange)
+      if (isNonDefault(range, DEFAULT_FILTERS.heightRange)) {
+        filters.heightRange.value = range
+      }
+    }
+
+    // Load weightRange
+    if (query.weightRange) {
+      const range = deserializeTuple(query.weightRange, DEFAULT_FILTERS.weightRange)
+      if (isNonDefault(range, DEFAULT_FILTERS.weightRange)) {
+        filters.weightRange.value = range
       }
     }
 
@@ -359,6 +383,14 @@ export function useFilterUrlSync(
       query.ageRange = serializeArray(filters.ageRange.value)
     }
 
+    if (isNonDefault(filters.heightRange.value, DEFAULT_FILTERS.heightRange)) {
+      query.heightRange = serializeArray(filters.heightRange.value)
+    }
+
+    if (isNonDefault(filters.weightRange.value, DEFAULT_FILTERS.weightRange)) {
+      query.weightRange = serializeArray(filters.weightRange.value)
+    }
+
     if (filters.tradeFilter.value !== DEFAULT_FILTERS.tradeFilter) {
       query.tradeFilter = filters.tradeFilter.value
     }
@@ -409,6 +441,8 @@ export function useFilterUrlSync(
       filters.preDraftTeamSearch.value,
       filters.selectedPositions.value,
       filters.ageRange.value,
+      filters.heightRange.value,
+      filters.weightRange.value,
       filters.tradeFilter.value,
       filters.retiredFilter.value,
       filters.selectedNationalities.value,
@@ -465,6 +499,8 @@ export function useFilterUrlSync(
     filters.preDraftTeamSearch.value = [...DEFAULT_FILTERS.preDraftTeamSearch]
     filters.selectedPositions.value = [...DEFAULT_FILTERS.selectedPositions]
     filters.ageRange.value = [...DEFAULT_FILTERS.ageRange]
+    filters.heightRange.value = [...DEFAULT_FILTERS.heightRange]
+    filters.weightRange.value = [...DEFAULT_FILTERS.weightRange]
     filters.tradeFilter.value = DEFAULT_FILTERS.tradeFilter
     filters.retiredFilter.value = DEFAULT_FILTERS.retiredFilter
     filters.selectedNationalities.value = [...DEFAULT_FILTERS.selectedNationalities]

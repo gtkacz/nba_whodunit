@@ -10,6 +10,34 @@ const allDraftPicks = ref<DraftPick[]>([])
 const loading = ref(false)
 const error = ref<string | null>(null)
 
+// Helper function to parse height strings like "6-8" or "6'8\"" into inches
+function parseHeight(height: string | null | undefined): number {
+  if (!height) return 0
+  const str = String(height).trim()
+  
+  // Try format "6-8" (feet-inches)
+  const match1 = str.match(/(\d+)[-'](\d+)/)
+  if (match1 && match1[1] && match1[2]) {
+    const feet = parseInt(match1[1], 10)
+    const inches = parseInt(match1[2], 10)
+    return feet * 12 + inches
+  }
+  
+  // Try format "6'8\"" (feet'inches")
+  const match2 = str.match(/(\d+)'(\d+)"/)
+  if (match2 && match2[1] && match2[2]) {
+    const feet = parseInt(match2[1], 10)
+    const inches = parseInt(match2[2], 10)
+    return feet * 12 + inches
+  }
+  
+  // Try to parse as just a number (assume inches)
+  const num = parseFloat(str)
+  if (!isNaN(num)) return num
+  
+  return 0
+}
+
 export function useDraftData() {
   const selectedTeam = ref<TeamAbbreviation[]>([])
   const selectedPlaysFor = ref<TeamAbbreviation[]>([])
@@ -21,6 +49,8 @@ export function useDraftData() {
   const preDraftTeamSearch = ref<string[]>([])
   const selectedPositions = ref<string[]>([])
   const ageRange = ref<[number, number]>([17, 50])
+  const heightRange = ref<[number, number]>([60, 96]) // Default: 5'0" to 8'0" in inches
+  const weightRange = ref<[number, number]>([140, 350]) // Default: 140 to 350 lbs
   const tradeFilter = ref<'all' | 'traded' | 'not-traded'>('all')
   const retiredFilter = ref<'all' | 'retired' | 'not-retired'>('all')
   const selectedNationalities = ref<string[]>([])
@@ -71,6 +101,53 @@ export function useDraftData() {
       }
     })
     return Array.from(nationalities).sort()
+  })
+
+  // Compute min/max height and weight from data
+  const minHeight = computed(() => {
+    let min = 96 // 8'0" default max
+    allDraftPicks.value.forEach((pick) => {
+      if (pick.height) {
+        const heightInches = parseHeight(pick.height)
+        if (heightInches > 0 && heightInches < min) {
+          min = heightInches
+        }
+      }
+    })
+    return min < 96 ? min : 60 // Default to 5'0" if no valid data
+  })
+
+  const maxHeight = computed(() => {
+    let max = 60 // 5'0" default min
+    allDraftPicks.value.forEach((pick) => {
+      if (pick.height) {
+        const heightInches = parseHeight(pick.height)
+        if (heightInches > max) {
+          max = heightInches
+        }
+      }
+    })
+    return max > 60 ? max : 96 // Default to 8'0" if no valid data
+  })
+
+  const minWeight = computed(() => {
+    let min = 350 // default max
+    allDraftPicks.value.forEach((pick) => {
+      if (pick.weight && pick.weight > 0 && pick.weight < min) {
+        min = pick.weight
+      }
+    })
+    return min < 350 ? min : 140 // Default to 140 if no valid data
+  })
+
+  const maxWeight = computed(() => {
+    let max = 140 // default min
+    allDraftPicks.value.forEach((pick) => {
+      if (pick.weight && pick.weight > max) {
+        max = pick.weight
+      }
+    })
+    return max > 140 ? max : 350 // Default to 350 if no valid data
   })
 
   const filteredData = computed(() => {
@@ -170,6 +247,26 @@ export function useDraftData() {
       filtered = filtered.filter((pick) => {
         if (!pick.age || pick.age <= 0) return false
         return pick.age >= minAge && pick.age <= maxAge
+      })
+    }
+
+    // Height range filter
+    if (heightRange.value && heightRange.value.length === 2) {
+      const [minHeightInches, maxHeightInches] = heightRange.value
+      filtered = filtered.filter((pick) => {
+        if (!pick.height) return false
+        const heightInches = parseHeight(pick.height)
+        if (heightInches <= 0) return false
+        return heightInches >= minHeightInches && heightInches <= maxHeightInches
+      })
+    }
+
+    // Weight range filter
+    if (weightRange.value && weightRange.value.length === 2) {
+      const [minWeight, maxWeight] = weightRange.value
+      filtered = filtered.filter((pick) => {
+        if (!pick.weight || pick.weight <= 0) return false
+        return pick.weight >= minWeight && pick.weight <= maxWeight
       })
     }
 
@@ -315,6 +412,8 @@ export function useDraftData() {
     preDraftTeamSearch,
     selectedPositions,
     ageRange,
+    heightRange,
+    weightRange,
     tradeFilter,
     retiredFilter,
     selectedNationalities,
@@ -327,6 +426,10 @@ export function useDraftData() {
     availableYears,
     availableAges,
     availableNationalities,
+    minHeight,
+    maxHeight,
+    minWeight,
+    maxWeight,
     loading,
     error,
     loadAllTeamData,

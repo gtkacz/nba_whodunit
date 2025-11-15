@@ -26,6 +26,8 @@ const {
   preDraftTeamSearch,
   selectedPositions,
   ageRange,
+  heightRange,
+  weightRange,
   tradeFilter,
   retiredFilter,
   selectedNationalities,
@@ -38,6 +40,10 @@ const {
   availableYears,
   availableAges,
   availableNationalities,
+  minHeight,
+  maxHeight,
+  minWeight,
+  maxWeight,
   loading,
   loadAllTeamData
 } = useDraftData()
@@ -54,6 +60,8 @@ const { resetFilters: resetFiltersFromUrl } = useFilterUrlSync({
   preDraftTeamSearch,
   selectedPositions,
   ageRange,
+  heightRange,
+  weightRange,
   tradeFilter,
   retiredFilter,
   selectedNationalities,
@@ -117,6 +125,8 @@ onMounted(() => {
               v-model:pre-draft-team-search="preDraftTeamSearch"
               v-model:selected-positions="selectedPositions"
               v-model:age-range="ageRange"
+              v-model:height-range="heightRange"
+              v-model:weight-range="weightRange"
               v-model:trade-filter="tradeFilter"
               v-model:retired-filter="retiredFilter"
               v-model:selected-nationalities="selectedNationalities"
@@ -129,6 +139,10 @@ onMounted(() => {
               :all-pre-draft-teams="allPreDraftTeams"
               :available-ages="availableAges"
               :available-nationalities="availableNationalities"
+              :min-height="minHeight"
+              :max-height="maxHeight"
+              :min-weight="minWeight"
+              :max-weight="maxWeight"
               :reset-filters="resetFilters"
             />
           </v-col>

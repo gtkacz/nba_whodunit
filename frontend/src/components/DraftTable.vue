@@ -4,7 +4,6 @@ import { useDisplay } from 'vuetify'
 import type { DraftPick } from '@/types/draft'
 import type { TeamAbbreviation } from '@/types/team'
 import { getCanonicalTeam, getDisplayTeam, getOriginalTeamName } from '@/utils/teamAliases'
-import { getDataUrl } from '@/utils/dataUrl'
 import { exportDraftPicksToCSV, downloadCSV as downloadCSVFile } from '@/utils/csvExporter'
 import { getCountryCode } from '@/utils/countryCodeConverter'
 import { useCountryData } from '@/composables/useCountryData'
@@ -32,6 +31,8 @@ interface DraftTableProps {
   preDraftTeamSearch?: string[]
   selectedPositions?: string[]
   ageRange?: [number, number]
+  heightRange?: [number, number]
+  weightRange?: [number, number]
   tradeFilter?: 'all' | 'traded' | 'not-traded'
   retiredFilter?: 'all' | 'retired' | 'not-retired'
   selectedNationalities?: string[]
@@ -43,6 +44,10 @@ interface DraftTableProps {
   allPreDraftTeams?: string[]
   availableAges?: number[]
   availableNationalities?: string[]
+  minHeight?: number
+  maxHeight?: number
+  minWeight?: number
+  maxWeight?: number
   showPlayerMeasurements?: boolean
   resetFilters?: () => void
 }
@@ -59,6 +64,8 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   preDraftTeamSearch: () => [],
   selectedPositions: () => [],
   ageRange: () => [17, 50],
+  heightRange: () => [60, 96],
+  weightRange: () => [140, 350],
   tradeFilter: () => 'all',
   retiredFilter: () => 'all',
   selectedNationalities: () => [],
@@ -73,6 +80,10 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   allPreDraftTeams: () => [],
   availableAges: () => [],
   availableNationalities: () => [],
+  minHeight: 60,
+  maxHeight: 96,
+  minWeight: 140,
+  maxWeight: 350,
   showPlayerMeasurements: false,
   resetFilters: undefined
 })
@@ -88,6 +99,8 @@ const emit = defineEmits<{
   'update:preDraftTeamSearch': [value: string[]]
   'update:selectedPositions': [value: string[]]
   'update:ageRange': [value: [number, number]]
+  'update:heightRange': [value: [number, number]]
+  'update:weightRange': [value: [number, number]]
   'update:tradeFilter': [value: 'all' | 'traded' | 'not-traded']
   'update:retiredFilter': [value: 'all' | 'retired' | 'not-retired']
   'update:selectedNationalities': [value: string[]]
@@ -200,6 +213,13 @@ const positionOptions = [
 
 const minAge = computed(() => props.availableAges.length > 0 ? Math.min(...props.availableAges) : 17)
 const maxAge = computed(() => props.availableAges.length > 0 ? Math.max(...props.availableAges) : 50)
+
+// Helper function to format height from inches to feet-inches
+function formatHeight(inches: number): string {
+  const feet = Math.floor(inches / 12)
+  const remainingInches = Math.round(inches % 12)
+  return `${feet}'${remainingInches}"`
+}
 
 const minYear = computed(() => props.availableYears.length > 0 ? Math.min(...props.availableYears) : 1947)
 const maxYear = computed(() => props.availableYears.length > 0 ? Math.max(...props.availableYears) : 2025)
@@ -390,6 +410,12 @@ const hasActiveFilters = computed(() => {
   // Age range filter active
   if (props.ageRange[0] !== 17 || props.ageRange[1] !== 50) return true
   
+  // Height range filter active
+  if (props.heightRange && (props.heightRange[0] !== 60 || props.heightRange[1] !== 96)) return true
+  
+  // Weight range filter active
+  if (props.weightRange && (props.weightRange[0] !== 140 || props.weightRange[1] !== 350)) return true
+  
   // Trade filter active
   if (props.tradeFilter !== 'all') return true
   
@@ -417,6 +443,8 @@ function getActiveFiltersCount(): number {
   if (props.preDraftTeamSearch.length > 0) count++
   if (props.selectedPositions.length > 0) count++
   if (props.ageRange[0] !== 17 || props.ageRange[1] !== 50) count++
+  if (props.heightRange && (props.heightRange[0] !== 60 || props.heightRange[1] !== 96)) count++
+  if (props.weightRange && (props.weightRange[0] !== 140 || props.weightRange[1] !== 350)) count++
   if (props.tradeFilter !== 'all') count++
   if (props.retiredFilter !== 'all') count++
   if (props.selectedNationalities && props.selectedNationalities.length > 0) count++
@@ -953,7 +981,7 @@ watch(currentPage, () => {
                         @update:model-value="emit('update:selectedTeam', $event)"
                         :items="teamOptions"
                         :loading="loadingTeams"
-                        label="Team"
+                        label="Drafted By"
                         variant="outlined"
                         hide-details
                         multiple
@@ -1295,6 +1323,58 @@ watch(currentPage, () => {
                 <!-- Quadrant 4: Player Measurements -->
                 <div class="pa-4">
                   <v-row>
+                    <v-col cols="12" md="6" class="mb-2">
+                      <div class="px-1">
+                        <label class="text-caption text-medium-emphasis mb-3 d-block">
+                          Height Range
+                          <span class="ml-2 text-primary">
+                            ({{ formatHeight(props.heightRange[0]) }} - {{ formatHeight(props.heightRange[1]) }})
+                          </span>
+                        </label>
+                        <v-range-slider
+                          :model-value="props.heightRange"
+                          @update:model-value="emit('update:heightRange', $event)"
+                          :min="props.minHeight || 60"
+                          :max="props.maxHeight || 96"
+                          :step="1"
+                          thumb-label="always"
+                          thumb-label-location="bottom"
+                          hide-details
+                          color="primary"
+                          class="mt-2"
+                        >
+                          <template v-slot:thumb-label="{ modelValue }">
+                            <span>{{ formatHeight(modelValue) }}</span>
+                          </template>
+                        </v-range-slider>
+                      </div>
+                    </v-col>
+                    <v-col cols="12" md="6" class="mb-2">
+                      <div class="px-1">
+                        <label class="text-caption text-medium-emphasis mb-3 d-block">
+                          Weight Range
+                          <span class="ml-2 text-primary">
+                            ({{ props.weightRange[0] }} - {{ props.weightRange[1] }} lbs)
+                          </span>
+                        </label>
+                        <v-range-slider
+                          :model-value="props.weightRange"
+                          @update:model-value="emit('update:weightRange', $event)"
+                          :min="props.minWeight || 140"
+                          :max="props.maxWeight || 350"
+                          :step="1"
+                          thumb-label="always"
+                          thumb-label-location="bottom"
+                          hide-details
+                          color="primary"
+                          class="mt-2"
+                        >
+                          <template v-slot:thumb-label="{ modelValue }">
+                            <span>{{ modelValue }} lbs</span>
+                          </template>
+                        </v-range-slider>
+                      </div>
+                    </v-col>
                     <v-col cols="12" class="mb-2">
                       <v-checkbox
                         :model-value="props.showPlayerMeasurements"
@@ -1706,6 +1786,58 @@ watch(currentPage, () => {
             <!-- Quadrant 4: Player Measurements -->
             <div class="pa-4 pb-4">
               <v-row>
+                <v-col cols="12" md="6" class="mb-2">
+                  <div class="px-1">
+                    <label class="text-caption text-medium-emphasis mb-3 d-block">
+                      Height Range
+                      <span class="ml-2 text-primary">
+                        ({{ formatHeight(props.heightRange[0]) }} - {{ formatHeight(props.heightRange[1]) }})
+                      </span>
+                    </label>
+                    <v-range-slider
+                      :model-value="props.heightRange"
+                      @update:model-value="emit('update:heightRange', $event)"
+                      :min="props.minHeight || 60"
+                      :max="props.maxHeight || 96"
+                      :step="1"
+                      thumb-label="always"
+                      thumb-label-location="bottom"
+                      hide-details
+                      color="primary"
+                      class="mt-2"
+                    >
+                      <template v-slot:thumb-label="{ modelValue }">
+                        <span>{{ formatHeight(modelValue) }}</span>
+                      </template>
+                    </v-range-slider>
+                  </div>
+                </v-col>
+                <v-col cols="12" md="6" class="mb-2">
+                  <div class="px-1">
+                    <label class="text-caption text-medium-emphasis mb-3 d-block">
+                      Weight Range
+                      <span class="ml-2 text-primary">
+                        ({{ props.weightRange[0] }} - {{ props.weightRange[1] }} lbs)
+                      </span>
+                    </label>
+                    <v-range-slider
+                      :model-value="props.weightRange"
+                      @update:model-value="emit('update:weightRange', $event)"
+                      :min="props.minWeight || 140"
+                      :max="props.maxWeight || 350"
+                      :step="1"
+                      thumb-label="always"
+                      thumb-label-location="bottom"
+                      hide-details
+                      color="primary"
+                      class="mt-2"
+                    >
+                      <template v-slot:thumb-label="{ modelValue }">
+                        <span>{{ modelValue }} lbs</span>
+                      </template>
+                    </v-range-slider>
+                  </div>
+                </v-col>
                 <v-col cols="12" class="mb-2">
                   <v-checkbox
                     :model-value="props.showPlayerMeasurements"
