@@ -10,6 +10,7 @@ import { getCountryCode } from '@/utils/countryCodeConverter'
 import { useCountryData } from '@/composables/useCountryData'
 import { useTeamData } from '@/composables/useTeamData'
 import PlayerCard from './PlayerCard.vue'
+import MobileDraftCard from './MobileDraftCard.vue'
 
 const display = useDisplay()
 const isMobile = computed(() => display.mobile.value)
@@ -349,6 +350,14 @@ function parseHeight(height: string | null | undefined): number {
 
 const items = computed(() => {
   return sortItems(props.data, sortBy.value)
+})
+
+// Paginated items for mobile view
+const paginatedItems = computed(() => {
+  if (itemsPerPage.value === -1) return items.value
+  const start = (currentPage.value - 1) * itemsPerPage.value
+  const end = start + itemsPerPage.value
+  return items.value.slice(start, end)
 })
 
 // Check if any filters are active (non-default)
@@ -704,9 +713,14 @@ function openPlayerCard(player: DraftPick) {
   showPlayerCard.value = true
 }
 
-function handlePageInput(event: Event) {
-  const target = event.target as HTMLInputElement
-  const value = parseInt(target.value, 10)
+function handlePageInput(event?: Event) {
+  let value: number
+  if (event) {
+    const target = event.target as HTMLInputElement
+    value = parseInt(target.value, 10)
+  } else {
+    value = parseInt(String(pageInput.value), 10)
+  }
   if (!isNaN(value) && value >= 1 && value <= totalPages.value) {
     currentPage.value = value
     pageInput.value = ''
@@ -751,21 +765,31 @@ watch(currentPage, () => {
 
 <template>
   <v-card elevation="2" class="draft-table">
-    <v-card-title class="d-flex align-center justify-space-between pa-4">
-      <div class="d-flex align-center">
-        <v-avatar size="32" class="mr-2" rounded="0" style="background: transparent;">
-          <v-img
-            :src="headerLogo"
-            :alt="singleSelectedTeam || 'NBA'"
-            contain
-          />
-        </v-avatar>
-        {{ headerTitle }}
-        <v-chip class="ml-2" color="primary" size="small" variant="flat">
-          {{ items.length }} picks
-        </v-chip>
+    <v-card-title :class="isMobile ? 'd-flex flex-column align-start pa-3' : 'd-flex align-center justify-space-between pa-4'">
+      <div :class="isMobile ? 'd-flex align-center justify-space-between w-100 mb-3' : 'd-flex align-center'">
+        <div class="d-flex align-center flex-grow-1" :class="isMobile ? 'flex-column align-start' : ''">
+          <div class="d-flex align-center">
+            <v-avatar :size="isMobile ? 28 : 32" class="mr-2" rounded="0" style="background: transparent;">
+              <v-img
+                :src="headerLogo"
+                :alt="singleSelectedTeam || 'NBA'"
+                contain
+              />
+            </v-avatar>
+            <span :class="isMobile ? 'text-h6' : ''">{{ headerTitle }}</span>
+          </div>
+          <v-chip 
+            class="mt-1" 
+            :class="isMobile ? 'ml-0' : 'ml-2'" 
+            color="primary" 
+            :size="isMobile ? 'x-small' : 'small'" 
+            variant="flat"
+          >
+            {{ items.length }} picks
+          </v-chip>
+        </div>
       </div>
-      <div class="d-flex align-center gap-2">
+      <div :class="isMobile ? 'd-flex flex-column w-100 gap-2' : 'd-flex align-center gap-2'">
         <!-- Player Search Bar -->
         <v-text-field
           v-model="playerSearch"
@@ -776,7 +800,8 @@ watch(currentPage, () => {
           hide-details
           clearable
           class="player-search-field"
-          :style="isMobile ? 'max-width: 175px; min-width: 120px;' : 'max-width: 250px; min-width: 200px;'"
+          :class="isMobile ? 'w-100' : ''"
+          :style="isMobile ? '' : 'max-width: 250px; min-width: 200px;'"
           rounded="xl"
         />
         
@@ -791,6 +816,9 @@ watch(currentPage, () => {
                 color="primary"
                 size="default"
                 title="Actions"
+                class="w-100"
+                min-width="44"
+                min-height="44"
               />
             </template>
             <v-list>
@@ -1243,12 +1271,21 @@ watch(currentPage, () => {
         </template>
         
         <!-- Mobile: Bottom Sheet for Filters -->
-        <v-bottom-sheet v-model="filterMenu" v-if="isMobile">
+        <v-bottom-sheet v-model="filterMenu" v-if="isMobile" scrollable>
         <v-card class="filter-card">
-          <v-card-title class="d-flex align-center justify-space-between pa-4">
+          <v-card-title class="d-flex align-center justify-space-between pa-4 sticky-header">
             <div class="d-flex align-center">
               <v-icon icon="mdi-filter-variant" class="mr-2" />
-              Filters
+              <span class="text-h6">Filters</span>
+              <v-chip
+                v-if="hasActiveFilters"
+                class="ml-2"
+                color="error"
+                size="small"
+                variant="flat"
+              >
+                {{ getActiveFiltersCount() }}
+              </v-chip>
             </div>
             <div class="d-flex align-center gap-2">
               <v-btn
@@ -1256,23 +1293,27 @@ watch(currentPage, () => {
                 icon="mdi-refresh"
                 variant="text"
                 color="primary"
-                size="small"
+                size="default"
                 :disabled="!hasActiveFilters"
                 @click="props.resetFilters"
                 title="Reset all filters to default"
+                min-width="44"
+                min-height="44"
               />
               <v-btn
                 icon="mdi-close"
                 variant="text"
                 @click="filterMenu = false"
+                min-width="44"
+                min-height="44"
               />
             </div>
           </v-card-title>
-          <v-card-text class="pa-0">
+          <v-card-text class="pa-0 filter-content">
             <!-- Quadrant 1: Team, Nationality, Drafted From -->
-            <div class="pa-4 pb-2">
+            <div class="pa-4 pb-3">
               <v-row>
-                <v-col cols="12" md="6" class="mb-2">
+                <v-col cols="12" md="6" class="mb-3">
                   <v-autocomplete
                     :model-value="props.selectedTeam"
                     @update:model-value="emit('update:selectedTeam', $event)"
@@ -1460,12 +1501,12 @@ watch(currentPage, () => {
               </v-row>
             </div>
 
-            <v-divider></v-divider>
+            <v-divider class="my-2"></v-divider>
 
             <!-- Quadrant 2: Position, Round, Trade Status -->
-            <div class="pa-4 pb-2">
+            <div class="pa-4 pb-3">
               <v-row>
-                <v-col cols="12" md="6" class="mb-2">
+                <v-col cols="12" md="6" class="mb-3">
                   <v-select
                     :model-value="props.selectedPositions"
                     @update:model-value="emit('update:selectedPositions', $event)"
@@ -1514,12 +1555,12 @@ watch(currentPage, () => {
               </v-row>
             </div>
 
-            <v-divider></v-divider>
+            <v-divider class="my-2"></v-divider>
 
             <!-- Quadrant 3: All Range Sliders -->
-            <div class="pa-4 pb-2">
+            <div class="pa-4 pb-3">
               <v-row>
-                <v-col cols="12" md="6" class="mb-2">
+                <v-col cols="12" md="6" class="mb-3">
                   <div class="px-1">
                     <div class="d-flex align-center justify-space-between mb-3">
                       <label class="text-caption text-medium-emphasis">Year</label>
@@ -1604,10 +1645,10 @@ watch(currentPage, () => {
               </v-row>
             </div>
 
-            <v-divider></v-divider>
+            <v-divider class="my-2"></v-divider>
 
             <!-- Quadrant 4: Player Measurements -->
-            <div class="pa-4">
+            <div class="pa-4 pb-4">
               <v-row>
                 <v-col cols="12" class="mb-2">
                   <v-checkbox
@@ -1616,6 +1657,7 @@ watch(currentPage, () => {
                     label="Show Player Measurements"
                     hide-details
                     density="comfortable"
+                    class="touch-target-checkbox"
                   />
                 </v-col>
               </v-row>
@@ -1639,7 +1681,89 @@ watch(currentPage, () => {
       <p class="text-center">{{ shareSnackbarText }}</p>
     </v-snackbar>
 
+    <!-- Mobile Card View -->
+    <div v-if="isMobile" class="mobile-cards-container">
+      <v-progress-linear
+        v-if="loading"
+        indeterminate
+        color="primary"
+        class="mb-4"
+      />
+      
+      <div v-if="!loading && paginatedItems.length === 0" class="text-center pa-8">
+        <v-icon icon="mdi-information-outline" size="48" color="info" class="mb-2" />
+        <p class="text-h6">No draft picks found</p>
+        <p class="text-body-2 text-medium-emphasis">Try adjusting your filters</p>
+      </div>
+
+      <template v-else>
+        <MobileDraftCard
+          v-for="item in paginatedItems"
+          :key="`${item.year}-${item.pick}-${item.player}`"
+          :item="item"
+          :show-player-measurements="props.showPlayerMeasurements"
+          @player-click="openPlayerCard"
+        />
+      </template>
+
+      <!-- Mobile Pagination -->
+      <div v-if="!loading && items.length > 0" class="mobile-pagination mt-4">
+        <v-row align="center" justify="center" class="mb-2">
+          <v-col cols="12" class="d-flex align-center justify-center flex-wrap gap-2">
+            <v-btn
+              icon="mdi-chevron-left"
+              variant="outlined"
+              :disabled="currentPage === 1"
+              @click="currentPage = Math.max(1, currentPage - 1)"
+              size="large"
+              min-width="44"
+              min-height="44"
+            />
+            
+            <div class="d-flex align-center gap-2">
+              <input
+                v-model.number="pageInput"
+                type="number"
+                :min="1"
+                :max="totalPages"
+                class="page-input-mobile"
+                @keydown.enter="handlePageInput($event)"
+                @blur="handlePageInput($event)"
+              />
+              <span class="text-body-2 text-medium-emphasis">/ {{ totalPages }}</span>
+            </div>
+            
+            <v-btn
+              icon="mdi-chevron-right"
+              variant="outlined"
+              :disabled="currentPage >= totalPages"
+              @click="currentPage = Math.min(totalPages, currentPage + 1)"
+              size="large"
+              min-width="44"
+              min-height="44"
+            />
+          </v-col>
+        </v-row>
+        
+        <v-row align="center" justify="center">
+          <v-col cols="12" class="d-flex align-center justify-center">
+            <span class="text-body-2 text-medium-emphasis mr-2">Items per page:</span>
+            <v-select
+              v-model="itemsPerPage"
+              :items="itemsPerPageOptions"
+              variant="outlined"
+              density="compact"
+              hide-details
+              style="max-width: 120px;"
+            />
+          </v-col>
+        </v-row>
+      </div>
+    </div>
+
+    <!-- Desktop Table View -->
     <v-data-table
+      v-else
       :headers="headers"
       :items="items"
       :loading="loading"
@@ -2009,6 +2133,20 @@ watch(currentPage, () => {
     max-width: 100%;
     max-height: 80vh;
     overflow-y: auto;
+    
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      background: rgba(var(--v-theme-surface), 1);
+      border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.12);
+    }
+
+    .filter-content {
+      max-height: calc(80vh - 80px);
+      overflow-y: auto;
+      padding-bottom: 24px;
+    }
   }
 
   @media (min-width: 960px) {
@@ -2018,6 +2156,16 @@ watch(currentPage, () => {
       max-width: 650px;
       max-height: none;
       overflow-y: visible;
+      
+      .sticky-header {
+        position: relative;
+        border-bottom: none;
+      }
+
+      .filter-content {
+        max-height: none;
+        overflow-y: visible;
+      }
     }
   }
 
@@ -2199,6 +2347,42 @@ watch(currentPage, () => {
     .page-input-field {
       min-height: 44px;
       font-size: 16px; // Prevents zoom on iOS
+    }
+
+    // Mobile cards container
+    .mobile-cards-container {
+      padding: 8px 0;
+    }
+
+    // Mobile pagination
+    .mobile-pagination {
+      padding: 16px;
+      background: rgba(var(--v-theme-surface), 0.5);
+      border-radius: 8px;
+    }
+
+    .page-input-mobile {
+      width: 60px;
+      padding: 8px 12px;
+      border: 1px solid rgba(var(--v-theme-on-surface), 0.12);
+      border-radius: 4px;
+      text-align: center;
+      font-size: 16px; // Prevents zoom on iOS
+      min-height: 44px;
+      background: rgba(var(--v-theme-surface), 1);
+      color: rgba(var(--v-theme-on-surface), 1);
+    }
+
+    // Ensure checkboxes have proper touch targets
+    .touch-target-checkbox {
+      :deep(.v-selection-control) {
+        min-height: 44px;
+      }
+    }
+
+    // Ensure list items have proper touch targets
+    :deep(.v-list-item) {
+      min-height: 44px;
     }
   }
 }

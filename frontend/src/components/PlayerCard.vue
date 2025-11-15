@@ -1,8 +1,12 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useDisplay } from 'vuetify'
 import type { DraftPick } from '@/types/draft'
 import { getCanonicalTeam, getOriginalTeamName } from '@/utils/teamAliases'
 import { useTeamData } from '@/composables/useTeamData'
+
+const display = useDisplay()
+const isMobile = computed(() => display.mobile.value)
 
 interface PlayerCardProps {
   player: DraftPick | null
@@ -68,7 +72,8 @@ const teamColorAccent = computed(() => {
 <template>
   <v-dialog
     v-model="isOpen"
-    max-width="500"
+    :max-width="isMobile ? undefined : '500'"
+    :fullscreen="isMobile"
     scrollable
   >
     <v-card
@@ -99,8 +104,10 @@ const teamColorAccent = computed(() => {
         <v-btn
           icon="mdi-close"
           variant="text"
-          size="small"
+          size="default"
           @click="isOpen = false"
+          min-width="44"
+          min-height="44"
         />
       </v-card-title>
 

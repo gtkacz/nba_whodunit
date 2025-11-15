@@ -145,13 +145,13 @@ onMounted(() => {
 }
 
 .table-container {
-  padding: 16px 8px 0 !important;
+  padding: 8px 4px 0 !important;
   max-width: 100%;
 }
 
 @media (min-width: 600px) {
   .table-container {
-    padding: 20px 16px 0 !important;
+    padding: 16px 12px 0 !important;
   }
 }
 

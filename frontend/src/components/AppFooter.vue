@@ -1,5 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useDisplay } from 'vuetify'
+
+const display = useDisplay()
+const isMobile = computed(() => display.mobile.value)
 
 const currentYear = computed(() => new Date().getFullYear())
 const copyrightYears = computed(() => {
@@ -19,10 +23,10 @@ const appVersion = computed(() => {
     <v-container>
       <v-row align="center" justify="center">
         <v-col class="text-center">
-          <div class="text-body-2">
+          <div :class="isMobile ? 'text-body-1' : 'text-body-2'">
             &copy; {{ copyrightYears }} Gabriel Mitelman Tkacz. All rights reserved.
           </div>
-          <div class="text-body-2">
+          <div :class="isMobile ? 'text-body-1' : 'text-body-2'" class="mt-2">
             Data sourced from
             <a
               href="https://basketball.realgm.com/"
@@ -38,7 +42,7 @@ const appVersion = computed(() => {
               <span>RealGM</span>
             </a>
             and used under fair use.
-            <p id="app-version" class="text-caption text-medium-emphasis">
+            <p id="app-version" :class="isMobile ? 'text-body-2' : 'text-caption'" class="text-medium-emphasis mt-2">
               v{{ appVersion }}
             </p>
           </div>
@@ -64,6 +68,11 @@ const appVersion = computed(() => {
     color: #F16D20;
     transition: opacity 0.2s;
     opacity: 1 !important;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 8px;
+    margin: -4px -8px;
 
     &:hover {
       opacity: 0.9;
@@ -75,6 +84,9 @@ const appVersion = computed(() => {
     align-items: center;
     gap: 0.25em;
     vertical-align: middle;
+    min-height: 44px;
+    padding: 4px 8px;
+    margin: -4px -8px;
   }
 
   .realgm-logo {
@@ -83,6 +95,12 @@ const appVersion = computed(() => {
     width: auto;
     vertical-align: middle;
     object-fit: contain;
+  }
+
+  @media (max-width: 959px) {
+    .app-footer {
+      padding: 16px 8px !important;
+    }
   }
 }
 </style>
