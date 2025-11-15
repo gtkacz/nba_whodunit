@@ -842,6 +842,101 @@ watch(currentPage, () => {
     pageInput.value = ''
   }
 })
+
+// Helper function to describe active filters
+function getActiveFiltersDescription(): string {
+  const filters: string[] = []
+  
+  if (props.selectedTeam.length > 0) {
+    const teamNames = props.selectedTeam.map(t => getTeamFullName(t)).join(', ')
+    filters.push(`Drafted by: ${teamNames}`)
+  }
+  
+  if (props.selectedPlaysFor.length > 0) {
+    const teamNames = props.selectedPlaysFor.map(t => getTeamFullName(t)).join(', ')
+    filters.push(`Currently plays for: ${teamNames}`)
+  }
+  
+  if (!props.useYearRange && props.selectedYear !== null) {
+    filters.push(`Year: ${props.selectedYear}`)
+  } else if (props.useYearRange && (props.yearRange[0] !== 1947 || props.yearRange[1] !== 2025)) {
+    filters.push(`Year range: ${props.yearRange[0]}-${props.yearRange[1]}`)
+  }
+  
+  if (props.selectedRounds.length > 0) {
+    const rounds = props.selectedRounds.map(r => r === '3+' ? '3+' : `Round ${r}`).join(', ')
+    filters.push(`Rounds: ${rounds}`)
+  }
+  
+  if (props.overallPickRange[0] !== 1 || props.overallPickRange[1] !== 61) {
+    filters.push(`Pick range: ${props.overallPickRange[0]}-${props.overallPickRange[1]}`)
+  }
+  
+  if (props.preDraftTeamSearch.length > 0) {
+    filters.push(`Drafted from: ${props.preDraftTeamSearch.slice(0, 2).join(', ')}${props.preDraftTeamSearch.length > 2 ? '...' : ''}`)
+  }
+  
+  if (props.selectedPositions.length > 0) {
+    filters.push(`Position: ${props.selectedPositions.join(', ')}`)
+  }
+  
+  if (props.ageRange[0] !== 17 || props.ageRange[1] !== 50) {
+    filters.push(`Age: ${props.ageRange[0]}-${props.ageRange[1]}`)
+  }
+  
+  if (props.heightRange && (props.heightRange[0] !== 60 || props.heightRange[1] !== 96)) {
+    filters.push(`Height: ${formatHeight(props.heightRange[0])}-${formatHeight(props.heightRange[1])}`)
+  }
+  
+  if (props.weightRange && (props.weightRange[0] !== 140 || props.weightRange[1] !== 350)) {
+    filters.push(`Weight: ${props.weightRange[0]}-${props.weightRange[1]} lbs`)
+  }
+  
+  if (props.tradeFilter !== 'all') {
+    filters.push(`Trade status: ${props.tradeFilter === 'traded' ? 'Traded only' : 'Not traded'}`)
+  }
+  
+  if (props.retiredFilter !== 'all') {
+    filters.push(`Retirement: ${props.retiredFilter === 'retired' ? 'Retired only' : 'Active only'}`)
+  }
+  
+  if (props.selectedNationalities && props.selectedNationalities.length > 0) {
+    const countries = props.selectedNationalities.map(c => getFormattedCountryName(c)).slice(0, 2).join(', ')
+    filters.push(`Nationality: ${countries}${props.selectedNationalities.length > 2 ? '...' : ''}`)
+  }
+  
+  if (props.playerSearch && props.playerSearch.trim() !== '') {
+    filters.push(`Search: "${props.playerSearch}"`)
+  }
+  
+  return filters.length > 0 ? filters.join('; ') : 'No filters applied'
+}
+
+// Get CSV column names dynamically
+const csvColumns = computed(() => {
+  const baseColumns = [
+    'Year', 'Round', 'Pick', 'Player', 'Position', 
+    'Height', 'Weight', 'Age', 'Pre-Draft Team', 'Class',
+    'Draft Trades', 'Years of Service', 'Team', 'nba_id',
+    'origin_country', 'played_until_year', 'is_defunct', 'plays_for'
+  ]
+  return baseColumns.join(', ')
+})
+
+// Tooltip text for export button
+const exportTooltipText = computed(() => {
+  const filterDesc = getActiveFiltersDescription()
+  const rowCount = items.value.length
+  const filtersText = filterDesc !== 'No filters applied' ? `\n\nActive filters: ${filterDesc}` : ''
+  return `Export ${rowCount} ${rowCount === 1 ? 'pick' : 'picks'} to CSV with all current filters applied.${filtersText}\n\nColumns: ${csvColumns.value}`
+})
+
+// Tooltip text for share button
+const shareTooltipText = computed(() => {
+  const filterDesc = getActiveFiltersDescription()
+  const filtersText = filterDesc !== 'No filters applied' ? `\n\nActive filters: ${filterDesc}` : ''
+  return `Copy the current page URL to clipboard. The URL includes all active filters (including search), so anyone opening it will see the same filtered view.${filtersText}`
+})
 </script>
 
 <template>
@@ -902,16 +997,26 @@ watch(currentPage, () => {
               />
             </template>
             <v-list>
-              <v-list-item
-                prepend-icon="mdi-download"
-                title="Download CSV"
-                @click="() => { downloadCSV(); actionsMenu = false; }"
-              />
-              <v-list-item
-                prepend-icon="mdi-share-variant"
-                title="Share URL"
-                @click="() => { copyUrlToClipboard(); actionsMenu = false; }"
-              />
+              <v-tooltip location="right" :text="exportTooltipText" max-width="400">
+                <template #activator="{ props: tooltipProps }">
+                  <v-list-item
+                    v-bind="tooltipProps"
+                    prepend-icon="mdi-download"
+                    title="Download CSV"
+                    @click="() => { downloadCSV(); actionsMenu = false; }"
+                  />
+                </template>
+              </v-tooltip>
+              <v-tooltip location="right" :text="shareTooltipText" max-width="400">
+                <template #activator="{ props: tooltipProps }">
+                  <v-list-item
+                    v-bind="tooltipProps"
+                    prepend-icon="mdi-share-variant"
+                    title="Share URL"
+                    @click="() => { copyUrlToClipboard(); actionsMenu = false; }"
+                  />
+                </template>
+              </v-tooltip>
               <v-list-item
                 prepend-icon="mdi-filter-variant"
                 title="Filters"
@@ -940,24 +1045,32 @@ watch(currentPage, () => {
         <!-- Desktop: Three separate buttons -->
         <template v-else>
           <!-- Download CSV Button -->
-          <v-btn
-            icon="mdi-download"
-            variant="outlined"
-            color="primary"
-            size="small"
-            @click="downloadCSV"
-            title="Download CSV"
-          />
+          <v-tooltip location="bottom" :text="exportTooltipText" max-width="400">
+            <template #activator="{ props: tooltipProps }">
+              <v-btn
+                v-bind="tooltipProps"
+                icon="mdi-download"
+                variant="outlined"
+                color="primary"
+                size="small"
+                @click="downloadCSV"
+              />
+            </template>
+          </v-tooltip>
           
           <!-- Share Button -->
-          <v-btn
-            icon="mdi-share-variant"
-            variant="outlined"
-            color="primary"
-            size="small"
-            @click="copyUrlToClipboard"
-            title="Share URL"
-          />
+          <v-tooltip location="bottom" :text="shareTooltipText" max-width="400">
+            <template #activator="{ props: tooltipProps }">
+              <v-btn
+                v-bind="tooltipProps"
+                icon="mdi-share-variant"
+                variant="outlined"
+                color="primary"
+                size="small"
+                @click="copyUrlToClipboard"
+              />
+            </template>
+          </v-tooltip>
           
           <!-- Desktop: Filter Menu with button as activator -->
           <v-menu 
@@ -2601,6 +2714,14 @@ watch(currentPage, () => {
     :deep(.v-list-item) {
       min-height: 44px;
     }
+  }
+
+  // Tooltip styling for better readability
+  :deep(.v-tooltip > .v-overlay__content) {
+    max-width: 400px;
+    white-space: pre-line;
+    word-wrap: break-word;
+    line-height: 1.5;
   }
 }
 </style>
