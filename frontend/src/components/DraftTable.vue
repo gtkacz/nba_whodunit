@@ -36,7 +36,7 @@ interface DraftTableProps {
   tradeFilter?: 'all' | 'traded' | 'not-traded'
   retiredFilter?: 'all' | 'retired' | 'not-retired'
   selectedNationalities?: string[]
-  selectedAwards?: string[]
+  selectedAwards?: Record<string, number>
   playerSearch?: string
   sortBy?: SortItem[]
   currentPage?: number
@@ -71,7 +71,7 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   tradeFilter: () => 'all',
   retiredFilter: () => 'all',
   selectedNationalities: () => [],
-  selectedAwards: () => [],
+  selectedAwards: () => ({}),
   playerSearch: '',
   sortBy: () => [
     { key: 'year', order: 'desc' },
@@ -108,7 +108,7 @@ const emit = defineEmits<{
   'update:tradeFilter': [value: 'all' | 'traded' | 'not-traded']
   'update:retiredFilter': [value: 'all' | 'retired' | 'not-retired']
   'update:selectedNationalities': [value: string[]]
-  'update:selectedAwards': [value: string[]]
+  'update:selectedAwards': [value: Record<string, number>]
   'update:playerSearch': [value: string]
   'update:sortBy': [value: SortItem[]]
   'update:currentPage': [value: number]
@@ -211,6 +211,23 @@ const awardOptions = computed(() => {
     title: award
   }))
 })
+
+function handleAwardCheckboxChange(award: string, checked: boolean) {
+  const current = { ...(props.selectedAwards || {}) }
+  if (checked) {
+    current[award] = 1 // Default to 1
+  } else {
+    delete current[award]
+  }
+  emit('update:selectedAwards', current)
+}
+
+function handleAwardCountChange(award: string, count: number) {
+  if (count < 1) return
+  const current = { ...(props.selectedAwards || {}) }
+  current[award] = count
+  emit('update:selectedAwards', current)
+}
 
 const nationalityOptions = computed<NationalityOption[]>(() => {
   return props.availableNationalities.map((cca2) => ({
@@ -1322,27 +1339,6 @@ const shareTooltipText = computed(() => {
 
                     <v-col cols="12" md="6" class="mb-2">
                       <v-autocomplete
-                        :model-value="props.selectedAwards"
-                        @update:model-value="emit('update:selectedAwards', $event)"
-                        :items="awardOptions"
-                        :loading="false"
-                        label="Awards"
-                        variant="outlined"
-                        hide-details
-                        multiple
-                        chips
-                        clearable
-                        persistent-clear
-                        closable-chips
-                      >
-                        <template #prepend-inner>
-                          <v-icon icon="mdi-star" size="20" class="mr-2" />
-                        </template>
-                      </v-autocomplete>
-                    </v-col>
-
-                    <v-col cols="12" md="6" class="mb-2">
-                      <v-autocomplete
                         :model-value="props.preDraftTeamSearch"
                         @update:model-value="emit('update:preDraftTeamSearch', $event)"
                         :items="props.allPreDraftTeams"
@@ -1361,6 +1357,44 @@ const shareTooltipText = computed(() => {
                 </div>
 
                 <v-divider></v-divider>
+
+                <!-- Awards Filter Section -->
+                <div v-if="props.availableAwards && props.availableAwards.length > 0" class="pa-4 pb-2">
+                  <div class="text-subtitle-2 font-weight-bold mb-3 d-flex align-center">
+                    <v-icon icon="mdi-star" size="20" class="mr-2" />
+                    Awards
+                  </div>
+                  <div class="awards-filter-list">
+                    <div
+                      v-for="award in props.availableAwards"
+                      :key="award"
+                      class="d-flex align-center mb-2"
+                    >
+                      <v-checkbox
+                        :model-value="award in (props.selectedAwards || {})"
+                        @update:model-value="handleAwardCheckboxChange(award, $event)"
+                        :label="award"
+                        hide-details
+                        density="comfortable"
+                        class="flex-grow-1 mr-2"
+                      />
+                      <v-text-field
+                        v-if="award in (props.selectedAwards || {})"
+                        :model-value="(props.selectedAwards || {})[award] || 1"
+                        @update:model-value="handleAwardCountChange(award, Number($event))"
+                        type="number"
+                        variant="outlined"
+                        density="compact"
+                        hide-details
+                        :min="1"
+                        style="max-width: 80px;"
+                        class="award-count-input"
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                <v-divider v-if="props.availableAwards && props.availableAwards.length > 0"></v-divider>
 
                 <!-- Quadrant 2: Position, Round, Trade Status -->
                 <div class="pa-4 pb-2">
@@ -1803,26 +1837,157 @@ const shareTooltipText = computed(() => {
                     </template>
                   </v-select>
                 </v-col>
+              </v-row>
+            </div>
 
-                <v-col cols="12" md="6" class="mb-2">
-                  <v-autocomplete
-                    :model-value="props.selectedAwards"
-                    @update:model-value="emit('update:selectedAwards', $event)"
-                    :items="props.availableAwards"
-                    :loading="false"
-                    label="Awards"
-                    variant="outlined"
+            <!-- Awards Filter Section -->
+            <div v-if="props.availableAwards && props.availableAwards.length > 0" class="pa-4 pb-3">
+              <div class="text-subtitle-2 font-weight-bold mb-3 d-flex align-center">
+                <v-icon icon="mdi-star" size="20" class="mr-2" />
+                Awards
+              </div>
+              <div class="awards-filter-list">
+                <div
+                  v-for="award in props.availableAwards"
+                  :key="award"
+                  class="d-flex align-center mb-2"
+                >
+                  <v-checkbox
+                    :model-value="award in (props.selectedAwards || {})"
+                    @update:model-value="handleAwardCheckboxChange(award, $event)"
+                    :label="award"
                     hide-details
+                    density="comfortable"
+                    class="flex-grow-1 mr-2"
+                  />
+                  <v-text-field
+                    v-if="award in (props.selectedAwards || {})"
+                    :model-value="(props.selectedAwards || {})[award] || 1"
+                    @update:model-value="handleAwardCountChange(award, Number($event))"
+                    type="number"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    :min="1"
+                    style="max-width: 80px;"
+                    class="award-count-input"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <v-divider v-if="props.availableAwards && props.availableAwards.length > 0" class="my-2"></v-divider>
+
+            <!-- Quadrant 2: Position, Round, Trade Status -->
+            <div class="pa-4 pb-3">
+              <v-row>
+                <v-col cols="12" md="6" class="mb-3">
+                  <v-select
+                    :model-value="props.selectedPositions"
+                    @update:model-value="emit('update:selectedPositions', $event)"
+                    :items="positionOptions"
+                    label="Position"
+                    variant="outlined"
                     multiple
                     chips
                     clearable
                     persistent-clear
+                    hide-details
+                    prepend-inner-icon="mdi-account"
                     closable-chips
-                  >
-                    <template #prepend-inner>
-                      <v-icon icon="mdi-star" size="20" class="mr-2" />
-                    </template>
-                  </v-autocomplete>
+                  />
+                </v-col>
+
+                <v-col cols="12" md="6" class="mb-2">
+                  <v-select
+                    :model-value="props.selectedRounds"
+                    @update:model-value="emit('update:selectedRounds', $event)"
+                    :items="roundOptions"
+                    label="Rounds"
+                    variant="outlined"
+                    multiple
+                    chips
+                    hide-details
+                    prepend-inner-icon="mdi-numeric"
+                  />
+                </v-col>
+
+                <v-col cols="12" md="6" class="mb-2">
+                  <v-select
+                    :model-value="props.tradeFilter"
+                    @update:model-value="emit('update:tradeFilter', $event)"
+                    :items="[
+                      { value: 'all', title: 'All Picks' },
+                      { value: 'traded', title: 'Traded Only' },
+                      { value: 'not-traded', title: 'Not Traded' }
+                    ]"
+                    label="Trade Status"
+                    variant="outlined"
+                    hide-details
+                    prepend-inner-icon="mdi-swap-horizontal"
+                  />
+                </v-col>
+
+                <v-col cols="12" md="6" class="mb-2">
+                  <v-select
+                    :model-value="props.retiredFilter"
+                    @update:model-value="emit('update:retiredFilter', $event)"
+                    :items="[
+                      { value: 'all', title: 'All Players' },
+                      { value: 'retired', title: 'Retired Only' },
+                      { value: 'not-retired', title: 'Active Only' }
+                    ]"
+                    label="Retirement Status"
+                    variant="outlined"
+                    hide-details
+                    prepend-inner-icon="mdi-account-off"
+                  />
+                </v-col>
+              </v-row>
+            </div>
+
+            <v-divider class="my-2"></v-divider>
+
+            <!-- Quadrant 3: All Range Sliders -->
+            <div class="pa-4 pb-3">
+              <v-row>
+                <v-col cols="12" md="6" class="mb-3">
+                  <div class="px-1">
+                    <div class="d-flex align-center justify-space-between mb-3">
+                      <label class="text-caption text-medium-emphasis">Year</label>
+                      <v-btn-toggle
+                        :model-value="props.useYearRange ? 'range' : 'single'"
+                        @update:model-value="emit('update:useYearRange', $event === 'range')"
+                        variant="outlined"
+                        mandatory
+                      >
+                        <v-btn value="single">Single</v-btn>
+                        <v-btn value="range">Range</v-btn>
+                      </v-btn-toggle>
+                    </div>
+                    <v-range-slider
+                      v-if="props.useYearRange"
+                      :model-value="props.yearRange"
+                      @update:model-value="emit('update:yearRange', $event)"
+                      :min="minYear"
+                      :max="maxYear"
+                      :step="1"
+                      thumb-label="always"
+                      thumb-label-location="bottom"
+                      hide-details
+                      color="primary"
+                      class="mt-2"
+                    />
+                    <v-select
+                      v-else
+                      :model-value="props.selectedYear"
+                      @update:model-value="emit('update:selectedYear', $event)"
+                      :items="props.availableYears"
+                      label="Select Year"
+                      variant="outlined"
+                      hide-details
+                    />
+                  </div>
                 </v-col>
 
                 <v-col cols="12" md="6" class="mb-2">
@@ -2271,25 +2436,6 @@ const shareTooltipText = computed(() => {
                 class="player-deceased-icon"
               />
             </span>
-            <!-- Awards Star Icon -->
-            <v-tooltip v-if="item.awards && Object.keys(item.awards).length > 0" location="top">
-              <template #activator="{ props: tooltipProps }">
-                <v-icon
-                  v-bind="tooltipProps"
-                  icon="mdi-star"
-                  size="16"
-                  color="warning"
-                  class="player-awards-icon"
-                />
-              </template>
-              <div>
-                <ul style="margin: 0; padding-left: 20px; text-align: left;">
-                  <li v-for="(times, awardName) in item.awards" :key="awardName">
-                    {{ awardName }} ({{ times }} {{ times === 1 ? 'time' : 'times' }})
-                  </li>
-                </ul>
-              </div>
-            </v-tooltip>
             <!-- Nationality Flag - always show, fallback to 'un' -->
             <v-tooltip location="top">
               <template #activator="{ props: tooltipProps }">
@@ -2332,6 +2478,25 @@ const shareTooltipText = computed(() => {
                 Currently plays for the {{ getTeamDisplayName(item.plays_for, item.year) }}
               </span>
               <span v-else>{{ getRetirementTooltipText(item.played_until_year, item.plays_for, item.year) }}</span>
+            </v-tooltip>
+            <!-- Awards Star Icon -->
+            <v-tooltip v-if="item.awards && Object.keys(item.awards).length > 0" location="top">
+              <template #activator="{ props: tooltipProps }">
+                <v-icon
+                  v-bind="tooltipProps"
+                  icon="mdi-star"
+                  size="16"
+                  color="warning"
+                  class="player-awards-icon"
+                />
+              </template>
+              <div>
+                <ul style="margin: 0; padding-left: 20px; text-align: left;">
+                  <li v-for="(times, awardName) in item.awards" :key="awardName">
+                    {{ awardName }} ({{ times }} {{ times === 1 ? 'time' : 'times' }})
+                  </li>
+                </ul>
+              </div>
             </v-tooltip>
           </div>
         </div>

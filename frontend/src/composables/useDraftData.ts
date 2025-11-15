@@ -54,7 +54,7 @@ export function useDraftData() {
   const tradeFilter = ref<'all' | 'traded' | 'not-traded'>('all')
   const retiredFilter = ref<'all' | 'retired' | 'not-retired'>('all')
   const selectedNationalities = ref<string[]>([])
-  const selectedAwards = ref<string[]>([])
+  const selectedAwards = ref<Record<string, number>>({}) // { awardName: minCount }
   const playerSearch = ref<string>('')
 
   // Sort state - initial multi-sort by year (desc) and pick (asc)
@@ -319,12 +319,16 @@ export function useDraftData() {
       })
     }
 
-    // Awards filter - multiple selection
-    if (selectedAwards.value.length > 0) {
+    // Awards filter - check each selected award with its specific minimum count
+    const selectedAwardEntries = Object.entries(selectedAwards.value)
+    if (selectedAwardEntries.length > 0) {
       filtered = filtered.filter((pick) => {
         if (!pick.awards || typeof pick.awards !== 'object') return false
-        // Check if player has at least one of the selected awards
-        return selectedAwards.value.some((awardName) => awardName in pick.awards)
+        // Check if player meets the minimum count requirement for all selected awards
+        return selectedAwardEntries.every(([awardName, minCount]) => {
+          const playerCount = pick.awards[awardName]
+          return playerCount !== undefined && typeof playerCount === 'number' && playerCount >= minCount
+        })
       })
     }
 

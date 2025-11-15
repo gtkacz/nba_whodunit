@@ -20,7 +20,7 @@ interface FilterDefaults {
   tradeFilter: 'all' | 'traded' | 'not-traded'
   retiredFilter: 'all' | 'retired' | 'not-retired'
   selectedNationalities: string[]
-  selectedAwards: string[]
+  selectedAwards: Record<string, number>
   playerSearch: string
   sortBy: SortItem[]
   currentPage: number
@@ -44,7 +44,7 @@ const DEFAULT_FILTERS: FilterDefaults = {
   tradeFilter: 'all',
   retiredFilter: 'all',
   selectedNationalities: [],
-  selectedAwards: [],
+  selectedAwards: {},
   playerSearch: '',
   sortBy: [
     { key: 'year', order: 'desc' },
@@ -72,7 +72,7 @@ export function useFilterUrlSync(
     tradeFilter: Ref<'all' | 'traded' | 'not-traded'>
     retiredFilter: Ref<'all' | 'retired' | 'not-retired'>
     selectedNationalities: Ref<string[]>
-    selectedAwards: Ref<string[]>
+    selectedAwards: Ref<Record<string, number>>
     playerSearch: Ref<string>
     sortBy: Ref<SortItem[]>
     currentPage: Ref<number>
@@ -167,7 +167,7 @@ export function useFilterUrlSync(
       filters.tradeFilter.value = DEFAULT_FILTERS.tradeFilter
       filters.retiredFilter.value = DEFAULT_FILTERS.retiredFilter
       filters.selectedNationalities.value = [...DEFAULT_FILTERS.selectedNationalities]
-      filters.selectedAwards.value = [...DEFAULT_FILTERS.selectedAwards]
+      filters.selectedAwards.value = { ...DEFAULT_FILTERS.selectedAwards }
       filters.playerSearch.value = DEFAULT_FILTERS.playerSearch
       filters.sortBy.value = [...DEFAULT_FILTERS.sortBy]
       filters.currentPage.value = DEFAULT_FILTERS.currentPage
@@ -286,11 +286,38 @@ export function useFilterUrlSync(
       }
     }
 
-    // Load selectedAwards
+    // Load selectedAwards (format: "award1:count1,award2:count2" or JSON)
     if (query.awards) {
-      const awards = deserializeArray(query.awards, 'string')
-      if (awards.length > 0) {
-        filters.selectedAwards.value = awards as string[]
+      try {
+        // Try JSON first
+        const awardsStr = Array.isArray(query.awards) ? query.awards[0] : query.awards
+        if (typeof awardsStr === 'string') {
+          // Try parsing as JSON
+          try {
+            const parsed = JSON.parse(awardsStr)
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+              filters.selectedAwards.value = parsed
+            }
+          } catch {
+            // Fallback to colon-separated format: "award1:count1,award2:count2"
+            const awards: Record<string, number> = {}
+            const parts = awardsStr.split(',')
+            for (const part of parts) {
+              const [awardName, countStr] = part.split(':')
+              if (awardName && countStr) {
+                const count = Number(countStr)
+                if (!isNaN(count) && count >= 1) {
+                  awards[awardName.trim()] = count
+                }
+              }
+            }
+            if (Object.keys(awards).length > 0) {
+              filters.selectedAwards.value = awards
+            }
+          }
+        }
+      } catch (error) {
+        console.warn('Failed to parse awards from URL:', error)
       }
     }
 
@@ -425,7 +452,8 @@ export function useFilterUrlSync(
     }
 
     if (isNonDefault(filters.selectedAwards.value, DEFAULT_FILTERS.selectedAwards)) {
-      query.awards = serializeArray(filters.selectedAwards.value)
+      // Serialize as JSON for complex structure
+      query.awards = JSON.stringify(filters.selectedAwards.value)
     }
 
     // Only add playerSearch if it's different from default (non-empty)
@@ -536,7 +564,7 @@ export function useFilterUrlSync(
     filters.tradeFilter.value = DEFAULT_FILTERS.tradeFilter
     filters.retiredFilter.value = DEFAULT_FILTERS.retiredFilter
     filters.selectedNationalities.value = [...DEFAULT_FILTERS.selectedNationalities]
-    filters.selectedAwards.value = [...DEFAULT_FILTERS.selectedAwards]
+    filters.selectedAwards.value = { ...DEFAULT_FILTERS.selectedAwards }
     filters.playerSearch.value = DEFAULT_FILTERS.playerSearch
     filters.sortBy.value = [...DEFAULT_FILTERS.sortBy]
     filters.currentPage.value = DEFAULT_FILTERS.currentPage
