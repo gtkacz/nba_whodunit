@@ -834,7 +834,6 @@ watch(currentPage, () => {
                 color="primary"
                 size="default"
                 title="Actions"
-                class="w-100"
                 min-width="44"
                 min-height="44"
               />
