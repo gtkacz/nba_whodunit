@@ -33,7 +33,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2014,2,37,DeAndre Daniels,SF,6-9,196,22,UConn,Jr *,,0,,,,,
 2012,1,8,Terrence Ross,SF,6-7,206,21,Washington,So *,,11,203082.0,US,2022,0.0,PHX
 2012,2,37,Quincy Acy,F,6-7,240,21,Baylor,Sr,,7,203112.0,US,2018,0.0,SAC
-2011,1,5,Jonas Valanciunas,C,6-11,265,19,Lietuvos Rytas (Lithuania),1992 DOB *,,13,202685.0,LT,2025,0.0,DEN
+2011,1,5,Jonas Valančiūnas,C,6-11,265,19,Lietuvos Rytas (Lithuania),1992 DOB *,,13,202685.0,LT,2025,0.0,DEN
 2010,1,13,Ed Davis,PF,6-9,218,21,North Carolina,So *,,12,202334.0,US,2021,0.0,CLE
 2009,1,9,DeMar DeRozan,GF,6-6,220,19,USC,Fr *,,16,201942.0,US,2025,0.0,SAC
 2006,1,1,Andrea Bargnani,FC,7-0,245,20,Universo De'Longhi Treviso (Italy),1985 DOB *,,10,200745.0,IT,2015,0.0,TOR
@@ -42,12 +42,12 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2005,1,16,Joey Graham,G,6-7,225,23,Oklahoma State,Sr,,6,101121.0,US,2010,0.0,TOR
 2005,2,41,Roko Ukic,G,6-5,183,20,Fenerbahce Beko (Turkey),1984 DOB *,,2,101146.0,HR,2009,0.0,TOR
 2005,2,58,Uros Slokar,PF,6-11,238,22,Pallalcesto Amatori Udine (Italy),1983 DOB,,1,101166.0,SI,2006,0.0,TOR
-2004,1,8,Babby Araujo,C,6-11,280,23,Brigham Young,Sr,,3,2737.0,BR,2006,0.0,TOR
+2004,1,8,Rafael Araujo,C,6-11,280,23,Brigham Young,Sr,,3,2737.0,BR,2006,0.0,TOR
 2003,1,4,Chris Bosh,PF,6-11,235,19,Georgia Tech,Fr *,,14,2547.0,US,2016,0.0,MIA
 2001,1,17,Michael Bradley,F,6-10,245,22,Villanova,Jr *,,5,2214.0,US,2005,0.0,TOR
 2000,1,21,Morris Peterson,G,6-7,220,22,Michigan State,Sr,,11,2050.0,US,2010,0.0,TOR
 2000,2,46,DeeAndre Hulett,F,6-8,215,19,Las Vegas Silver Bandits (United States),1980 DOB,,0,,,,,
-1999,1,12,Alek Radojevic,C,7-3,250,22,Barton,So *,,4,1893.0,BA,2004,0.0,UTA
+1999,1,12,Aleksandar Radojevic,C,7-3,250,22,Barton,So *,,4,1893.0,BA,2004,0.0,UTA
 1997,1,9,Tracy McGrady,GF,6-8,210,18,Mt. Zion Christian Academy (North Carolina),1979 DOB *,,16,1503.0,US,2012,0.0,HOU
 1996,1,2,Marcus Camby,C,6-11,240,22,Massachusetts,Jr *,,17,948.0,US,2012,0.0,DEN
 1995,1,7,Damon Stoudamire,G,5-10,171,21,Arizona,Sr,,13,757.0,US,2007,0.0,POR

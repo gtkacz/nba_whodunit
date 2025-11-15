@@ -45,7 +45,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2009,2,48,Taylor Griffin,F,6-8,235.0,23.0,Oklahoma,Sr,,1,201981.0,US,2009,0.0,PHX
 2008,1,15,Robin Lopez,FC,7-1,281.0,20.0,Stanford,So *,,16,201577.0,US,2023,0.0,MIL
 2007,1,29,Alando Tucker,F,6-6,205.0,23.0,Wisconsin,Sr,,3,201169.0,US,2009,0.0,PHX
-2007,2,59,D.J. Strawberry,G,6-6,205.0,22.0,Maryland,Sr,,1,201199.0,US,2007,0.0,PHX
+2007,2,59,DJ Strawberry,G,6-6,205.0,22.0,Maryland,Sr,,1,201199.0,US,2007,0.0,PHX
 2003,1,17,Zarko Cabarkapa,F-C,6-11,235.0,22.0,Buducnost Voli Podgorica (Montenegro),1981 DOB,,3,2560.0,RS,2006,0.0,GSW
 2002,1,9,Amar'e Stoudemire,FC,6-10,245.0,19.0,Cypress Creek High School (Florida),1982 DOB *,,14,2405.0,US,2015,0.0,PHX
 2002,1,22,Casey Jacobsen,SG,6-6,214.0,21.0,Stanford,Jr *,,4,2418.0,US,2007,0.0,PHX
@@ -108,7 +108,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1985,6,124,Charles Rayne,F,,,,Temple,Sr,,0,,,,,
 1985,7,148,Georgi Glouchkov,PF,6-8,235.0,25.0,Euroins Cherno More (Bulgaria),1960 DOB,,1,76824.0,BG,1985,0.0,PHX
 1984,1,13,Jay Humphries,G,6-3,185.0,21.0,Colorado,Sr,,11,77081.0,US,1994,0.0,MIL
-1984,2,36,Charles Alexander Jones,F,6-8,215.0,22.0,Louisville,Sr,,5,77178.0,US,1988,0.0,PHX
+1984,2,36,Charles Jones,F,6-8,215.0,22.0,Louisville,Sr,,5,77178.0,US,1988,0.0,PHX
 1984,3,59,Murray Jarman,SF,6-6,205.0,,Clemson,Sr,,1,,,,,
 1984,4,82,Jeff Collins,SG,6-1,175.0,,UNLV,Sr,,0,,,,,
 1984,5,105,Bill Flye,,,,,Richmond,Sr,,0,,,,,
@@ -129,7 +129,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1983,10,224,Bo Overton,PG,,,,Oklahoma,Sr,,0,,,,,
 1982,1,15,David Thirdkill,GF,6-7,195.0,22.0,Bradley,Sr,,5,78314.0,US,1986,0.0,BOS
 1982,2,39,Kevin Magee,PF,6-8,230.0,23.0,UC Irvine,Sr,,1,,,,,
-1982,3,61,Charles Pittman,F,6-8,220.0,24.0,Maryland,Sr,,4,77864.0,US,1985,0.0,PHX
+1982,3,61,Charlie Pittman,F,6-8,220.0,24.0,Maryland,Sr,,4,77864.0,US,1985,0.0,PHX
 1982,4,86,Rory White,PF,6-8,210.0,22.0,South Alabama,Sr,,5,78512.0,US,1986,0.0,LAC
 1982,5,108,Marvin McCrary,,,,,Missouri,Sr,,0,,,,,
 1982,6,130,Jake Bethany,,,,,Hardin-Simmons,Sr,,0,,,,,
@@ -163,7 +163,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1979,5,107,Mark Eaton,C,7-4,275.0,22.0,UCLA,Fr,,12,,,,,
 1979,6,127,Dale Shackelford,GF,6-6,200.0,23.0,Syracuse,Sr,,0,,,,,
 1979,7,147,Ollie Matson,,,,,Pepperdine,Jr,,0,,,,,
-1979,8,165,Charles A. Jones,FC,6-9,215.0,22.0,Albany State (GA),Sr,,17,279.0,US,1997,0.0,WAS
+1979,8,165,Charles Jones,FC,6-9,215.0,22.0,Albany State (GA),Sr,,17,279.0,US,1997,0.0,WAS
 1979,9,183,Hosea Champine,,,,,Robert Morris,Sr,,0,,,,,
 1979,10,201,Korky Nelson,,,,,Santa Clara,Sr,,0,,,,,
 1978,1,19,Marty Byrnes,SF,6-7,215.0,22.0,Syracuse,Sr,,5,76321.0,US,1982,0.0,IND
@@ -245,7 +245,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1972,12,172,Mark Soderberg,C,6-10,225.0,21.0,Utah,Sr,,0,,,,,
 1972,13,179,Kelly Utley,GF,,,,Shaw,Sr,,0,,,,,
 1972,14,186,Ray Golson,,,,,Texas State,Sr,,0,,,,,
-1971,3,48,Mo Layton,PG,6-1,180.0,22.0,USC,Sr,,7,77350.0,US,1977,0.0,PHX
+1971,3,48,Dennis Layton,PG,6-1,180.0,22.0,USC,Sr,,7,77350.0,US,1977,0.0,PHX
 1971,4,65,Walt Szczerbiak,F,6-6,210.0,21.0,George Washington,Sr,,1,,,,,
 1971,5,82,Ken Gardner,SF,6-5,205.0,21.0,Utah,Sr,,1,,,,,
 1971,5,84,Bob Kissane,,,,,Holy Cross,Sr,,1,,,,,
@@ -301,7 +301,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1968,2,21,Dick Cunningham,C,6-10,245.0,21.0,Murray State,Sr,,7,76485.0,US,1974,0.0,MIL
 1968,3,36,Art Beatty,C,7-1,,20.0,American University,Sr,,0,,,,,
 1968,5,64,Harry Hollines,,,,,Denver,Sr,,0,,,,,
-1968,6,77,Rodney Knowles,C,6-9,,22.0,Davidson,Sr,,1,77293.0,US,1968,0.0,PHX
+1968,6,77,Rod Knowles,C,6-9,,22.0,Davidson,Sr,,1,77293.0,US,1968,0.0,PHX
 1968,7,92,Charles Parkes,,,,,Idaho State,Sr,,0,,,,,
 1968,8,105,Brian Clare,,,,,Denver,Sr,,0,,,,,
 1968,9,120,Merv Jackson,G,6-3,175.0,21.0,Utah,Sr,,0,,,,,

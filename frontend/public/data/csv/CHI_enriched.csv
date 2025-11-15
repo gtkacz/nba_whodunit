@@ -12,7 +12,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2004,2,39,Albert Miralles,FC,6-10,238.0,22.0,Roseto Sharks (Italy),1982 DOB,TOR to  MIA MIA  to BOS BOS  to MIL MIL  to CLE CLE  to CHI,0,,,,,
 2001,1,2,Tyson Chandler,C,7-1,240.0,18.0,Dominguez High School (California),1982 DOB *,LAC to  CHI,19,2199.0,US,2019,0.0,NYK
 2000,1,8,Jamal Crawford,SG,6-5,195.0,20.0,Michigan,Fr *,CLE to  CHI,19,2037.0,US,2019,0.0,LAC
-1998,2,49,Corry Carr,G,6-3,212.0,22.0,Texas Tech,Sr,ATL to  CHI,2,1757.0,US,1998,0.0,CHI
+1998,2,49,Cory Carr,G,6-3,212.0,22.0,Texas Tech,Sr,ATL to  CHI,2,1757.0,US,1998,0.0,CHI
 1987,1,5,Scottie Pippen,SF,6-8,228.0,21.0,Central Arkansas,Sr,SEA to  CHI,18,937.0,US,2003,0.0,CHI
 1985,1,9,Charles Oakley,PF,6-8,225.0,21.0,Virginia Union,Sr,CLE to  CHI,18,891.0,US,2003,0.0,NYK
 1985,2,25,Mike Smrek,C,7-0,250.0,22.0,Canisius,Sr,POR to  CHI,8,1091.0,US,1991,0.0,LAL
@@ -32,7 +32,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2020,2,44,Marko Simonovic,C,7-0,220.0,21.0,KK Mega Bemax (Serbia),1999 DOB *,,2,1630250.0,ME,2022,0.0,CHI
 2019,1,7,Coby White,PG,6-4,195.0,19.0,North Carolina,Fr *,,6,1629632.0,US,2025,0.0,CHI
 2019,2,38,Daniel Gafford,C,6-10,265.0,20.0,Arkansas,So *,,6,1629655.0,US,2025,0.0,DAL
-2018,1,7,"Wendell Carter, Jr.",PF,6-10,270.0,19.0,Duke,Fr *,,7,1628976.0,US,2025,0.0,ORL
+2018,1,7,Wendell Carter Jr.,PF,6-10,270.0,19.0,Duke,Fr *,,7,1628976.0,US,2025,0.0,ORL
 2018,1,22,Chandler Hutchison,SG,6-6,210.0,22.0,Boise State,Sr,,4,1628990.0,US,2021,0.0,PHX
 2016,1,14,Denzel Valentine,F,6-4,220.0,22.0,Michigan State,Sr,,6,1627756.0,US,2021,0.0,UTA
 2016,2,48,Paul Zipser,F,6-8,226.0,22.0,Next Generation Team Munich (Germany),1994 DOB,,2,1627835.0,DE,2017,0.0,CHI
@@ -53,7 +53,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2003,1,7,Kirk Hinrich,G,6-4,190.0,22.0,Kansas,Sr,,13,2550.0,US,2015,0.0,CHI
 2003,2,53,Tommy Smith,F,6-10,215.0,22.0,Arizona State,Sr,,1,,,,,
 2002,1,2,Jay Williams,G,6-2,195.0,20.0,Duke,Jr *,,2,2398.0,US,2002,0.0,CHI
-2002,2,30,Roger Mason,SG,6-5,205.0,21.0,Virginia,Jr *,,11,2427.0,US,2013,0.0,WAS
+2002,2,30,Roger Mason Jr.,SG,6-5,205.0,21.0,Virginia,Jr *,,11,2427.0,US,2013,0.0,WAS
 2002,2,43,Lonny Baxter,PF,6-8,260.0,23.0,Maryland,Sr,,4,2437.0,US,2005,0.0,CHI
 2001,1,4,Eddy Curry,C,7-0,295.0,18.0,Thornwood High School (Illinois),1982 DOB *,,12,2201.0,US,2012,0.0,CHI
 2001,2,29,Trenton Hassell,F,6-5,227.0,22.0,Austin Peay,Jr *,,9,2239.0,US,2009,0.0,MIN
@@ -171,7 +171,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1978,5,97,Ron Anthony,F,6-8,220.0,,Jacksonville,Sr,,0,,,,,
 1978,6,119,John Shoemaker,PG,,,,Miami (OH),Sr,,0,,,,,
 1978,7,140,Jarvis Reynolds,,,,,West Georgia,Sr,,0,,,,,
-1978,8,159,Chubby Cox,SG,6-2,180.0,22.0,San Francisco,Sr,,3,76463.0,US,1982,0.0,WAS
+1978,8,159,John Cox,SG,6-2,180.0,22.0,San Francisco,Sr,,3,76463.0,US,1982,0.0,WAS
 1978,9,176,Joe Ponsetto,F,,,,DePaul,Sr,,1,,,,,
 1978,10,191,Mark Tucker,,,,,Oklahoma,Sr,,0,,,,,
 1977,1,13,Tate Armstrong,SG,6-3,175.0,21.0,Duke,Sr,,2,76059.0,US,1978,0.0,CHI

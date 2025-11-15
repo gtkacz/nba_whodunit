@@ -26,7 +26,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2019,1,19,Luka Samanic,PF,6-10,227.0,19.0,Union Olimpija (Slovenia),2000 DOB *,,5,1629677.0,HR,2023,0.0,UTA
 2019,1,29,Keldon Johnson,SF,6-6,220.0,19.0,Kentucky,Fr *,,6,1629640.0,US,2025,0.0,SAS
 2019,2,49,Quinndary Weatherspoon,SG,6-3,205.0,22.0,Mississippi State,Sr,,3,1629683.0,US,2021,0.0,GSW
-2018,1,18,Lonnie Walker,SG,6-4,204.0,19.0,Miami (FL),Fr *,,7,1629022.0,US,2024,0.0,PHI
+2018,1,18,Lonnie Walker IV,SG,6-4,204.0,19.0,Miami (FL),Fr *,,7,1629022.0,US,2024,0.0,PHI
 2018,2,49,Chimezie Metu,PF,6-10,225.0,21.0,USC,Jr *,,6,1629002.0,US,2023,0.0,DET
 2017,1,29,Derrick White,G,6-4,190.0,22.0,Colorado,Sr,,8,1628401.0,US,2025,0.0,BOS
 2017,2,59,Jaron Blossomgame,F,6-8,220.0,23.0,Clemson,Sr,,1,1628417.0,US,2018,0.0,CLE
@@ -45,7 +45,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2008,1,26,George Hill,G,6-3,188.0,22.0,IU Indy,Jr *,,15,201588.0,US,2022,0.0,IND
 2008,2,57,James Gist,PF,6-9,235.0,21.0,Maryland,Sr,,0,,,,,
 2007,1,28,Tiago Splitter,F,6-11,245.0,22.0,Baskonia (Spain),1985 DOB,,7,201168.0,BR,2016,0.0,SAS
-2007,2,33,Marcus E. Williams,F,6-7,207.0,20.0,Arizona,So *,,2,201173.0,US,2008,0.0,LAC
+2007,2,33,Marcus Williams,F,6-7,207.0,20.0,Arizona,So *,,2,201173.0,US,2008,0.0,LAC
 2005,1,28,Ian Mahinmi,C,6-11,262.0,18.0,STB Le Havre (France),1986 DOB *,,13,101133.0,FR,2019,0.0,IND
 2004,1,28,Beno Udrih,G,6-4,205.0,21.0,AX Armani Exchange Milan (Italy),1982 DOB,,13,2757.0,SI,2016,0.0,SAC
 2004,2,52,Romain Sato,GF,6-5,205.0,23.0,Xavier,Sr,,1,,,,,
@@ -70,7 +70,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1988,3,56,Barry Sumpter,FC,6-11,215.0,22.0,Austin Peay,Sr,,1,78654.0,US,1988,0.0,LAC
 1988,3,75,Archie Marshall,F,6-7,190.0,23.0,Kansas,Jr,,1,,,,,
 1987,1,1,David Robinson,C,7-1,250.0,21.0,Navy,Sr,,14,764.0,US,2002,0.0,SAS
-1987,1,23,Cadillac Anderson,PF,6-10,230.0,22.0,Houston,Sr,,10,246.0,US,1997,0.0,SAS
+1987,1,23,Greg Anderson,PF,6-10,230.0,22.0,Houston,Sr,,10,246.0,US,1997,0.0,SAS
 1987,2,27,Nate Blackwell,G,6-4,170.0,22.0,Temple,Sr,,1,76179.0,US,1987,0.0,SAS
 1987,3,50,Phil Zevenbergen,FC,6-10,230.0,23.0,Washington,Sr,,1,78644.0,US,1987,0.0,SAS
 1987,4,73,Todd May,PF,6-8,225.0,22.0,Pikeville,Sr,,0,,,,,

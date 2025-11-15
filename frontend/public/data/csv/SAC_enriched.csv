@@ -4,12 +4,12 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2020,2,40,Robert Woodard II,G,6-7,230.0,21.0,Mississippi State,So *,MEM to  SAC,2,1630218.0,US,2021,0.0,OKC
 2019,2,55,Kyle Guy,SG,6-1,167.0,21.0,Virginia,Jr *,NYK to  SAC,3,1629657.0,US,2021,0.0,MIA
 2017,1,15,Justin Jackson,F,6-8,220.0,22.0,North Carolina,Jr *,POR to  SAC,7,1628382.0,US,2023,0.0,MIN
-2017,1,20,Harry Giles,PF,6-10,240.0,19.0,Duke,Fr *,POR to  SAC,5,1628385.0,US,2023,0.0,SAC
+2017,1,20,Harry Giles III,PF,6-10,240.0,19.0,Duke,Fr *,POR to  SAC,5,1628385.0,US,2023,0.0,SAC
 2017,2,57,Sasha Vezenkov,PF,6-8,225.0,21.0,FC Barcelona II (Spain),1995 DOB,BKN to  CLE CLE  to SAC,1,1628426.0,BG,2023,0.0,SAC
-2016,1,13,George Papagiannis,C,7-2,275.0,18.0,Panathinaikos (Greece),1997 DOB *,PHX to  SAC,2,1627834.0,GR,2017,0.0,SAC
+2016,1,13,Georgios Papagiannis,C,7-2,275.0,18.0,Panathinaikos (Greece),1997 DOB *,PHX to  SAC,2,1627834.0,GR,2017,0.0,SAC
 2016,1,22,Malachi Richardson,SF,6-6,205.0,20.0,Syracuse,Fr *,CHA to  SAC,3,1627781.0,US,2018,0.0,SAC
 2016,1,28,Skal Labissiere,C,6-10,235.0,20.0,Kentucky,Fr *,PHX to  SAC,5,1627746.0,HT,2024,0.0,SAC
-2014,1,27,Bogdan Bogdanovic,SG,6-5,225.0,21.0,KK Partizan (Serbia),1992 DOB,PHX to  SAC,8,203992.0,RS,2025,0.0,LAC
+2014,1,27,Bogdan Bogdanović,SG,6-5,225.0,21.0,KK Partizan (Serbia),1992 DOB,PHX to  SAC,8,203992.0,RS,2025,0.0,LAC
 2013,2,57,Alex Oriakhi,PF,6-9,255.0,23.0,Missouri,Sr,PHX to  SAC,0,,,,,
 2012,2,57,Ilkan Karaman,F,6-8,254.0,22.0,Pinar Karsiyaka (Turkey),1990 DOB,BKN to  CLE CLE  to MIL MIL  to SAC,0,,,,,
 2011,1,10,Jimmer Fredette,G,6-2,195.0,22.0,Brigham Young,Sr,MIL to  SAC,6,202690.0,US,2018,0.0,SAC
@@ -33,7 +33,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2019,2,40,Justin James,SG,6-7,190.0,22.0,Wyoming,Sr,,3,1629713.0,US,2020,0.0,SAC
 2018,1,2,Marvin Bagley III,PF,6-10,235.0,19.0,Duke,Fr *,,7,1628963.0,US,2025,0.0,WAS
 2017,1,5,De'Aaron Fox,PG,6-3,185.0,19.0,Kentucky,Fr *,,8,1628368.0,US,2025,0.0,SAS
-2017,2,34,Frank Mason,G,5-11,190.0,23.0,Kansas,Sr,,4,1628412.0,US,2020,0.0,SAC
+2017,2,34,Frank Mason III,G,5-11,190.0,23.0,Kansas,Sr,,4,1628412.0,US,2020,0.0,SAC
 2016,2,59,Isaiah Cousins,G,6-4,191.0,22.0,Oklahoma,Sr,,0,,,,,
 2015,1,6,Willie Cauley-Stein,C,7-0,240.0,21.0,Kentucky,Jr *,,8,1626161.0,US,2022,0.0,PHI
 2014,1,8,Nik Stauskas,SG,6-6,205.0,20.0,Michigan,So *,,6,203917.0,CA,2021,0.0,BOS
@@ -48,7 +48,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2009,1,23,Omri Casspi,F,6-9,225.0,21.0,Maccabi FOX Tel Aviv (Israel),1988 DOB *,,10,201956.0,IL,2018,0.0,SAC
 2008,1,12,Jason Thompson,PF,6-11,250.0,21.0,Rider,Sr,,8,201574.0,US,2015,0.0,SAC
 2008,2,42,Sean Singletary,PG,6-0,185.0,22.0,Virginia,Sr,,1,201606.0,US,2008,0.0,CHA
-2008,2,43,Pat Ewing,F,6-8,237.0,24.0,Georgetown,Sr,,1,201607.0,US,2010,0.0,NOP
+2008,2,43,Patrick Ewing,F,6-8,237.0,24.0,Georgetown,Sr,,1,201607.0,US,2010,0.0,NOP
 2007,1,10,Spencer Hawes,C,7-1,245.0,19.0,Washington,Fr *,,10,201150.0,US,2016,0.0,PHI
 2006,1,19,Quincy Douby,G,6-3,175.0,22.0,Rutgers,Jr *,,4,200763.0,US,2008,0.0,SAC
 2005,1,23,Francisco Garcia,GF,6-7,195.0,23.0,Louisville,Jr *,,10,101128.0,DO,2014,0.0,SAC
@@ -150,7 +150,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1981,8,173,Randy Smithson,G,,,,Wichita State,Sr,,0,,,,,
 1981,9,194,Mike Perry,,,,,Richmond,Sr,,1,,,,,
 1981,10,214,Mark Wilson,,,,,Fort Hays State,Sr,,0,,,,,
-1980,1,16,Hawkeye Whitney,F,6-5,235.0,22.0,NC State,Sr,,2,78519.0,US,1981,0.0,SAC
+1980,1,16,Charles Whitney,F,6-5,235.0,22.0,NC State,Sr,,2,78519.0,US,1981,0.0,SAC
 1980,3,62,Tony Murphy,SG,6-3,180.0,23.0,Southern,Sr,,1,,,,,
 1980,5,108,Kevin Blakley,,,,,Eastern Michigan,Sr,,0,,,,,
 1980,6,131,Kent Grooms,,,,,Kent State,Sr,,0,,,,,
@@ -168,7 +168,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1978,1,2,Phil Ford,G,6-2,175.0,22.0,North Carolina,Sr,,8,76736.0,US,1984,0.0,SAC
 1978,3,49,Jeff Cook,FC,6-10,215.0,21.0,Idaho State,Sr,,10,76436.0,US,1987,0.0,PHX
 1978,3,52,Mike Russell,F,6-7,205.0,,Texas Tech,Sr,,0,,,,,
-1978,4,70,Geff Crompton,C,6-11,280.0,22.0,North Carolina,Sr,KCK to DEN,5,76474.0,US,1983,0.0,MIL
+1978,4,70,Jeffrey Crompton,C,6-11,280.0,22.0,North Carolina,Sr,KCK to DEN,5,76474.0,US,1983,0.0,MIL
 1978,5,93,Derick Clairborne,G,6-1,160.0,,Massachusetts,Sr,,0,,,,,
 1978,6,114,Jim Krivacs,PG,,,,Texas,Jr,,0,,,,,
 1978,7,136,Charles McMilliam,GF,6-3,,,North Texas,Sr,,0,,,,,
@@ -216,7 +216,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1973,8,127,Mike Williams,,,,,Kentucky Wesleyan,Sr,,1,,,,,
 1973,9,143,James Brown,,,,,Dartmouth,Sr,,0,,,,,
 1973,10,157,Ernie Kusyner,GF,,,,Kansas State,Sr,,0,,,,,
-1972,2,19,Sam Siebert,PF,6-7,215.0,23.0,Kentucky State,Sr,,1,78144.0,US,1972,0.0,SAC
+1972,2,19,Sam Sibert,PF,6-7,215.0,23.0,Kentucky State,Sr,,1,78144.0,US,1972,0.0,SAC
 1972,2,28,Mike Ratliff,C,6-10,230.0,20.0,Wisconsin-Eau Claire,Sr,,2,77915.0,US,1973,0.0,SAC
 1972,3,38,Ron Riley,PF,6-8,195.0,21.0,USC,Sr,,4,77964.0,US,1975,0.0,HOU
 1972,4,53,Frank Schade,G,6-1,170.0,22.0,Wisconsin-Eau Claire,Sr,,1,78069.0,US,1972,0.0,SAC
@@ -243,7 +243,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1971,7,106,Ollie Shannon,G,6-2,,,Minnesota,Sr,,0,,,,,
 1971,8,123,Frank Fitzgerald,,,,,Boston College,Sr,,0,,,,,
 1970,1,5,Sam Lacey,C,6-10,235.0,21.0,New Mexico State,Sr,,13,77326.0,US,1982,0.0,SAC
-1970,2,19,Tiny Archibald,PG,6-1,150.0,21.0,UTEP,Sr,,14,76054.0,US,1983,0.0,SAC
+1970,2,19,Nate Archibald,PG,6-1,150.0,21.0,UTEP,Sr,,14,76054.0,US,1983,0.0,SAC
 1970,2,22,Doug Cook,F,6-6,220.0,,Davidson,Sr,,0,,,,,
 1970,3,39,Greg Hyder,SF,6-6,215.0,21.0,Eastern New Mexico,Sr,,1,77091.0,US,1970,0.0,SAC
 1970,4,56,Wade Fuller,G,6-4,185.0,,Loyola (IL),Sr,,1,,,,,
@@ -260,7 +260,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1970,15,216,Mike Neer,,,,,Washington & Lee,Sr,,1,,,,,
 1970,16,225,Paul Favorite,FC,6-8,,,Georgetown,Sr,,0,,,,,
 1969,1,8,Herm Gilliam,G,6-3,190.0,22.0,Purdue,Jr,,8,76815.0,US,1976,0.0,ATL
-1969,3,37,Luther Rackley,C,6-10,220.0,22.0,Xavier,Sr,,5,77894.0,US,1973,0.0,CLE
+1969,3,37,Luke Rackley,C,6-10,220.0,22.0,Xavier,Sr,,5,77894.0,US,1973,0.0,CLE
 1969,3,41,Luther Green,PF,6-7,190.0,22.0,Long Island,Sr,,1,76872.0,US,1972,0.0,PHI
 1969,4,51,Ron Sanford,F,6-9,215.0,22.0,New Mexico,Jr,,0,,,,,
 1969,5,65,Jake Ford,PG,6-3,180.0,22.0,Maryland-Eastern Shore,Jr,,2,,,,,
@@ -294,7 +294,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1967,1,9,Mel Daniels,C,6-9,220.0,22.0,New Mexico,Sr,,1,76502.0,US,1976,0.0,BKN
 1967,3,26,Gary Gray,SG,6-1,185.0,22.0,Oklahoma City,Sr,,1,76859.0,US,1967,0.0,SAC
 1967,3,28,Sam Smith,F,6-7,230.0,23.0,Kentucky Wesleyan,Sr,,0,,,,,
-1967,4,38,Louie Dampier,PG,6-0,170.0,22.0,Kentucky,Sr,,4,76499.0,US,1978,0.0,SAS
+1967,4,38,Lou Dampier,PG,6-0,170.0,22.0,Kentucky,Sr,,4,76499.0,US,1978,0.0,SAS
 1967,5,50,Trooper Washington,F,6-7,215.0,23.0,Cheyney (PA),Sr,,0,,,,,
 1967,6,62,Frank Stronczek,,,,,American International,Sr,,0,,,,,
 1967,7,74,Charley Beasley,GF,6-5,190.0,21.0,Southern Methodist,Sr,,0,,,,,
@@ -350,7 +350,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1963,5,40,Mac Herndon,,,,,Bradley,Sr,,0,,,,,
 1963,6,49,Jim McCormack,,,,,West Virginia,Sr,,0,,,,,
 1963,7,58,Hunter Beckman,F,,,,Memphis,Sr,,0,,,,,
-1962,2,13,Bud Olsen,PF,6-8,220.0,21.0,Louisville,Sr,,7,77765.0,US,1968,0.0,SAC
+1962,2,13,Enoch Olsen,PF,6-8,220.0,21.0,Louisville,Sr,,7,77765.0,US,1968,0.0,SAC
 1962,3,22,Chris Appel,G,6-2,190.0,,USC,Sr,,0,,,,,
 1962,4,31,Jack Thobe,F,6-8,215.0,,Xavier,Sr,,0,,,,,
 1962,5,40,Mike Wroblewski,,,,,Kansas State,Sr,,0,,,,,
@@ -362,7 +362,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1962,11,88,Frank Pinchback,,,,,Xavier,Sr,,1,,,,,
 1961,1,3,Larry Siegfried,G,6-3,190.0,21.0,Ohio State,Sr,,9,78147.0,US,1971,0.0,BOS
 1961,2,11,Bob Wiesenhahn,F,6-4,215.0,22.0,Cincinnati,Sr,,1,78522.0,US,1961,0.0,SAC
-1961,3,25,Bevo Nordmann,C,6-10,230.0,21.0,Saint Louis,Sr,,4,77727.0,US,1964,0.0,ATL
+1961,3,25,Robert Nordmann,C,6-10,230.0,21.0,Saint Louis,Sr,,4,77727.0,US,1964,0.0,ATL
 1961,4,34,Lowery Kirk,F,6-6,,,Memphis,Sr,,0,,,,,
 1961,5,43,Rossie Johnson,,,,,Tennessee State,Sr,,0,,,,,
 1961,6,52,Bob Slobodnik,,,,,Duquesne,Sr,,0,,,,,
@@ -408,7 +408,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1959,12,77,Roger Wendel,,,,,Tulsa,Sr,,0,,,,,
 1958,1,2,Archie Dees,FC,6-8,205.0,22.0,Indiana,Sr,,4,76546.0,US,1961,0.0,DET
 1958,2,9,Vern Hatton,G,6-3,195.0,22.0,Kentucky,Sr,,4,76969.0,US,1961,0.0,GSW
-1958,3,17,Bucky Bockhorn,G,6-4,195.0,24.0,Dayton,Sr,,7,76191.0,US,1964,0.0,SAC
+1958,3,17,Arlen Bockhorn,G,6-4,195.0,24.0,Dayton,Sr,,7,76191.0,US,1964,0.0,SAC
 1958,4,25,Phil Murrell,F,6-4,205.0,25.0,Drake,Sr,,0,,,,,
 1958,5,33,Jim Fulmer,C,6-7,,,Alabama,Sr,,0,,,,,
 1958,6,41,Jim McClennan,,,,,St. Francis (PA),Sr,,0,,,,,
@@ -423,7 +423,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1958,15,84,Adrian Smith,PG,6-1,180.0,21.0,Kentucky,Sr,,10,78178.0,US,1970,0.0,SAC
 1958,16,85,Jack McCarthy,,,,,Dayton,Sr,,0,,,,,
 1958,17,86,John Powell,,,,,Miami (OH),Sr,,0,,,,,
-1957,1,1,Hot Rod Hundley,G,6-4,185.0,22.0,West Virginia,Sr,ROR to MIN,6,77082.0,US,1962,0.0,LAL
+1957,1,1,Rod Hundley,G,6-4,185.0,22.0,West Virginia,Sr,ROR to MIN,6,77082.0,US,1962,0.0,LAL
 1957,2,9,Dick Duckett,G,6-1,195.0,24.0,St. John's,Sr,,1,76605.0,US,1957,0.0,SAC
 1957,3,17,Jerry Paulson,G,6-3,185.0,21.0,Manhattan,Sr,,1,77816.0,US,1957,0.0,SAC
 1957,4,25,Jed Dormeyer,F,6-3,190.0,,Minnesota,Sr,,0,,,,,
@@ -463,7 +463,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1954,3,25,Lee Morton,G,6-2,175.0,,Cornell,Sr,,0,,,,,
 1954,4,34,Art Spoelstra,C,6-10,205.0,21.0,Western Kentucky,Sr,,4,78232.0,US,1957,0.0,SAC
 1954,5,43,Bo Erias,SF,6-3,220.0,21.0,Niagara,Sr,,1,76679.0,US,1957,0.0,LAL
-1954,6,52,Red Davis,F,6-7,220.0,23.0,St. John's,Sr,,1,76524.0,US,1955,0.0,SAC
+1954,6,52,James Davis,F,6-7,220.0,23.0,St. John's,Sr,,1,76524.0,US,1955,0.0,SAC
 1954,7,61,Bill Hull,,,,,Utah State,Jr,,0,,,,,
 1954,8,70,Paul Morrow,C,,,21.0,Wisconsin,Sr,,0,,,,,
 1954,9,78,Roy Irvin,,,,,USC,Sr,,0,,,,,
@@ -488,7 +488,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1953,18,117,"Gene Lambert, Jr.",,,,,,,,0,,,,,
 1953,19,119,Tex Silverman,G,6-3,175.0,,George Washington,Sr,,0,,,,,
 1953,20,120,Nick Maguire,G,,,,Villanova,Sr,,0,,,,,
-1952,1,9,Chuck Darling,FC,6-8,225.0,22.0,Iowa,Sr,,0,77414.0,US,1963,0.0,LAL
+1952,1,9,Clyde Lovellette,FC,6-8,225.0,22.0,Iowa,Sr,,0,77414.0,US,1963,0.0,LAL
 1952,2,19,Jack McMahon,G,6-1,185.0,23.0,St. John's,Sr,,8,77551.0,US,1959,0.0,ATL
 1952,3,29,Ronnie MacGilvray,G,6-2,185.0,21.0,St. John's,Sr,,1,77430.0,US,1954,0.0,ATL
 1952,4,39,Bryant Ivey,,,,,Alabama,Sr,,0,,,,,
@@ -502,14 +502,14 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1952,12,99,Ray Steiner,G,5-11,175.0,,Saint Louis,Sr,,0,,,,,
 1952,13,101,Bob Whitmer,F,6-2,204.0,,Florida State College,Sr,,0,,,,,
 1951,1,8,Sam Ranzino,G,6-1,185.0,23.0,NC State,Sr,,1,77912.0,US,1951,0.0,SAC
-1951,2,18,Ray Ragelis,GF,6-4,205.0,22.0,Northwestern,Sr,,1,77824.0,US,1952,1.0,INO
+1951,2,18,Mel Payton,GF,6-4,205.0,22.0,Northwestern,Sr,,1,77824.0,US,1952,1.0,INO
 1951,3,28,Fred Diute,SG,6-3,210.0,22.0,St. Bonaventure,Sr,,1,76578.0,US,1954,0.0,ATL
 1951,4,38,Elmer Behnke,F,6-7,210.0,22.0,Bradley,Sr,ROR to MIL,1,76141.0,US,1951,0.0,ATL
-1951,5,48,Dan Bagley,,,,,Notre Dame,Jr,,0,77230.0,US,1954,0.0,GSW
+1951,5,48,Michael Kearns,,,,,Notre Dame,Jr,,0,77230.0,US,1954,0.0,GSW
 1951,6,58,Jim Ove,C,6-5,,,Valparaiso,Sr,,0,,,,,
-1951,7,68,John Brown,,,,,Southern Methodist,Sr,,0,76555.0,US,1958,0.0,GSW
-1951,8,77,George Davidson,,,,,Lafayette,Sr,,0,77849.0,US,1953,0.0,GSW
-1950,1,10,Joe McNamee,F,6-6,210.0,23.0,San Francisco,Sr,,2,77773.0,US,1952,1.0,BAL
+1951,7,68,George Dempsey,,,,,Southern Methodist,Sr,,0,76555.0,US,1958,0.0,GSW
+1951,8,77,Jim Phelan,,,,,Lafayette,Sr,,0,77849.0,US,1953,0.0,GSW
+1950,1,10,Kevin O'Shea,F,6-6,210.0,23.0,San Francisco,Sr,,2,77773.0,US,1952,1.0,BAL
 1950,2,22,George Stanich,G,,,21.0,UCLA,Sr,,0,,,,,
 1950,3,34,Bob Roper,,,,,John Carroll,Sr,,0,,,,,
 1950,4,46,Chet Giermak,F,6-6,195.0,21.0,William & Mary,Sr,,0,,,,,

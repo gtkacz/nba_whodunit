@@ -54,7 +54,7 @@ def main() -> None:  # noqa: D103
 
         # First match by Year/Round/Pick to DRAFT_YEAR/DRAFT_ROUND/DRAFT_NUMBER
         curr_df_merged = curr_df.merge(
-            nba_df[["nba_id", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER", "COUNTRY", "TO_YEAR", "IS_DEFUNCT", "real_team"]],
+            nba_df[["nba_id", "full_name", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER", "COUNTRY", "TO_YEAR", "IS_DEFUNCT", "real_team"]],
             left_on=["Year", "Round", "Pick"],
             right_on=["DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER"],
             how="left",
@@ -75,7 +75,7 @@ def main() -> None:  # noqa: D103
 
             # Try matching by name and year
             unmatched_df = unmatched_df.merge(
-                nba_df[["nba_id", "treated_name", "DRAFT_YEAR", "COUNTRY", "TO_YEAR", "IS_DEFUNCT", "real_team"]],
+                nba_df[["nba_id", "full_name", "treated_name", "DRAFT_YEAR", "COUNTRY", "TO_YEAR", "IS_DEFUNCT", "real_team"]],
                 left_on=["treated_name", "Year"],
                 right_on=["treated_name", "DRAFT_YEAR"],
                 how="left",
@@ -83,14 +83,23 @@ def main() -> None:  # noqa: D103
             )
 
             # Update the original merged dataframe with the name matches
-            curr_df_merged.loc[unmatched_mask, "nba_id"] = unmatched_df["nba_id"].values
-            curr_df_merged.loc[unmatched_mask, "COUNTRY"] = unmatched_df["COUNTRY"].values
-            curr_df_merged.loc[unmatched_mask, "TO_YEAR"] = unmatched_df["TO_YEAR"].values
-            curr_df_merged.loc[unmatched_mask, "IS_DEFUNCT"] = unmatched_df["IS_DEFUNCT"].values
-            curr_df_merged.loc[unmatched_mask, "real_team"] = unmatched_df["real_team"].values
+            curr_df_merged.loc[unmatched_mask, "nba_id"] = unmatched_df["nba_id"].to_numpy()
+            curr_df_merged.loc[unmatched_mask, "COUNTRY"] = unmatched_df["COUNTRY"].to_numpy()
+            curr_df_merged.loc[unmatched_mask, "TO_YEAR"] = unmatched_df["TO_YEAR"].to_numpy()
+            curr_df_merged.loc[unmatched_mask, "IS_DEFUNCT"] = unmatched_df["IS_DEFUNCT"].to_numpy()
+            curr_df_merged.loc[unmatched_mask, "real_team"] = unmatched_df["real_team"].to_numpy()
+            # Also pull the original, punctuated `full_name` from nba_df for matched rows
+            curr_df_merged.loc[unmatched_mask, "full_name"] = unmatched_df["full_name"].to_numpy()
 
-        # Clean up columns
+        # Clean up columns but keep `full_name` from nba_df when present
         curr_df = curr_df_merged.drop(columns=["treated_name", "DRAFT_YEAR", "DRAFT_ROUND", "DRAFT_NUMBER"])
+
+        # Prefer the nba `full_name` (original punctuation) when available; otherwise fall back to the CSV `Player` value
+        curr_df["full_name"] = curr_df["full_name"].where(curr_df["full_name"].notna(), curr_df["Player"])
+
+        # Make the final output keep the column name `Player` but use the NBA `full_name` when present
+        curr_df["Player"] = curr_df["full_name"]
+        curr_df = curr_df.drop(columns=["full_name"])
 
         curr_df = curr_df.drop_duplicates(subset=["Year", "Round", "Pick"])
 

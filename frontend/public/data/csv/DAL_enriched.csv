@@ -5,8 +5,8 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2022,2,37,Jaden Hardy,SG,6-3,198.0,19.0,NBA G League Ignite,2002 DOB,SAC to  DAL,3,1630702.0,US,2025,0.0,DAL
 2020,2,36,Tyler Bey,PF,6-7,215.0,22.0,Colorado,Jr *,PHI to  DAL,1,1630189.0,US,2020,0.0,HOU
 2019,2,45,Isaiah Roby,SF,6-8,230.0,21.0,Nebraska,Jr *,DET to  DAL,4,1629676.0,US,2022,0.0,NYK
-2018,1,3,Luka Doncic,SF,6-8,230.0,19.0,Real Madrid (Spain),1999 DOB *,ATL to  DAL,7,1629029.0,SI,2025,0.0,LAL
-2018,2,56,Raymond Spalding,PF,6-9,225.0,21.0,Louisville,Jr *,PHI to  DAL,3,1629034.0,US,2020,0.0,PHX
+2018,1,3,Luka Dončić,SF,6-8,230.0,19.0,Real Madrid (Spain),1999 DOB *,ATL to  DAL,7,1629029.0,SI,2025,0.0,LAL
+2018,2,56,Ray Spalding,PF,6-9,225.0,21.0,Louisville,Jr *,PHI to  DAL,3,1629034.0,US,2020,0.0,PHX
 2018,2,60,Kostas Antetokounmpo,PF,6-10,200.0,20.0,Dayton,Fr *,PHI to  DAL,4,1628961.0,GR,2020,0.0,CHI
 2013,1,18,Shane Larkin,PG,5-11,175.0,20.0,Miami (FL),So *,ATL to  DAL,4,203499.0,US,2017,0.0,BKN
 2013,2,43,Ricky Ledo,GF,6-7,197.0,20.0,Providence,Fr *,MIL to  PHI PHI  to DAL,2,203495.0,US,2014,0.0,DAL
@@ -32,14 +32,14 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2020,1,18,Josh Green,SG,6-6,200.0,20.0,Arizona,Fr *,,5,1630182.0,AU,2025,0.0,CHA
 2020,2,31,Tyrell Terry,PG,6-2,170.0,20.0,Stanford,Fr *,,2,1630179.0,US,2021,0.0,MEM
 2018,2,33,Jalen Brunson,PG,6-2,190.0,21.0,Villanova,Jr *,,7,1628973.0,US,2025,0.0,NYK
-2017,1,9,Dennis Smith,PG,6-2,205.0,19.0,NC State,Fr *,,7,1628372.0,US,2023,0.0,DAL
-2016,2,46,A.J. Hammons,C,7-0,250.0,23.0,Purdue,Sr,,2,1627773.0,US,2016,0.0,DAL
+2017,1,9,Dennis Smith Jr.,PG,6-2,205.0,19.0,NC State,Fr *,,7,1628372.0,US,2023,0.0,DAL
+2016,2,46,AJ Hammons,C,7-0,250.0,23.0,Purdue,Sr,,2,1627773.0,US,2016,0.0,DAL
 2015,1,21,Justin Anderson,F,6-6,230.0,21.0,Virginia,Jr *,,6,1626147.0,US,2021,0.0,IND
 2007,2,34,Nick Fazekas,F,6-11,240.0,22.0,Nevada,Sr,,1,201174.0,US,2007,0.0,LAC
 2006,1,28,Maurice Ager,F-G,6-5,202.0,22.0,Michigan State,Sr,,4,200772.0,US,2010,0.0,DAL
 2003,1,29,Josh Howard,GF,6-7,210.0,23.0,Wake Forest,Sr,,10,2572.0,US,2012,0.0,DAL
 2000,1,12,Etan Thomas,C,6-9,256.0,22.0,Syracuse,Sr,,11,2041.0,US,2010,0.0,WAS
-1999,2,36,Zhizhi Wang,C,7-1,255.0,21.0,Ningbo Rockets (China),1977 DOB,,5,1917.0,CN,2004,0.0,DAL
+1999,2,36,Wang Zhi-zhi,C,7-1,255.0,21.0,Ningbo Rockets (China),1977 DOB,,5,1917.0,CN,2004,0.0,DAL
 1998,2,30,Ansu Sesay,F,6-9,225.0,21.0,Ole Miss,Sr,,6,1738.0,US,2004,0.0,OKC
 1998,2,35,Bruno Sundov,C,7-2,220.0,18.0,KK Split (Croatia),1980 DOB *,,7,1743.0,HR,2004,0.0,IND
 1998,2,53,Greg Buckner,G-F,6-4,210.0,21.0,Clemson,Sr,,11,1761.0,US,2008,0.0,DAL
@@ -134,7 +134,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1981,9,184,John Hollinden,C,7-6,,,Indiana State,Sr,,0,,,,,
 1981,10,204,Scott Bolanko,,,,,Northern State,Sr,,0,,,,,
 1980,2,34,Roosevelt Bouie,C,6-11,225.0,22.0,Syracuse,Sr,,0,,,,,
-1980,3,57,Dave Britton,SG,6-4,180.0,21.0,Texas A&M,Sr,,1,76261.0,US,1980,0.0,WAS
+1980,3,57,David Britton,SG,6-4,180.0,21.0,Texas A&M,Sr,,1,76261.0,US,1980,0.0,WAS
 1980,4,80,David Johnson,PF,6-8,200.0,,Weber State,Sr,,0,,,,,
 1980,5,103,Darrell Allums,F,6-9,220.0,21.0,UCLA,Sr,,2,76030.0,US,1980,0.0,DAL
 1980,6,126,Leroy Jackson,,,,,Cameron,Sr,,0,,,,,

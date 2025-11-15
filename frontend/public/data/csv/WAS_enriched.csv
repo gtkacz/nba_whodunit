@@ -7,7 +7,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2020,2,53,Cassius Winston,PG,6-1,185.0,22.0,Michigan State,Sr,OKC to  WAS,2,1630216.0,US,2021,0.0,WAS
 2019,2,42,Admiral Schofield,SF,6-5,241.0,22.0,Tennessee,Sr,PHI to  WAS,4,1629678.0,GB,2023,0.0,ORL
 2017,2,50,Mathias Lessort,F,6-9,250.0,21.0,Nanterre 92 (France),1995 DOB,PHI to  LAC LAC  to MIN MIN  to NYK NYK  to WAS,0,,,,,
-2015,1,15,"Kelly Oubre, Jr.",SF,6-8,203.0,19.0,Kansas,Fr *,ATL to  WAS,10,1626162.0,US,2025,0.0,PHI
+2015,1,15,Kelly Oubre Jr.,SF,6-8,203.0,19.0,Kansas,Fr *,ATL to  WAS,10,1626162.0,US,2025,0.0,PHI
 2013,2,35,Glen Rice,GF,6-6,206.0,22.0,Rio Grande Valley Vipers,1991 DOB,PHI to  WAS,2,203318.0,US,2014,0.0,WAS
 2010,1,17,Kevin Seraphin,FC,6-10,278.0,20.0,Cholet Basket (France),1989 DOB *,CHI to  WAS,7,202338.0,FR,2016,0.0,WAS
 2010,1,23,Trevor Booker,PF,6-8,228.0,22.0,Clemson,Sr,MIN to  WAS,8,202344.0,US,2017,0.0,WAS
@@ -36,8 +36,8 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2021,1,15,Corey Kispert,SF,6-6,224.0,22.0,Gonzaga,Sr *,,4,1630557.0,US,2025,0.0,WAS
 2020,1,9,Deni Avdija,SG,6-8,228.0,19.0,Maccabi Tel Aviv U18 (Israel),2001 DOB *,,5,1630166.0,IL,2025,0.0,POR
 2019,1,9,Rui Hachimura,F,6-8,230.0,21.0,Gonzaga,Jr *,,6,1629060.0,JP,2025,0.0,LAL
-2018,1,15,"Troy Brown, Jr.",SF,6-7,215.0,18.0,Oregon,Fr *,,6,1628972.0,US,2023,0.0,DET
-2013,1,3,Otto Porter,SF,6-8,230.0,20.0,Georgetown,So *,,11,203490.0,US,2023,0.0,TOR
+2018,1,15,Troy Brown Jr.,SF,6-7,215.0,18.0,Oregon,Fr *,,6,1628972.0,US,2023,0.0,DET
+2013,1,3,Otto Porter Jr.,SF,6-8,230.0,20.0,Georgetown,So *,,11,203490.0,US,2023,0.0,TOR
 2012,1,3,Bradley Beal,SG,6-4,207.0,19.0,Florida,Fr *,,13,203078.0,US,2025,0.0,LAC
 2012,2,32,Tomas Satoransky,PG,6-7,210.0,20.0,Real Betis Baloncesto (Spain),1991 DOB *,,6,203107.0,CZ,2021,0.0,WAS
 2011,1,6,Jan Vesely,PF,6-11,240.0,21.0,KK Partizan (Serbia),1990 DOB *,,3,202686.0,CZ,2013,0.0,WAS
@@ -66,10 +66,10 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1994,1,5,Juwan Howard,PF,6-9,240.0,21.0,Michigan,Jr *,,19,436.0,US,2012,0.0,WAS
 1994,2,32,Jim McIlvaine,C,7-1,240.0,21.0,Marquette,Sr,,8,29.0,US,2000,0.0,OKC
 1993,1,6,Calbert Cheaney,GF,6-7,209.0,21.0,Indiana,Sr,,13,384.0,US,2005,0.0,WAS
-1993,2,30,George Muresan,C,7-7,303.0,22.0,Pau-Orthez (France),1971 DOB,,7,49.0,RO,1999,0.0,WAS
+1993,2,30,Gheorghe Muresan,C,7-7,303.0,22.0,Pau-Orthez (France),1971 DOB,,7,49.0,RO,1999,0.0,WAS
 1992,1,6,Tom Gugliotta,PF,6-10,240.0,22.0,NC State,Sr,,13,339.0,US,2004,0.0,PHX
 1992,2,32,Brent Price,PG,6-1,165.0,23.0,Oklahoma,Sr,,11,85.0,US,2002,0.0,WAS
-1991,1,19,LaBradford Smith,SG,6-3,200.0,22.0,Louisville,Sr,,4,78194.0,US,1993,0.0,WAS
+1991,1,19,Labradford Smith,SG,6-3,200.0,22.0,Louisville,Sr,,4,78194.0,US,1993,0.0,WAS
 1990,2,35,Greg Foster,C,6-11,240.0,21.0,UTEP,Sr,,13,323.0,US,2002,0.0,UTA
 1990,2,37,A.J. English,GF,6-5,175.0,22.0,Virginia Union,Sr,,3,76672.0,US,1991,0.0,WAS
 1989,1,9,Tom Hammonds,PF,6-9,215.0,22.0,Georgia Tech,Sr,,13,67.0,US,2000,0.0,DEN
@@ -137,7 +137,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1982,9,196,James Terry,,,,,Howard,Sr,,0,,,,,
 1982,10,217,Donald Sinclair,,,,,North Carolina Central,Sr,,0,,,,,
 1981,1,11,Frank Johnson,G,6-1,185.0,22.0,Wake Forest,Sr,,10,77146.0,US,1993,0.0,WAS
-1981,2,35,Charles Davis,F,6-7,215.0,22.0,Vanderbilt,Sr,,8,76518.0,US,1989,0.0,WAS
+1981,2,35,Charlie Davis,F,6-7,215.0,22.0,Vanderbilt,Sr,,8,76518.0,US,1989,0.0,WAS
 1981,2,41,Claude Gregory,F,6-8,205.0,22.0,Wisconsin,Sr,,3,76884.0,US,1987,0.0,LAC
 1981,2,44,Steve Lingenfelter,PF,6-9,225.0,22.0,South Dakota State,Sr,,2,77389.0,US,1983,0.0,WAS
 1981,3,48,Mike Ferrara,SG,6-4,190.0,22.0,Colgate,Sr,,1,,,,,
@@ -233,7 +233,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1973,13,187,Chester Davis,,,,,Morgan State,Sr,,1,,,,,
 1973,14,192,Howard White,G,6-1,165.0,,Maryland,Sr,,0,,,,,
 1973,15,197,Shorty Simmons,PF,6-8,,,St. Mary's (MD),Sr,,1,,,,,
-1972,2,25,Tom Patterson,F,6-6,220.0,23.0,Ouachita Baptist,Sr,,2,77813.0,US,1973,0.0,WAS
+1972,2,25,Tommy Patterson,F,6-6,220.0,23.0,Ouachita Baptist,Sr,,2,77813.0,US,1973,0.0,WAS
 1972,3,39,Kevin Porter,PG,6-0,170.0,21.0,St. Francis (PA),Sr,,11,77876.0,US,1982,0.0,WAS
 1972,4,56,Al Saunders,PF,6-8,255.0,22.0,LSU,Sr,,0,,,,,
 1972,5,72,Walter Jones,F,6-7,,,Long Island,Sr,,0,,,,,
@@ -261,7 +261,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1971,13,200,Tom Crosswhite,,,,,Dayton,Sr,,0,,,,,
 1971,14,211,Rudy Peele,,,,,Norfolk State,Sr,,0,,,,,
 1971,15,220,James Morrell,,,,,Norfolk State,Sr,,0,,,,,
-1970,1,9,George E. Johnson,C,6-11,245.0,22.0,Stephen F. Austin,Sr,,3,77147.0,US,1973,0.0,HOU
+1970,1,9,George Johnson,C,6-11,245.0,22.0,Stephen F. Austin,Sr,,3,77147.0,US,1973,0.0,HOU
 1970,3,49,Seaburn Hill,G,6-3,200.0,,Arizona State,Sr,,0,,,,,
 1970,4,54,Bill Stricker,FC,6-9,210.0,22.0,Pacific,Sr,,1,78269.0,US,1970,0.0,POR
 1970,4,66,Billy Jones,C,6-10,220.0,,Louisiana Christian,Sr,,0,,,,,

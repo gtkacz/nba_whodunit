@@ -2,7 +2,7 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 2024,2,44,Pelle Larsson,SG,6-5,215,23.0,Arizona,Sr *,HOU to  MIA,1,1641796.0,SE,2025,0.0,MIA
 2019,2,32,KZ Okpala,SG,6-8,215,20.0,Stanford,So *,PHX to  MIA,4,1629644.0,US,2022,0.0,SAC
 2014,1,24,Shabazz Napier,PG,6-1,180,22.0,UConn,Sr,CHA to  MIA,6,203894.0,US,2019,0.0,POR
-2013,2,50,James Ennis,GF,6-6,215,22.0,Long Beach State,Sr,ATL to  MIA,8,203516.0,US,2021,0.0,DEN
+2013,2,50,James Ennis III,GF,6-6,215,22.0,Long Beach State,Sr,ATL to  MIA,8,203516.0,US,2021,0.0,DEN
 2012,2,45,Justin Hamilton,C,7-0,255,22.0,LSU,Jr *,PHI to  MIA,3,203120.0,US,2016,0.0,BKN
 2011,1,28,Norris Cole,G,6-2,170,22.0,Cleveland State,Sr,CHI to  MIN MIN  to MIA,6,202708.0,US,2016,0.0,MIA
 2009,2,42,Patrick Beverley,PG,6-2,180,20.0,Dnipro Dnipropetrovsk (Ukraine),1988 DOB,LAL to  MIA,12,201976.0,US,2023,0.0,MIL
@@ -16,10 +16,10 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1992,2,43,Sasha Danilovic,SF,6-5,200,22.0,,1970 DOB,GSW to  MIA,2,390.0,RS,1996,0.0,MIA
 1990,1,12,Alec Kessler,C,6-11,230,23.0,Georgia,Sr,HOU to  MIA,4,77251.0,US,1993,0.0,MIA
 1990,2,40,Bimbo Coles,SG,6-1,180,22.0,Virginia Tech,Sr,SAC to  MIA,14,902.0,US,2003,0.0,MIA
-2025,1,20,Kasparas Jakucionis,G,6-5,200,19.0,Illinois,Fr *,,0,1642857.0,LT,2025,0.0,MIA
+2025,1,20,Kasparas Jakučionis,G,6-5,200,19.0,Illinois,Fr *,,0,1642857.0,LT,2025,0.0,MIA
 2024,1,15,Kel'el Ware,PF,7-0,230,20.0,Indiana,So *,,1,1642276.0,US,2025,0.0,MIA
-2023,1,18,"Jaime Jaquez, Jr.",GF,6-6,225,22.0,UCLA,Sr *,,2,1631170.0,US,2025,0.0,MIA
-2022,1,27,Nikola Jovic,F,6-10,205,19.0,KK Mega Bemax (Serbia),2003 DOB *,,3,1631107.0,RS,2025,0.0,MIA
+2023,1,18,Jaime Jaquez Jr.,GF,6-6,225,22.0,UCLA,Sr *,,2,1631170.0,US,2025,0.0,MIA
+2022,1,27,Nikola Jović,F,6-10,205,19.0,KK Mega Bemax (Serbia),2003 DOB *,,3,1631107.0,RS,2025,0.0,MIA
 2020,1,20,Precious Achiuwa,SF,6-8,243,21.0,Memphis,Fr *,,5,1630173.0,NG,2025,0.0,SAC
 2019,1,13,Tyler Herro,SG,6-5,195,19.0,Kentucky,Fr *,,6,1629639.0,US,2025,0.0,MIA
 2017,1,14,Bam Adebayo,C,6-9,255,19.0,Kentucky,Fr *,,8,1628389.0,US,2025,0.0,MIA
@@ -43,14 +43,14 @@ Year,Round,Pick,Player,Pos,HT,WT,Age,Pre-Draft Team,Class,Draft Trades,YOS,nba_i
 1999,1,25,Tim James,F,6-7,212,22.0,Miami (FL),Sr,,4,1906.0,US,2002,0.0,CHA
 1999,2,53,Rodney Buford,SF,6-5,189,21.0,Creighton,Sr,,5,1934.0,US,2004,0.0,BKN
 1998,2,51,Corey L. Brewer,SG,6-2,190,23.0,Oklahoma,Sr,,1,,,,,
-1997,1,26,Charles Cornelius Smith,SG,6-4,194,21.0,New Mexico,Sr,,6,1520.0,US,2005,0.0,SAS
+1997,1,26,Charles Smith,SG,6-4,194,21.0,New Mexico,Sr,,6,1520.0,US,2005,0.0,SAS
 1997,2,30,Mark Sanford,F,6-9,210,21.0,Washington,Jr *,,3,,,,,
 1995,1,10,Kurt Thomas,FC,6-9,240,22.0,TCU,Sr,,18,703.0,US,2012,0.0,NYK
 1995,2,46,George Banks,PF,6-7,210,22.0,UTEP,Sr,,0,,,,,
 1994,1,12,Khalid Reeves,G,6-3,200,21.0,Arizona,Sr,,7,234.0,US,1999,0.0,DAL
 1992,1,12,Harold Miner,SG,6-5,210,21.0,USC,Jr *,,5,114.0,US,1995,0.0,MIA
 1992,2,42,Matt Geiger,C,7-0,243,22.0,Georgia Tech,Sr,,10,761.0,US,2001,0.0,CHA
-1991,1,5,Steve Smith,SG,6-7,200,22.0,Michigan State,Sr,,14,120.0,US,2004,0.0,ATL
+1991,1,5,Steven Smith,SG,6-7,200,22.0,Michigan State,Sr,,14,120.0,US,2004,0.0,ATL
 1991,2,29,George Ackles,PF,6-9,215,23.0,UNLV,Sr,,2,,,,,
 1990,1,9,Willie Burton,G,6-6,210,22.0,Minnesota,Sr,,9,416.0,US,1998,0.0,MIA
 1989,1,4,Glen Rice,SF,6-8,228,22.0,Michigan,Sr,,15,779.0,US,2003,0.0,MIA
