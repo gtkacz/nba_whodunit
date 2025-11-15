@@ -820,7 +820,12 @@ function getPlayerRetirementStatus(playedUntilYear: number | undefined): 'active
 function getRetirementTooltipText(playedUntilYear: number | undefined, playsFor: string | undefined, year?: number): string {
   const status = getPlayerRetirementStatus(playedUntilYear)
   if (status === 'active') {
-    return 'Active'
+    if (playsFor && playsFor.trim() !== '') {
+      // Get the full team display name
+      const teamFullName = getTeamDisplayName(playsFor, year)
+      return `Currently plays for the ${teamFullName}`
+    }
+    return 'Currently active'
   } else if (status === 'retired') {
     if (playsFor && playsFor.trim() !== '') {
       // Get the full team display name
@@ -2225,7 +2230,7 @@ const shareTooltipText = computed(() => {
                   class="player-status-icon"
                 />
               </template>
-              <span v-if="getPlayerRetirementStatus(item.played_until_year) === 'active' && item.plays_for && getCanonicalTeam(item.plays_for, item.year) !== getCanonicalTeam(item.team, item.year)">
+              <span v-if="getPlayerRetirementStatus(item.played_until_year) === 'active' && item.plays_for">
                 Currently plays for the {{ getTeamDisplayName(item.plays_for, item.year) }}
               </span>
               <span v-else>{{ getRetirementTooltipText(item.played_until_year, item.plays_for, item.year) }}</span>
