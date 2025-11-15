@@ -4,6 +4,7 @@ import type { TeamAbbreviation } from '@/types/team'
 import { parseCSV } from '@/utils/csvParser'
 import { getDataUrl } from '@/utils/dataUrl'
 import { getCachedCSV, setCachedCSV, initializeCache } from '@/utils/csvCache'
+import { normalizeString } from '@/utils/stringNormalizer'
 
 const allDraftPicks = ref<DraftPick[]>([])
 const loading = ref(false)
@@ -187,12 +188,13 @@ export function useDraftData() {
       })
     }
 
-    // Player name search filter
+    // Player name search filter (with normalized matching for accents)
     if (playerSearch.value && playerSearch.value.trim() !== '') {
-      const searchTerm = playerSearch.value.toLowerCase().trim()
+      const searchTerm = normalizeString(playerSearch.value.toLowerCase().trim())
       filtered = filtered.filter((pick) => {
         if (!pick.player) return false
-        return pick.player.toLowerCase().includes(searchTerm)
+        const normalizedPlayerName = normalizeString(pick.player.toLowerCase())
+        return normalizedPlayerName.includes(searchTerm)
       })
     }
 
