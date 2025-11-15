@@ -24,6 +24,7 @@ interface FilterDefaults {
   sortBy: SortItem[]
   currentPage: number
   itemsPerPage: number
+  showPlayerMeasurements: boolean
 }
 
 const DEFAULT_FILTERS: FilterDefaults = {
@@ -48,7 +49,8 @@ const DEFAULT_FILTERS: FilterDefaults = {
     { key: 'pick', order: 'asc' }
   ],
   currentPage: 1,
-  itemsPerPage: 30
+  itemsPerPage: 30,
+  showPlayerMeasurements: false
 }
 
 export function useFilterUrlSync(
@@ -72,6 +74,7 @@ export function useFilterUrlSync(
     sortBy: Ref<SortItem[]>
     currentPage: Ref<number>
     itemsPerPage: Ref<number>
+    showPlayerMeasurements: Ref<boolean>
   }
 ) {
   const route = useRoute()
@@ -165,6 +168,7 @@ export function useFilterUrlSync(
       filters.sortBy.value = [...DEFAULT_FILTERS.sortBy]
       filters.currentPage.value = DEFAULT_FILTERS.currentPage
       filters.itemsPerPage.value = DEFAULT_FILTERS.itemsPerPage
+      filters.showPlayerMeasurements.value = DEFAULT_FILTERS.showPlayerMeasurements
     }
 
     // Load selectedTeam
@@ -330,6 +334,11 @@ export function useFilterUrlSync(
       }
     }
 
+    // Load showPlayerMeasurements
+    if (query.showPlayerMeasurements !== undefined) {
+      filters.showPlayerMeasurements.value = query.showPlayerMeasurements === 'true' || query.showPlayerMeasurements === '1'
+    }
+
     // Use nextTick to ensure all reactive updates are processed before allowing URL updates
     nextTick(() => {
       isLoadingFromUrl = false
@@ -424,6 +433,11 @@ export function useFilterUrlSync(
       query.limit = String(filters.itemsPerPage.value)
     }
 
+    // Only add showPlayerMeasurements if it's different from default
+    if (filters.showPlayerMeasurements.value !== DEFAULT_FILTERS.showPlayerMeasurements) {
+      query.showPlayerMeasurements = String(filters.showPlayerMeasurements.value)
+    }
+
     // Update URL without triggering navigation
     router.replace({ path: route.path, query })
   }
@@ -448,7 +462,8 @@ export function useFilterUrlSync(
       filters.selectedNationalities.value,
       filters.sortBy.value,
       filters.currentPage.value,
-      filters.itemsPerPage.value
+      filters.itemsPerPage.value,
+      filters.showPlayerMeasurements.value
     ],
     () => {
       updateUrlFromFilters()
@@ -508,6 +523,7 @@ export function useFilterUrlSync(
     filters.sortBy.value = [...DEFAULT_FILTERS.sortBy]
     filters.currentPage.value = DEFAULT_FILTERS.currentPage
     filters.itemsPerPage.value = DEFAULT_FILTERS.itemsPerPage
+    filters.showPlayerMeasurements.value = DEFAULT_FILTERS.showPlayerMeasurements
     
     // Clear any pending debounce timer
     if (playerSearchDebounceTimer) {

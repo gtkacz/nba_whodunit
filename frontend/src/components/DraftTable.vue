@@ -250,8 +250,23 @@ const allHeaders = [
   { title: 'Round', key: 'round', sortable: true, width: '80px' },
   { title: 'Overall Pick', key: 'pick', sortable: true, width: '35px' },
   { title: 'Position', key: 'position', sortable: true, width: '35px' },
-  { title: 'Height', key: 'height', sortable: true, width: '35px' },
-  { title: 'Weight', key: 'weight', sortable: true, width: '35px' },
+  { 
+    title: 'Draft Height', 
+    key: 'height', 
+    sortable: true, 
+    width: '35px',
+    sort: (a: DraftPick, b: DraftPick): number => {
+      const aHeight = parseHeight(a.height)
+      const bHeight = parseHeight(b.height)
+      // Handle invalid heights (0 means parsing failed)
+      if (aHeight === 0 && bHeight === 0) return 0
+      if (aHeight === 0) return 1  // Put invalid heights at the end
+      if (bHeight === 0) return -1 // Put invalid heights at the end
+      // Compare numerically
+      return aHeight - bHeight
+    }
+  },
+  { title: 'Draft Weight', key: 'weight', sortable: true, width: '35px' },
   { title: 'Draft Age', key: 'age', sortable: true, width: '35px' },
   { title: 'Drafted From', key: 'preDraftTeam', sortable: true, minWidth: '175px' },
   { title: 'Pick Trades', key: 'draftTrades', sortable: false, minWidth: '80px', width: 'auto' }
@@ -307,12 +322,19 @@ function sortItems(items: DraftPick[], sortBy: SortItem[]): DraftPick[] {
       if (aVal == null) return order === 'asc' ? 1 : -1
       if (bVal == null) return order === 'asc' ? -1 : 1
 
-      // Handle string comparisons (case-insensitive)
-      if (typeof aVal === 'string' && typeof bVal === 'string') {
-        aVal = aVal.toLowerCase().trim()
-        bVal = bVal.toLowerCase().trim()
-        if (aVal === bVal) continue
-        const comparison = aVal < bVal ? -1 : 1
+      // Handle height (format: "6-8" or "6'8\"" etc.) - check this BEFORE string comparison
+      // IMPORTANT: Always return early when sorting by height to prevent falling through to string comparison
+      if (key === 'height') {
+        const aHeight = parseHeight(aVal as string | null | undefined)
+        const bHeight = parseHeight(bVal as string | null | undefined)
+        // If both heights are 0 (invalid/empty), treat as equal
+        if (aHeight === 0 && bHeight === 0) return 0
+        // If one is 0 and the other isn't, put the 0 one at the end
+        if (aHeight === 0) return order === 'asc' ? 1 : -1
+        if (bHeight === 0) return order === 'asc' ? -1 : 1
+        // Both are valid heights, compare numerically
+        if (aHeight === bHeight) return 0
+        const comparison = aHeight < bHeight ? -1 : 1
         return order === 'asc' ? comparison : -comparison
       }
 
@@ -323,12 +345,12 @@ function sortItems(items: DraftPick[], sortBy: SortItem[]): DraftPick[] {
         return order === 'asc' ? comparison : -comparison
       }
 
-      // Handle height (format: "6-8" or "6'8\"" etc.)
-      if (key === 'height') {
-        const aHeight = parseHeight(aVal as string | null | undefined)
-        const bHeight = parseHeight(bVal as string | null | undefined)
-        if (aHeight === bHeight) continue
-        const comparison = aHeight < bHeight ? -1 : 1
+      // Handle string comparisons (case-insensitive)
+      if (typeof aVal === 'string' && typeof bVal === 'string') {
+        aVal = aVal.toLowerCase().trim()
+        bVal = bVal.toLowerCase().trim()
+        if (aVal === bVal) continue
+        const comparison = aVal < bVal ? -1 : 1
         return order === 'asc' ? comparison : -comparison
       }
 
@@ -347,26 +369,32 @@ function sortItems(items: DraftPick[], sortBy: SortItem[]): DraftPick[] {
 function parseHeight(height: string | null | undefined): number {
   if (!height) return 0
   const str = String(height).trim()
+  if (str === '') return 0
   
-  // Try format "6-8" (feet-inches)
-  const match1 = str.match(/(\d+)[-'](\d+)/)
+  // Try format "6-8" (feet-inches) - this is the most common format
+  // Match pattern: digits, then dash or apostrophe, then digits
+  const match1 = str.match(/^(\d+)[-'](\d+)$/)
   if (match1 && match1[1] && match1[2]) {
     const feet = parseInt(match1[1], 10)
     const inches = parseInt(match1[2], 10)
-    return feet * 12 + inches
+    if (!isNaN(feet) && !isNaN(inches)) {
+      return feet * 12 + inches
+    }
   }
   
   // Try format "6'8\"" (feet'inches")
-  const match2 = str.match(/(\d+)'(\d+)"/)
+  const match2 = str.match(/^(\d+)'(\d+)"$/)
   if (match2 && match2[1] && match2[2]) {
     const feet = parseInt(match2[1], 10)
     const inches = parseInt(match2[2], 10)
-    return feet * 12 + inches
+    if (!isNaN(feet) && !isNaN(inches)) {
+      return feet * 12 + inches
+    }
   }
   
   // Try to parse as just a number (assume inches)
   const num = parseFloat(str)
-  if (!isNaN(num)) return num
+  if (!isNaN(num) && num > 0) return num
   
   return 0
 }

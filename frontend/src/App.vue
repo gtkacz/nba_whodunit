@@ -48,6 +48,8 @@ const {
   loadAllTeamData
 } = useDraftData()
 
+const showPlayerMeasurements = ref(false)
+
 // Sync filters with URL query strings
 const { resetFilters: resetFiltersFromUrl } = useFilterUrlSync({
   selectedTeam,
@@ -68,13 +70,12 @@ const { resetFilters: resetFiltersFromUrl } = useFilterUrlSync({
   playerSearch,
   sortBy,
   currentPage,
-  itemsPerPage
+  itemsPerPage,
+  showPlayerMeasurements
 })
 
 // Use the resetFilters from URL sync (it now includes playerSearch)
 const resetFilters = resetFiltersFromUrl
-
-const showPlayerMeasurements = ref(false)
 
 async function loadData() {
   try {
