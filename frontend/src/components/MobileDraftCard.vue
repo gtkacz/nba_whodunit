@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import type { DraftPick } from '@/types/draft'
 import { getCanonicalTeam, getDisplayTeam, getOriginalTeamName } from '@/utils/teamAliases'
 import { getCountryCode } from '@/utils/countryCodeConverter'
-import { useCountryData } from '@/composables/useCountryData'
 import { useTeamData } from '@/composables/useTeamData'
 
 interface MobileDraftCardProps {
@@ -13,7 +12,6 @@ interface MobileDraftCardProps {
 
 const props = defineProps<MobileDraftCardProps>()
 
-const { getFormattedCountryName } = useCountryData()
 const { getTeamFullName } = useTeamData()
 
 const expanded = ref(false)
@@ -140,7 +138,6 @@ function handlePlayerClick() {
           :class="{ 'player-headshot-clickable': item.nba_id }"
           color="grey-lighten-4"
           @click.stop="handlePlayerClick"
-          style="min-width: 56px; min-height: 56px;"
         >
           <v-img
             v-if="item.nba_id"
@@ -148,6 +145,7 @@ function handlePlayerClick() {
             :alt="item.player"
             cover
             eager
+            class="player-headshot-img"
           >
             <template #placeholder>
               <div class="d-flex align-center justify-center fill-height">
@@ -166,6 +164,7 @@ function handlePlayerClick() {
             :alt="item.player"
             cover
             eager
+            class="player-headshot-img"
           >
             <template #placeholder>
               <div class="d-flex align-center justify-center fill-height">
@@ -197,8 +196,22 @@ function handlePlayerClick() {
               :class="`fi fi-${getCountryCode(item.origin_country)}`"
               class="player-flag-icon"
             />
+            <template v-if="getPlayerRetirementStatus(item.played_until_year) === 'active' && item.plays_for && getCanonicalTeam(item.plays_for, item.year) !== getCanonicalTeam(item.team, item.year)">
+              <v-avatar
+                size="16"
+                rounded="0"
+                style="background: transparent;"
+                class="player-status-icon"
+              >
+                <v-img
+                  :src="getTeamLogoUrl(item.plays_for, item.year)"
+                  :alt="item.plays_for"
+                  contain
+                />
+              </v-avatar>
+            </template>
             <v-icon
-              v-if="getPlayerRetirementStatus(item.played_until_year) === 'retired'"
+              v-else-if="getPlayerRetirementStatus(item.played_until_year) === 'retired'"
               icon="mdi-account-off"
               size="16"
               color="grey"
@@ -216,7 +229,6 @@ function handlePlayerClick() {
         </div>
         
         <v-btn
-          icon
           :icon="expanded ? 'mdi-chevron-up' : 'mdi-chevron-down'"
           size="small"
           color="primary"
@@ -229,10 +241,10 @@ function handlePlayerClick() {
       <!-- Quick Stats Row -->
       <div class="d-flex align-center justify-space-between mb-3">
         <div class="d-flex align-center gap-2">
-          <v-chip size="small" color="primary" variant="flat">
+          <v-chip size="small" color="primary" variant="tonal">
             Pick #{{ item.pick }}
           </v-chip>
-          <v-chip size="small" color="secondary" variant="flat">
+          <v-chip size="small" color="secondary" variant="tonal">
             Round {{ item.round }}
           </v-chip>
           <div v-if="item.position" class="d-flex gap-1">
@@ -298,7 +310,7 @@ function handlePlayerClick() {
           <v-row dense>
             <v-col cols="6">
               <div class="detail-item">
-                <div class="text-caption text-medium-emphasis mb-1">Age</div>
+                <div class="text-caption text-medium-emphasis mb-1">Draft Age</div>
                 <div class="text-body-1 font-weight-medium">{{ item.age || 'N/A' }}</div>
               </div>
             </v-col>
@@ -335,22 +347,62 @@ function handlePlayerClick() {
   transition: all 0.2s ease;
 
   &:hover {
-    elevation: 4;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   }
 
   .player-headshot {
     flex-shrink: 0;
     border: 2px solid rgba(var(--v-theme-surface), 0.1);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden !important;
+    border-radius: 50% !important;
 
     &.player-headshot-clickable {
       cursor: pointer;
 
       &:hover {
-        transform: scale(1.05);
+        transform: scale(1.1);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
       }
     }
+
+    :deep(.player-headshot-img),
+    :deep(.v-img) {
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 50% !important;
+      overflow: hidden !important;
+    }
+
+    :deep(.v-img__img) {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover !important;
+      object-position: center top;
+      border-radius: 50% !important;
+    }
+
+    :deep(.v-img__wrapper) {
+      width: 100% !important;
+      height: 100% !important;
+      border-radius: 50% !important;
+      overflow: hidden !important;
+    }
+
+    :deep(.v-img__sizer) {
+      padding-bottom: 0 !important;
+    }
+
+    :deep(.v-avatar__underlay) {
+      background: transparent;
+      border-radius: 50% !important;
+    }
+  }
+
+  .player-status-icon {
+    margin-left: 4px;
+    flex-shrink: 0;
   }
 
   .player-flag-icon {
@@ -373,4 +425,5 @@ function handlePlayerClick() {
   }
 }
 </style>
+
 

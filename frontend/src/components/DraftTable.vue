@@ -2083,16 +2083,17 @@ watch(currentPage, () => {
     overflow-x: auto;
   }
 
-  :deep(.v-avatar img),
-  :deep(.v-avatar .v-img__img),
-  :deep(.v-avatar .v-img) {
+  // Global avatar styling for team logos (not player headshots)
+  :deep(.v-avatar:not(.player-headshot) img),
+  :deep(.v-avatar:not(.player-headshot) .v-img__img),
+  :deep(.v-avatar:not(.player-headshot) .v-img) {
     object-fit: contain !important;
     background: transparent !important;
     width: 100% !important;
     height: 100% !important;
   }
   
-  :deep(.v-avatar) {
+  :deep(.v-avatar:not(.player-headshot)) {
     background: transparent !important;
     overflow: visible !important;
   }
