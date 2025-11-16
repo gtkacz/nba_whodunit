@@ -242,15 +242,19 @@ export function useDraftData() {
     // Overall pick range filter
     if (overallPickRange.value && overallPickRange.value.length === 2) {
       const [minOverall, maxOverall] = overallPickRange.value
+      // Explicitly convert to numbers to ensure proper comparison
+      const minOverallNum = Number(minOverall)
+      const maxOverallNum = Number(maxOverall)
       filtered = filtered.filter((pick) => {
-        // Calculate overall pick: (round - 1) * 30 + pick
-        const overallPick = (pick.round - 1) * 30 + pick.pick
-        if (maxOverall === 61) {
+        // pick.pick already contains the overall pick number (not the pick within the round)
+        // Explicitly convert to number to ensure proper comparison
+        const overallPick = Number(pick.pick)
+        if (maxOverallNum === 61) {
           // If max is 61, it means "no upper limit" - show all picks >= minOverall
-          return overallPick >= minOverall
+          return overallPick >= minOverallNum
         } else {
-          // Normal range filter
-          return overallPick >= minOverall && overallPick <= maxOverall
+          // Normal range filter - use <= to include the upper bound
+          return overallPick >= minOverallNum && overallPick <= maxOverallNum
         }
       })
     }

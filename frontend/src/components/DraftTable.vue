@@ -1961,120 +1961,6 @@ const shareTooltipText = computed(() => {
                     </template>
                   </v-select>
                 </v-col>
-              </v-row>
-            </div>
-
-            <!-- Quadrant 2: Position, Round, Trade Status -->
-            <div class="pa-4 pb-3">
-              <v-row>
-                <v-col cols="12" md="6" class="mb-3">
-                  <v-select
-                    :model-value="props.selectedPositions"
-                    @update:model-value="emit('update:selectedPositions', $event)"
-                    :items="positionOptions"
-                    label="Position"
-                    variant="outlined"
-                    multiple
-                    chips
-                    clearable
-                    persistent-clear
-                    hide-details
-                    prepend-inner-icon="mdi-account"
-                    closable-chips
-                  />
-                </v-col>
-
-                <v-col cols="12" md="6" class="mb-2">
-                  <v-select
-                    :model-value="props.selectedRounds"
-                    @update:model-value="emit('update:selectedRounds', $event)"
-                    :items="roundOptions"
-                    label="Rounds"
-                    variant="outlined"
-                    multiple
-                    chips
-                    hide-details
-                    prepend-inner-icon="mdi-numeric"
-                  />
-                </v-col>
-
-                <v-col cols="12" md="6" class="mb-2">
-                  <v-select
-                    :model-value="props.tradeFilter"
-                    @update:model-value="emit('update:tradeFilter', $event)"
-                    :items="[
-                      { value: 'all', title: 'All Picks' },
-                      { value: 'traded', title: 'Traded Only' },
-                      { value: 'not-traded', title: 'Not Traded' }
-                    ]"
-                    label="Trade Status"
-                    variant="outlined"
-                    hide-details
-                    prepend-inner-icon="mdi-swap-horizontal"
-                  />
-                </v-col>
-
-                <v-col cols="12" md="6" class="mb-2">
-                  <v-select
-                    :model-value="props.retiredFilter"
-                    @update:model-value="emit('update:retiredFilter', $event)"
-                    :items="[
-                      { value: 'all', title: 'All Players' },
-                      { value: 'retired', title: 'Retired Only' },
-                      { value: 'not-retired', title: 'Active Only' }
-                    ]"
-                    label="Retirement Status"
-                    variant="outlined"
-                    hide-details
-                    prepend-inner-icon="mdi-account-off"
-                  />
-                </v-col>
-              </v-row>
-            </div>
-
-            <v-divider class="my-2"></v-divider>
-
-            <!-- Quadrant 3: All Range Sliders -->
-            <div class="pa-4 pb-3">
-              <v-row>
-                <v-col cols="12" md="6" class="mb-3">
-                  <div class="px-1">
-                    <div class="d-flex align-center justify-space-between mb-3">
-                      <label class="text-caption text-medium-emphasis">Year</label>
-                      <v-btn-toggle
-                        :model-value="props.useYearRange ? 'range' : 'single'"
-                        @update:model-value="emit('update:useYearRange', $event === 'range')"
-                        variant="outlined"
-                        mandatory
-                      >
-                        <v-btn value="single">Single</v-btn>
-                        <v-btn value="range">Range</v-btn>
-                      </v-btn-toggle>
-                    </div>
-                    <v-range-slider
-                      v-if="props.useYearRange"
-                      :model-value="props.yearRange"
-                      @update:model-value="emit('update:yearRange', $event)"
-                      :min="minYear"
-                      :max="maxYear"
-                      :step="1"
-                      thumb-label="always"
-                      thumb-label-location="bottom"
-                      hide-details
-                      color="primary"
-                      class="mt-2"
-                    />
-                    <v-select
-                      v-else
-                      :model-value="props.selectedYear"
-                      @update:model-value="emit('update:selectedYear', $event)"
-                      :items="props.availableYears"
-                      label="Select Year"
-                      variant="outlined"
-                      hide-details
-                    />
-                  </div>
-                </v-col>
 
                 <v-col cols="12" md="6" class="mb-2">
                   <v-autocomplete
@@ -2094,8 +1980,6 @@ const shareTooltipText = computed(() => {
                 </v-col>
               </v-row>
             </div>
-
-            <v-divider class="my-2"></v-divider>
 
             <!-- Quadrant 2: Position, Round, Trade Status -->
             <div class="pa-4 pb-3">
