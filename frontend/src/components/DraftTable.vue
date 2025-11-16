@@ -1120,7 +1120,7 @@ const shareTooltipText = computed(() => {
           </v-chip>
         </div>
       </div>
-      <div :class="isMobile ? 'd-flex flex-column w-100 gap-2' : 'd-flex align-center gap-2'">
+      <div :class="isMobile ? 'd-flex align-center justify-space-between w-100 gap-2' : 'd-flex align-center gap-2'">
         <!-- Player Search Bar -->
         <v-text-field
           v-model="playerSearch"
@@ -1131,7 +1131,7 @@ const shareTooltipText = computed(() => {
           hide-details
           clearable
           class="player-search-field"
-          :class="isMobile ? 'w-100' : ''"
+          :class="isMobile ? 'flex-grow-1' : ''"
           :style="isMobile ? '' : 'max-width: 250px; min-width: 200px;'"
           rounded="xl"
         />
