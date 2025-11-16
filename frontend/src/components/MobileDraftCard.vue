@@ -139,9 +139,9 @@ function handlePlayerClick() {
   }
 }
 
-// Remove "NBA" prefix from award names for display
+// Format award names for display (keeping NBA prefix)
 function formatAwardName(award: string): string {
-  return award.replace(/^NBA\s+/i, '').trim()
+  return award
 }
 </script>
 
@@ -384,6 +384,14 @@ function formatAwardName(award: string): string {
               <div class="detail-item">
                 <div class="text-caption text-medium-emphasis mb-1">Draft Age</div>
                 <div class="text-body-1 font-weight-medium">{{ item.age || 'N/A' }}</div>
+              </div>
+            </v-col>
+            <v-col cols="6">
+              <div class="detail-item">
+                <div class="text-caption text-medium-emphasis mb-1">Years in the League</div>
+                <div class="text-body-1 font-weight-medium">
+                  {{ item.yearsOfService !== undefined ? item.yearsOfService : 'N/A' }}
+                </div>
               </div>
             </v-col>
             <v-col cols="12">

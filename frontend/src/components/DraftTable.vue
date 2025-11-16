@@ -242,9 +242,9 @@ function handleAwardCountChange(award: string, count: number) {
   emit('update:selectedAwards', current)
 }
 
-// Remove "NBA" prefix from award names for display
+// Format award names for display (keeping NBA prefix)
 function formatAwardName(award: string): string {
-  return award.replace(/^NBA\s+/i, '').trim()
+  return award
 }
 
 // Sort awards: "All-Rookie Team" and "Rookie of the Year" first, then alphabetically
@@ -292,6 +292,9 @@ const positionOptions = [
 
 const minAge = computed(() => props.availableAges.length > 0 ? Math.min(...props.availableAges) : 17)
 const maxAge = computed(() => props.availableAges.length > 0 ? Math.max(...props.availableAges) : 50)
+
+const minYearsOfService = computed(() => props.minYearsOfService || 0)
+const maxYearsOfService = computed(() => props.maxYearsOfService || 30)
 
 // Helper function to format height from inches to feet-inches
 function formatHeight(inches: number): string {
@@ -347,6 +350,7 @@ const allHeaders = [
   },
   { title: 'Draft Weight', key: 'weight', sortable: true, width: '35px' },
   { title: 'Draft Age', key: 'age', sortable: true, width: '35px' },
+  { title: 'Years in the League', key: 'yearsOfService', sortable: true, width: '60px' },
   { title: 'Drafted From', key: 'preDraftTeam', sortable: true, minWidth: '175px' },
   { title: 'Pick Trades', key: 'draftTrades', sortable: false, minWidth: '80px', width: 'auto' }
 ]
@@ -355,7 +359,7 @@ const headers = computed(() => {
   if (props.showPlayerMeasurements) {
     return allHeaders
   }
-  return allHeaders.filter(header => header.key !== 'height' && header.key !== 'weight')
+  return allHeaders.filter(header => header.key !== 'height' && header.key !== 'weight' && header.key !== 'yearsOfService')
 })
 
 // Sort state - use prop value, fallback to local ref if not provided
@@ -859,6 +863,61 @@ function getAgeColor(age: number | null | undefined): string {
   return `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`
 }
 
+// Heatmap color function for years of service - fewer years get yellow/orange, more years get red/purple
+function getYearsOfServiceColor(years: number | null | undefined): string {
+  if (years === undefined || years === null || years < 0) return '#9e9e9e' // Gray for missing/invalid
+  
+  const min = minYearsOfService.value
+  const max = maxYearsOfService.value
+  const range = max - min
+  
+  if (range === 0) return '#ff9800' // Orange if all years are the same
+  
+  // Normalize years to 0-1 range (0 = fewest years, 1 = most years)
+  const normalized = (years - min) / range
+  
+  // Heatmap: Yellow/Orange for few years, Red/Purple for many years
+  // Hue: 30 (yellow-orange) to 300 (magenta/purple)
+  // Saturation: High (80-100%) for vibrant colors
+  // Lightness: Medium (40-50%) for good contrast
+  
+  const hue = 30 + (300 - 30) * normalized // 30 (yellow-orange) to 300 (magenta)
+  const saturation = 85 + (normalized * 10) // 85% to 95%
+  const lightness = 45 - (normalized * 5) // 45% to 40%
+  
+  // Convert HSL to RGB
+  const h = hue / 360
+  const s = saturation / 100
+  const l = lightness / 100
+  
+  const c = (1 - Math.abs(2 * l - 1)) * s
+  const x = c * (1 - Math.abs((h * 6) % 2 - 1))
+  const m = l - c / 2
+  
+  let r = 0, g = 0, b = 0
+  
+  if (h < 1/6) {
+    r = c; g = x; b = 0
+  } else if (h < 2/6) {
+    r = x; g = c; b = 0
+  } else if (h < 3/6) {
+    r = 0; g = c; b = x
+  } else if (h < 4/6) {
+    r = 0; g = x; b = c
+  } else if (h < 5/6) {
+    r = x; g = 0; b = c
+  } else {
+    r = c; g = 0; b = x
+  }
+  
+  // Convert to hex
+  const red = Math.round((r + m) * 255)
+  const green = Math.round((g + m) * 255)
+  const blue = Math.round((b + m) * 255)
+  
+  return `#${red.toString(16).padStart(2, '0')}${green.toString(16).padStart(2, '0')}${blue.toString(16).padStart(2, '0')}`
+}
+
 // Computed properties for pagination
 const totalPages = computed(() => {
   if (itemsPerPage.value === -1) return 1
@@ -1000,7 +1059,7 @@ function getActiveFiltersDescription(): string {
   }
   
   if (props.yearsOfServiceRange && (props.yearsOfServiceRange[0] !== 0 || props.yearsOfServiceRange[1] !== 30)) {
-    filters.push(`Years of Service: ${props.yearsOfServiceRange[0]}-${props.yearsOfServiceRange[1]}`)
+    filters.push(`Years in the League: ${props.yearsOfServiceRange[0]}-${props.yearsOfServiceRange[1]}`)
   }
   
   if (props.tradeFilter !== 'all') {
@@ -1412,44 +1471,6 @@ const shareTooltipText = computed(() => {
 
                 <v-divider></v-divider>
 
-                <!-- Awards Filter Section -->
-                <div v-if="props.availableAwards && props.availableAwards.length > 0" class="pa-4 pb-2">
-                  <div class="text-subtitle-2 font-weight-bold mb-3 d-flex align-center">
-                    <v-icon icon="mdi-star" size="20" class="mr-2" />
-                    Awards
-                  </div>
-              <div class="awards-filter-list">
-                <div
-                  v-for="award in sortedAwards"
-                  :key="award"
-                  class="d-flex align-center mb-2"
-                >
-                  <v-checkbox
-                    :model-value="award in (props.selectedAwards || {})"
-                    @update:model-value="handleAwardCheckboxChange(award, $event)"
-                    :label="formatAwardName(award)"
-                    hide-details
-                    density="comfortable"
-                    class="flex-grow-1 mr-2"
-                  />
-                  <v-text-field
-                    v-if="award in (props.selectedAwards || {}) && shouldShowAwardCount(award)"
-                    :model-value="(props.selectedAwards || {})[award] || 1"
-                    @update:model-value="handleAwardCountChange(award, Number($event))"
-                    type="number"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                    :min="1"
-                    style="max-width: 80px;"
-                    class="award-count-input"
-                  />
-                </div>
-              </div>
-                </div>
-
-                <v-divider v-if="props.availableAwards && props.availableAwards.length > 0"></v-divider>
-
                 <!-- Quadrant 2: Position, Round, Trade Status -->
                 <div class="pa-4 pb-2">
                   <v-row>
@@ -1668,7 +1689,7 @@ const shareTooltipText = computed(() => {
                     <v-col cols="12" md="6" class="mb-2">
                       <div class="px-1">
                         <label class="text-caption text-medium-emphasis mb-3 d-block">
-                          Years of Service Range
+                          Years in the League Range
                           <span class="ml-2 text-primary">
                             ({{ props.yearsOfServiceRange[0] }} - {{ props.yearsOfServiceRange[1] }} years)
                           </span>
@@ -1700,6 +1721,44 @@ const shareTooltipText = computed(() => {
                       />
                     </v-col>
                   </v-row>
+                </div>
+
+                <v-divider v-if="props.availableAwards && props.availableAwards.length > 0"></v-divider>
+
+                <!-- Awards Filter Section -->
+                <div v-if="props.availableAwards && props.availableAwards.length > 0" class="pa-4 pb-2">
+                  <div class="text-subtitle-2 font-weight-bold mb-3 d-flex align-center">
+                    <v-icon icon="mdi-star" size="20" class="mr-2" />
+                    Awards
+                  </div>
+              <div class="awards-filter-list">
+                <div
+                  v-for="award in sortedAwards"
+                  :key="award"
+                  class="d-flex align-center mb-2"
+                >
+                  <v-checkbox
+                    :model-value="award in (props.selectedAwards || {})"
+                    @update:model-value="handleAwardCheckboxChange(award, $event)"
+                    :label="formatAwardName(award)"
+                    hide-details
+                    density="comfortable"
+                    class="flex-grow-1 mr-2"
+                  />
+                  <v-text-field
+                    v-if="award in (props.selectedAwards || {}) && shouldShowAwardCount(award)"
+                    :model-value="(props.selectedAwards || {})[award] || 1"
+                    @update:model-value="handleAwardCountChange(award, Number($event))"
+                    type="number"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    :min="1"
+                    style="max-width: 80px;"
+                    class="award-count-input"
+                  />
+                </div>
+              </div>
                 </div>
               </v-card-text>
             </v-card>
@@ -1919,44 +1978,6 @@ const shareTooltipText = computed(() => {
                 </v-col>
               </v-row>
             </div>
-
-            <!-- Awards Filter Section -->
-            <div v-if="props.availableAwards && props.availableAwards.length > 0" class="pa-4 pb-3">
-              <div class="text-subtitle-2 font-weight-bold mb-3 d-flex align-center">
-                <v-icon icon="mdi-star" size="20" class="mr-2" />
-                Awards
-              </div>
-              <div class="awards-filter-list">
-                <div
-                  v-for="award in sortedAwards"
-                  :key="award"
-                  class="d-flex align-center mb-2"
-                >
-                  <v-checkbox
-                    :model-value="award in (props.selectedAwards || {})"
-                    @update:model-value="handleAwardCheckboxChange(award, $event)"
-                    :label="formatAwardName(award)"
-                    hide-details
-                    density="comfortable"
-                    class="flex-grow-1 mr-2"
-                  />
-                  <v-text-field
-                    v-if="award in (props.selectedAwards || {}) && shouldShowAwardCount(award)"
-                    :model-value="(props.selectedAwards || {})[award] || 1"
-                    @update:model-value="handleAwardCountChange(award, Number($event))"
-                    type="number"
-                    variant="outlined"
-                    density="compact"
-                    hide-details
-                    :min="1"
-                    style="max-width: 80px;"
-                    class="award-count-input"
-                  />
-                </div>
-              </div>
-            </div>
-
-            <v-divider v-if="props.availableAwards && props.availableAwards.length > 0" class="my-2"></v-divider>
 
             <!-- Quadrant 2: Position, Round, Trade Status -->
             <div class="pa-4 pb-3">
@@ -2309,7 +2330,7 @@ const shareTooltipText = computed(() => {
                 <v-col cols="12" md="6" class="mb-2">
                   <div class="px-1">
                     <label class="text-caption text-medium-emphasis mb-3 d-block">
-                      Years of Service Range
+                      Years in the League Range
                       <span class="ml-2 text-primary">
                         ({{ props.yearsOfServiceRange[0] }} - {{ props.yearsOfServiceRange[1] }} years)
                       </span>
@@ -2343,6 +2364,44 @@ const shareTooltipText = computed(() => {
                   />
                 </v-col>
               </v-row>
+            </div>
+
+            <v-divider v-if="props.availableAwards && props.availableAwards.length > 0" class="my-2"></v-divider>
+
+            <!-- Awards Filter Section -->
+            <div v-if="props.availableAwards && props.availableAwards.length > 0" class="pa-4 pb-3">
+              <div class="text-subtitle-2 font-weight-bold mb-3 d-flex align-center">
+                <v-icon icon="mdi-star" size="20" class="mr-2" />
+                Awards
+              </div>
+              <div class="awards-filter-list">
+                <div
+                  v-for="award in sortedAwards"
+                  :key="award"
+                  class="d-flex align-center mb-2"
+                >
+                  <v-checkbox
+                    :model-value="award in (props.selectedAwards || {})"
+                    @update:model-value="handleAwardCheckboxChange(award, $event)"
+                    :label="formatAwardName(award)"
+                    hide-details
+                    density="comfortable"
+                    class="flex-grow-1 mr-2"
+                  />
+                  <v-text-field
+                    v-if="award in (props.selectedAwards || {}) && shouldShowAwardCount(award)"
+                    :model-value="(props.selectedAwards || {})[award] || 1"
+                    @update:model-value="handleAwardCountChange(award, Number($event))"
+                    type="number"
+                    variant="outlined"
+                    density="compact"
+                    hide-details
+                    :min="1"
+                    style="max-width: 80px;"
+                    class="award-count-input"
+                  />
+                </div>
+              </div>
             </div>
           </v-card-text>
         </v-card>
@@ -2638,6 +2697,16 @@ const shareTooltipText = computed(() => {
           :color="getAgeColor(item.age) || 'white'"
         >
           {{ item.age || '-' }}
+        </v-chip>
+      </template>
+
+      <template #item.yearsOfService="{ item }">
+        <v-chip 
+          size="small" 
+          variant="tonal"
+          :color="getYearsOfServiceColor(item.yearsOfService) || 'white'"
+        >
+          {{ item.yearsOfService !== undefined ? item.yearsOfService : '-' }}
         </v-chip>
       </template>
 

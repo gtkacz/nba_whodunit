@@ -68,9 +68,9 @@ const teamColorAccent = computed(() => {
   return `var(--team-${teamCode.value.toLowerCase()}-accent, #FFFFFF)`
 })
 
-// Remove "NBA" prefix from award names for display
+// Format award names for display (keeping NBA prefix)
 function formatAwardName(award: string): string {
-  return award.replace(/^NBA\s+/i, '').trim()
+  return award
 }
 </script>
 
