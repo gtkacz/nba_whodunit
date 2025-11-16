@@ -41,7 +41,7 @@ const DEFAULT_FILTERS: FilterDefaults = {
   selectedPositions: [],
   ageRange: [17, 50],
   heightRange: [60, 96],
-  weightRange: [140, 350],
+  weightRange: [140, 403],
   yearsOfServiceRange: [0, 30],
   tradeFilter: 'all',
   retiredFilter: 'all',

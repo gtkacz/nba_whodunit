@@ -70,7 +70,7 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   selectedPositions: () => [],
   ageRange: () => [17, 50],
   heightRange: () => [60, 96],
-  weightRange: () => [140, 350],
+  weightRange: () => [140, 403],
   yearsOfServiceRange: () => [0, 30],
   tradeFilter: () => 'all',
   retiredFilter: () => 'all',
@@ -91,7 +91,7 @@ const props = withDefaults(defineProps<DraftTableProps>(), {
   minHeight: 60,
   maxHeight: 96,
   minWeight: 140,
-  maxWeight: 350,
+  maxWeight: 403,
   minYearsOfService: 0,
   maxYearsOfService: 30,
   showPlayerMeasurements: false,
@@ -222,7 +222,7 @@ const awardOptions = computed(() => {
 function handleAwardCheckboxChange(award: string, checked: boolean) {
   const current = { ...(props.selectedAwards || {}) }
   if (checked) {
-    // For priority awards (All-Rookie Team, Rookie of the Year), don't set a count
+    // For one-time-only awards (All-Rookie variants), don't set a count
     // They're just boolean filters
     if (shouldShowAwardCount(award)) {
       current[award] = 1 // Default to 1 for awards that need counts
@@ -247,33 +247,18 @@ function formatAwardName(award: string): string {
   return award
 }
 
-// Sort awards: "All-Rookie Team" and "Rookie of the Year" first, then alphabetically
+// Sort awards alphabetically
 const sortedAwards = computed(() => {
   if (!props.availableAwards || props.availableAwards.length === 0) {
     return []
   }
-  const priorityAwardNames = ['All-Rookie Team', 'Rookie of the Year', 'NBA All-Rookie Team', 'NBA Rookie of the Year']
-  const priorityAwards = props.availableAwards.filter(a => 
-    priorityAwardNames.some(priority => a.toLowerCase().includes(priority.toLowerCase().replace('nba ', '')))
-  )
-  const otherAwards = props.availableAwards.filter(a => !priorityAwards.includes(a))
-  return [
-    ...priorityAwards.sort((a, b) => {
-      // Sort priority awards: All-Rookie Team first, then Rookie of the Year
-      const aIsRookieTeam = a.toLowerCase().includes('all-rookie')
-      const bIsRookieTeam = b.toLowerCase().includes('all-rookie')
-      if (aIsRookieTeam && !bIsRookieTeam) return -1
-      if (!aIsRookieTeam && bIsRookieTeam) return 1
-      return 0
-    }),
-    ...otherAwards.sort()
-  ]
+  return [...props.availableAwards].sort()
 })
 
-// Check if award should show count selector (exclude priority awards)
+// Check if award should show count selector (exclude one-time-only awards like All-Rookie variants)
 function shouldShowAwardCount(award: string): boolean {
   const awardLower = award.toLowerCase()
-  return !(awardLower.includes('all-rookie team') || awardLower.includes('rookie of the year'))
+  return !awardLower.includes('all-rookie')
 }
 
 const nationalityOptions = computed<NationalityOption[]>(() => {
@@ -525,7 +510,7 @@ const hasActiveFilters = computed(() => {
   if (props.heightRange && (props.heightRange[0] !== 60 || props.heightRange[1] !== 96)) return true
   
   // Weight range filter active
-  if (props.weightRange && (props.weightRange[0] !== 140 || props.weightRange[1] !== 350)) return true
+  if (props.weightRange && (props.weightRange[0] !== 140 || props.weightRange[1] !== 403)) return true
   
   // Years of service range filter active
   if (props.yearsOfServiceRange && (props.yearsOfServiceRange[0] !== 0 || props.yearsOfServiceRange[1] !== 30)) return true
@@ -558,7 +543,7 @@ function getActiveFiltersCount(): number {
   if (props.selectedPositions.length > 0) count++
   if (props.ageRange[0] !== 17 || props.ageRange[1] !== 50) count++
   if (props.heightRange && (props.heightRange[0] !== 60 || props.heightRange[1] !== 96)) count++
-  if (props.weightRange && (props.weightRange[0] !== 140 || props.weightRange[1] !== 350)) count++
+  if (props.weightRange && (props.weightRange[0] !== 140 || props.weightRange[1] !== 403)) count++
   if (props.tradeFilter !== 'all') count++
   if (props.retiredFilter !== 'all') count++
   if (props.selectedNationalities && props.selectedNationalities.length > 0) count++
@@ -1054,7 +1039,7 @@ function getActiveFiltersDescription(): string {
     filters.push(`Height: ${formatHeight(props.heightRange[0])}-${formatHeight(props.heightRange[1])}`)
   }
   
-  if (props.weightRange && (props.weightRange[0] !== 140 || props.weightRange[1] !== 350)) {
+  if (props.weightRange && (props.weightRange[0] !== 140 || props.weightRange[1] !== 403)) {
     filters.push(`Weight: ${props.weightRange[0]}-${props.weightRange[1]} lbs`)
   }
   
@@ -1672,7 +1657,7 @@ const shareTooltipText = computed(() => {
                           :model-value="props.weightRange"
                           @update:model-value="emit('update:weightRange', $event)"
                           :min="props.minWeight || 140"
-                          :max="props.maxWeight || 350"
+                          :max="props.maxWeight || 403"
                           :step="1"
                           thumb-label="always"
                           thumb-label-location="bottom"
@@ -2313,7 +2298,7 @@ const shareTooltipText = computed(() => {
                       :model-value="props.weightRange"
                       @update:model-value="emit('update:weightRange', $event)"
                       :min="props.minWeight || 140"
-                      :max="props.maxWeight || 350"
+                      :max="props.maxWeight || 403"
                       :step="1"
                       thumb-label="always"
                       thumb-label-location="bottom"

@@ -50,7 +50,7 @@ export function useDraftData() {
   const selectedPositions = ref<string[]>([])
   const ageRange = ref<[number, number]>([17, 50])
   const heightRange = ref<[number, number]>([60, 96]) // Default: 5'0" to 8'0" in inches
-  const weightRange = ref<[number, number]>([140, 350]) // Default: 140 to 350 lbs
+  const weightRange = ref<[number, number]>([140, 403]) // Default: 140 to 403 lbs
   const yearsOfServiceRange = ref<[number, number]>([0, 30]) // Default: 0 to 30 years
   const tradeFilter = ref<'all' | 'traded' | 'not-traded'>('all')
   const retiredFilter = ref<'all' | 'retired' | 'not-retired'>('all')
@@ -147,13 +147,13 @@ export function useDraftData() {
   })
 
   const minWeight = computed(() => {
-    let min = 350 // default max
+    let min = 403 // default max
     allDraftPicks.value.forEach((pick) => {
       if (pick.weight && pick.weight > 0 && pick.weight < min) {
         min = pick.weight
       }
     })
-    return min < 350 ? min : 140 // Default to 140 if no valid data
+    return min < 403 ? min : 140 // Default to 140 if no valid data
   })
 
   const maxWeight = computed(() => {
@@ -163,7 +163,7 @@ export function useDraftData() {
         max = pick.weight
       }
     })
-    return max > 140 ? max : 350 // Default to 350 if no valid data
+    return max > 140 ? max : 403 // Default to 403 if no valid data
   })
 
   const minYearsOfService = computed(() => {
